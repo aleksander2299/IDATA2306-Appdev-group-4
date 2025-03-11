@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>group4</groupId>
-	<artifactId>BackendGroup4Idata2306</artifactId>
+	<artifactId>idata2306Backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>BackendGroup4Idata2306</name>
 	<description>Spring boot project for appdev </description>

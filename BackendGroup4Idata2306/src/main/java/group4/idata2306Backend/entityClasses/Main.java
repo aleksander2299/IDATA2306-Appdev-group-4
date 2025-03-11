@@ -1,4 +1,4 @@
-package group4.BackendGroup4Idata2306.entityClasses;
+package group4.idata2306Backend.entityClasses;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
