@@ -1,4 +1,4 @@
-package group4.BackendGroup4Idata2306.entityClasses;
+package group4.backend.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
