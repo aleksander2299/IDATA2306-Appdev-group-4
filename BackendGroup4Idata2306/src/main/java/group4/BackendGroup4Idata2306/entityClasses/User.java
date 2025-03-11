@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="user")
-public class user {
+public class User {
 
     @Column(name="username", length=255, nullable=false, unique=true)
     private String username;
