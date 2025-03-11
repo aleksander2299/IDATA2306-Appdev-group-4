@@ -1,7 +1,7 @@
 package group4.idata2306Backend.entityClasses;
 
 <<<<<<< HEAD
-public class main {
+public class Main {
     public static void main(String[] args) {
         System.out.println("hello world");
     }
