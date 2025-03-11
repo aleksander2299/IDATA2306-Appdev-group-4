@@ -41,17 +41,6 @@
 			<scope>test</scope>
 		</dependency>
 
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<!-- Include a newer version of json-path to avoid CVE-2023-51074 vulnerability -->
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
