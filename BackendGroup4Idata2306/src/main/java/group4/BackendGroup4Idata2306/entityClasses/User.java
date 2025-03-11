@@ -1,7 +1,12 @@
+package group4.BackendGroup4Idata2306.entityClasses;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name="user")
-public class user {
+public class User {
 
     @Column(name="username", length=255, nullable=false, unique=true)
     private String username;
