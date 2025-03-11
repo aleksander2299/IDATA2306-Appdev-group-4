@@ -1,2 +1,7 @@
-package group4.BackendGroup4Idata2306.entityClasses;public class main {
+package group4.BackendGroup4Idata2306.entityClasses;
+
+public class main {
+    public static void main(String[] args) {
+        System.out.println("hello world");
+    }
 }
