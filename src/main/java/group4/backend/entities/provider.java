@@ -1,2 +1,4 @@
-package group4.backend.entities;public class provider {
+package group4.backend.entities;
+
+public class provider {
 }
