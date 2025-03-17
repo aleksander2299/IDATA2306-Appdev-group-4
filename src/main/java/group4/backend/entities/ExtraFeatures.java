@@ -11,8 +11,16 @@ public class ExtraFeatures {
     @Id
     @Column(name = "feature", nullable = false)
     private String feature;
-
+    
+    /**
+     * returns feature
+     * @return string feature
+     */
     public String getFeature() { return feature; }
 
+    /**
+     * sets the feature to a new feature
+     * @param feature the feature
+     */
     public void setFeature(String feature) {this.feature = feature; }
 }
