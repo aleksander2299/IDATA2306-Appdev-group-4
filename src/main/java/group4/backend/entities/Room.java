@@ -8,17 +8,18 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "room")
-public class room {
+public class Room {
 
 
     /**
      * set to auto increment for now. primary key roomID
      */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_id")
     private int roomId;  // Primary Key
 
-    @ManyToOne
-    @JoinColumn(name = "source_id", referencedColumnName = "source_id")  //foreign key ?
+   // @ManyToOne
+   // @JoinColumn(name = "source_id", referencedColumnName = "source_id")  //foreign key ?
     // private Source source;  this doesnt exist on my branch so just commented.
 
     @Column(name = "room_name", nullable = false)
