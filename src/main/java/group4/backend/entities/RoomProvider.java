@@ -16,11 +16,11 @@ public class RoomProvider {
     private int roomProviderId;
 
     @ManyToOne
-    @JoinColumn(name = "provider_id", nullable = false)
+    @JoinColumn(name = "provider_id", nullable = false, foreignKey = @ForeignKey(name = "FK_provider_id"))
     private Provider provider;
 
     @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
+    @JoinColumn(name = "room_id", nullable = false, foreignKey = @ForeignKey(name = "FK_room_id"))
     private Room room;
 
     @Column(name = "room_price")
