@@ -18,9 +18,9 @@ public class Room {
     @Column(name = "room_id")
     private int roomId;  // Primary Key
 
-   // @ManyToOne
-   // @JoinColumn(name = "source_id", referencedColumnName = "source_id")  //foreign key ?
-    // private Source source;  this doesnt exist on my branch so just commented.
+   @ManyToOne
+   @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id"))
+    private Source sourceID;
 
     @Column(name = "room_name", nullable = false)
     private String roomName;
@@ -37,6 +37,18 @@ public class Room {
     @Column(name = "image_url")
     private String imageurl;
 
+    /**
+     * returns source id
+     * @return int source id
+     */
+    public Source getSourceID() { return sourceID; }
+
+
+    /**
+     * sets the source id to a new source id
+     * @param sourceID the source id
+     */
+    public void setSourceID(Source sourceID) {this.sourceID = sourceID; }
 
     /**
      * gets the room id;
