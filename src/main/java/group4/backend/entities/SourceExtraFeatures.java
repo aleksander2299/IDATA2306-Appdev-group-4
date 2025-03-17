@@ -13,7 +13,7 @@ public class SourceExtraFeatures {
     private ExtraFeatures feature;
 
     @Id @ManyToOne
-    @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id"))
+    @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id_2"))
     private Source sourceID;
 
     /**
