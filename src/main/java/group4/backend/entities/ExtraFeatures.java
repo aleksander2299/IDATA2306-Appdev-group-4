@@ -14,5 +14,5 @@ public class ExtraFeatures {
 
     public String getFeature() { return feature; }
 
-    public void setFeature() {this.feature = feature; }
+    public void setFeature(String feature) {this.feature = feature; }
 }
