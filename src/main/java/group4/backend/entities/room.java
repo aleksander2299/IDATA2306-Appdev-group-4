@@ -7,6 +7,7 @@ import jakarta.persistence.*;
  * class representing room table in our database. responsible for holding room: name, id, description, type etc
  */
 @Entity
+@Table(name = "room")
 public class room {
 
 
@@ -31,6 +32,9 @@ public class room {
 
     @Column(name = "room_type", nullable = false)
     private String roomType;
+
+    @Column(name = "image_url")
+    private String imageurl;
 
 
     /**
