@@ -18,11 +18,9 @@ public class Booking {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int bookingId;
 
-  @Id @ManyToOne
   @JoinColumn(name = "room_provider", referencedColumnName = "room_provider_id", foreignKey = @ForeignKey(name = "FK_room_provider_id"))
   private int roomProviderId;
 
-  @Id @ManyToOne
   @JoinColumn(name = "room", referencedColumnName = "username", foreignKey = @ForeignKey(name = "FK_username"))
   private String username;
 

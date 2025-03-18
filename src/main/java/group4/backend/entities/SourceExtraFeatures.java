@@ -8,13 +8,34 @@ import jakarta.persistence.*;
 @Table(name = "source_extra_features")
 public class SourceExtraFeatures {
 
-    @Id @ManyToOne
+    @EmbeddedId
+    private SourceExtraFeaturesId id;
+
+    @ManyToOne
+    @MapsId("feature")
     @JoinColumn(name = "feature", referencedColumnName = "feature", foreignKey = @ForeignKey(name = "FK_feature"))
     private ExtraFeatures feature;
 
-    @Id @ManyToOne
+    @ManyToOne
+    @MapsId("sourceId")
     @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id_2"))
     private Source sourceID;
+
+    public SourceExtraFeatures() {}
+
+    public SourceExtraFeatures(ExtraFeatures feature, Source source) {
+        this.id = new SourceExtraFeaturesId(feature.getFeature(), source.getSourceID());
+        this.feature = feature;
+        this.sourceID = source;
+    }
+
+    public SourceExtraFeaturesId getId() {
+        return this.id;
+    }
+
+    public void setId(SourceExtraFeaturesId id) {
+        this.id = id;
+    }
 
     /**
      * returns feature
