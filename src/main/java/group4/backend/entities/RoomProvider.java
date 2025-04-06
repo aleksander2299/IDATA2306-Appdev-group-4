@@ -27,6 +27,12 @@ public class RoomProvider {
     private int roomPrice;
 
 
+    public RoomProvider(Room room, Provider provider, int roomPrice) {
+        this.room = room;
+        this.provider = provider;
+        this.roomPrice = roomPrice;
+    }
+
     /**
      * returns RoomProviderId
      * @return the current RoomProviderId
@@ -58,4 +64,39 @@ public class RoomProvider {
     public void setRoomPrice(int roomPrice) {
         this.roomPrice = roomPrice;
     }
+
+
+    /**
+     * gets the provider
+     * @return the provider
+     */
+    public Provider getProvider() {
+        return provider;
+    }
+
+    /**
+     * sets the provider to a new provider
+     * @param provider the new provider
+     */
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+
+    /**
+     * gets the room
+     * @return the room.
+     */
+    public Room getRoom() {
+        return room;
+    }
+
+    /**
+     * sets the room to new room in parameter
+     * @param room the new room.
+     */
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
 }

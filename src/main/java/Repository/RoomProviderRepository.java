@@ -2,9 +2,11 @@ package Repository;
 
 import group4.backend.entities.RoomProvider;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface RoomProviderRepository extends CrudRepository<RoomProvider,Integer> {
 
     @Override
@@ -30,5 +32,7 @@ public interface RoomProviderRepository extends CrudRepository<RoomProvider,Inte
 
     @Override
     void deleteAllById(Iterable iterable);
+
+
 
 }
