@@ -4,7 +4,9 @@ import Repository.ProviderRepository;
 import Repository.RoomProviderRepository;
 import Repository.RoomRepository;
 import group4.backend.entities.RoomProvider;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,9 +36,15 @@ public class RoomProviderService {
      * @return List of roomProviderObjects
      */
     public List<RoomProvider> findAllById(Iterable<Integer> ids){
+        if(ids == null){
+            throw new IllegalArgumentException("no ids found ");
+        }
         List<RoomProvider> providerList = new ArrayList<>();
         for(RoomProvider roomProvider : findAllById(ids)){
             providerList.add(roomProvider);
+        }
+        if (providerList.isEmpty()) {
+            throw new EmptyResultDataAccessException("No RoomProviders found", 1);
         }
         return providerList;
     }
@@ -48,6 +56,9 @@ public class RoomProviderService {
      * @return optional of roomProvider
      */
     public Optional<RoomProvider> findById(Integer id){
+        if(id == null){
+            throw new IllegalArgumentException("no id found ");
+        }
            return roomProviderRepository.findById(id);
     }
 
@@ -57,11 +68,13 @@ public class RoomProviderService {
      * @return list of all roomProvider objects
      */
     public List<RoomProvider> findAll(){
-           List<RoomProvider> providerList = new ArrayList<>();
-           for(RoomProvider roomProvider : roomProviderRepository.findAll()){
-               providerList.add(roomProvider);
-           }
-           return providerList;
+
+            List<RoomProvider> providerList = new ArrayList<>();
+            roomProviderRepository.findAll().forEach(providerList::add);
+            if (providerList.isEmpty()) {
+            throw new EmptyResultDataAccessException("No RoomProviders found", 1);
+            }
+            return providerList;
     }
 
 
@@ -70,6 +83,9 @@ public class RoomProviderService {
      * @param provider the RoomProvider to be deleted.
      */
     public void delete(RoomProvider provider){
+        if(provider == null){
+            throw new IllegalArgumentException("no id found ");
+        }
            roomProviderRepository.delete(provider);
     }
 
@@ -79,6 +95,9 @@ public class RoomProviderService {
      * @param id the id of the roomProvider object to be deleted
      */
     public void deleteById(Integer id){
+        if(id == null){
+            throw new IllegalArgumentException("no ids found ");
+        }
          roomProviderRepository.deleteById(id);
     }
 
@@ -94,6 +113,9 @@ public class RoomProviderService {
      * @param ids the list of ids which roomProvider objects will be dleeted
      */
     public void deletAllById(Iterable<Integer> ids){
+        if(ids == null){
+            throw new IllegalArgumentException("no ids found ");
+        }
         roomProviderRepository.deleteAllById(ids);
     }
 
@@ -103,8 +125,15 @@ public class RoomProviderService {
      * @param roomProviders the list of roomProvider objects to be deleted.
      */
     public void deleteAll(Iterable<RoomProvider> roomProviders){
-           roomProviderRepository.deleteAll(roomProviders);
+        if (roomProviders == null || !roomProviders.iterator().hasNext()) {
+            throw new IllegalArgumentException("No RoomProvider objects provided to delete.");
+        }
+            roomProviderRepository.deleteAll(roomProviders);
+
     }
+
+
+
 
 
 
