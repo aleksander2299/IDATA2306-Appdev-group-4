@@ -16,7 +16,7 @@ public interface RoomProviderRepository extends CrudRepository<RoomProvider,Inte
     Optional<RoomProvider> findById(Integer integer);
 
     @Override
-    Iterable findAll();
+    Iterable<RoomProvider> findAll();
 
     @Override
     void delete(RoomProvider entity);
