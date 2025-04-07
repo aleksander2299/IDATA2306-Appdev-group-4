@@ -40,7 +40,7 @@ public class RoomProviderService {
             throw new IllegalArgumentException("no ids found ");
         }
         List<RoomProvider> providerList = new ArrayList<>();
-        for(RoomProvider roomProvider : findAllById(ids)){
+        for(RoomProvider roomProvider : roomProviderRepository.findAllById(ids)){
             providerList.add(roomProvider);
         }
         if (providerList.isEmpty()) {

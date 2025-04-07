@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface RoomProviderRepository extends CrudRepository<RoomProvider,Integer> {
 
     @Override
-    Iterable findAllById(Iterable iterable);
+    Iterable<RoomProvider> findAllById(Iterable iterable);
 
     @Override
     Optional<RoomProvider> findById(Integer integer);
