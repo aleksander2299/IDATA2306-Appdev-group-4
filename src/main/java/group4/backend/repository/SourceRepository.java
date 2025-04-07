@@ -1,4 +1,7 @@
 package group4.backend.repository;
 
-public interface SourceRepository {
+import group4.backend.entities.Source;
+import org.springframework.data.repository.CrudRepository;
+
+public interface SourceRepository extends CrudRepository<Source, Integer> {
 }
