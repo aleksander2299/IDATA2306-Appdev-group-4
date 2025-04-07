@@ -1,9 +1,12 @@
 package Repository;
 
+import group4.backend.entities.Provider;
+import group4.backend.entities.Room;
 import group4.backend.entities.RoomProvider;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Repository
@@ -33,6 +36,8 @@ public interface RoomProviderRepository extends CrudRepository<RoomProvider,Inte
     @Override
     void deleteAllById(Iterable iterable);
 
+
+    Optional<RoomProvider> findByRoomAndProvider(Room room, Provider provider);
 
 
 }
