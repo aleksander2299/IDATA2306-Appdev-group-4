@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 /**
  * class representing favourite table in our database.
  */
+@Entity
+@Table(name = "favourite")
 public class Favourite {
 
     @Id
@@ -12,7 +14,7 @@ public class Favourite {
     private int favouriteId;
 
     @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false, foreignKey = @ForeignKey(name = "user_id"))
+    @JoinColumn(name = "room_id", nullable = false, foreignKey = @ForeignKey(name = "user_id_fk"))
     private Room roomId;
 
     @ManyToOne
