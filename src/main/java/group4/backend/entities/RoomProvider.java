@@ -33,6 +33,10 @@ public class RoomProvider {
         this.roomPrice = roomPrice;
     }
 
+    public RoomProvider() {
+
+    }
+
     /**
      * returns RoomProviderId
      * @return the current RoomProviderId
