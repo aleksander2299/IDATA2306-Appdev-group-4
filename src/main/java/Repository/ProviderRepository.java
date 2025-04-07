@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ProviderRepository extends CrudRepository<Provider,Integer> {
 
     @Override
-    Iterable findAllById(Iterable iterable);
+    Iterable<Provider> findAllById(Iterable<Integer> integers);
 
     @Override
     Optional<Provider> findById(Integer id);
