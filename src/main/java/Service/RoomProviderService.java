@@ -3,6 +3,8 @@ package Service;
 import Repository.ProviderRepository;
 import Repository.RoomProviderRepository;
 import Repository.RoomRepository;
+import group4.backend.entities.Provider;
+import group4.backend.entities.Room;
 import group4.backend.entities.RoomProvider;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,13 +135,43 @@ public class RoomProviderService {
     }
 
 
+    /**
+     * method that links an existing room to a provider
+     * @param roomId the room to link to a provider
+     * @param providerId the provider to link to a room
+     */
+    public void linkRoomToProvider(int roomId, int providerId){
+
+        if(roomRepository.findById(roomId).isEmpty() || providerRepository.findById(providerId).isEmpty()){
+            throw new IllegalArgumentException("room or provider doesnt exist");
+        }
+        Room room = roomRepository.findById(roomId).get();
+        Provider provider = providerRepository.findById(providerId).get();
 
 
+            RoomProvider roomProvider = new RoomProvider();
+            roomProvider.setRoom(room);
+            roomProvider.setProvider(provider);
+            roomProviderRepository.save(roomProvider);
+    }
 
 
+    /**
+     * method for unlinking a room and a provider effectively removing an entyry from the table
+     * @param roomId the room to unlink from provider
+     * @param providerId the provider to unlink from room
+     */
+    public void unlinkRoomToProvider(int roomId, int providerId){
+        Room room = roomRepository.findById(roomId).get();
+        Provider provider = providerRepository.findById(providerId).get();
 
+        if(roomProviderRepository.findByRoomAndProvider(room,provider).isEmpty()){
+          throw new IllegalArgumentException("the link doesnt exist");
+        }
 
-
+        RoomProvider roomProvider = roomProviderRepository.findByRoomAndProvider(room,provider).get();
+        roomProviderRepository.delete(roomProvider);
+    }
 
 
 
