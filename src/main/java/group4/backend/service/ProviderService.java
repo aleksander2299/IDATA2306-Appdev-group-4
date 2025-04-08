@@ -1,4 +1,4 @@
-package Service;
+package group4.backend.service;
 
 import Repository.ProviderRepository;
 import group4.backend.entities.Provider;

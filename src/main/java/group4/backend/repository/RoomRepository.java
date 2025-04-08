@@ -1,4 +1,4 @@
-package Repository;
+package group4.backend.repository;
 
 import group4.backend.entities.Room;
 import org.springframework.data.repository.CrudRepository;
