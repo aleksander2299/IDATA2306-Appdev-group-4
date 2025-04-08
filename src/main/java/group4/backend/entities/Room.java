@@ -3,6 +3,8 @@ package group4.backend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 /**
  * class representing room table in our database. responsible for holding room: name, id, description, type etc
  */
@@ -21,6 +23,10 @@ public class Room {
    @ManyToOne
    @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id"))
     private Source sourceID;
+
+
+    @OneToMany(mappedBy = "room")
+    private List<RoomProvider> roomProviders;
 
     @Column(name = "room_name", nullable = false)
     private String roomName;
