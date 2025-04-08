@@ -5,16 +5,16 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface ExtraFeaturesRepository extends CrudRepository<ExtraFeatures, Integer> {
+public interface ExtraFeaturesRepository extends CrudRepository<ExtraFeatures, String> {
 
     @Override
     Iterable<ExtraFeatures> findAll();
 
     @Override
-    Iterable<ExtraFeatures> findAllById(Iterable<Integer> integers);
+    Iterable<ExtraFeatures> findAllById(Iterable<String> strings);
 
     @Override
-    Optional<ExtraFeatures> findById(Integer integer);
+    Optional<ExtraFeatures> findById(String string);
 
     @Override
     void delete(ExtraFeatures entity);
@@ -26,8 +26,9 @@ public interface ExtraFeaturesRepository extends CrudRepository<ExtraFeatures, I
     void deleteAll(Iterable<? extends ExtraFeatures> entities);
 
     @Override
-    void deleteAllById(Iterable<? extends Integer> integers);
+    void deleteAllById(Iterable<? extends String> strings);
 
     @Override
-    void deleteById(Integer integer);
+    void deleteById(String string);
+
 }
