@@ -1,11 +1,12 @@
 package group4.backend.service;
 
-import Repository.ProviderRepository;
-import Repository.RoomProviderRepository;
-import Repository.RoomRepository;
+
 import group4.backend.entities.Provider;
 import group4.backend.entities.Room;
 import group4.backend.entities.RoomProvider;
+import group4.backend.repository.ProviderRepository;
+import group4.backend.repository.RoomProviderRepository;
+import group4.backend.repository.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
