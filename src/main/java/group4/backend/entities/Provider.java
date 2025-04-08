@@ -2,6 +2,8 @@ package group4.backend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 /**
  * class representing provider table in database model. a provider is one that lists room from sources.
@@ -17,6 +19,11 @@ public class Provider {
 
     @Column(name = "provider_name", nullable = false)
     private String providerName;
+
+
+    @OneToMany(mappedBy = "provider")
+    private List<RoomProvider> roomProviders;
+
 
     /**
      * gets provider
