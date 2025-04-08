@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 /**
  * class representing favourite table in our database.
  */
-public class Favourite {
+public class Favorite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
