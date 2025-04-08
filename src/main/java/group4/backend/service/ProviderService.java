@@ -1,7 +1,8 @@
 package group4.backend.service;
 
-import Repository.ProviderRepository;
+
 import group4.backend.entities.Provider;
+import group4.backend.repository.ProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
