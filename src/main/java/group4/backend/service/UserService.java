@@ -28,4 +28,13 @@ public class UserService {
     return user != null && user.isValid()
         && (this.userRepository.findById(user.getUsername()).isEmpty());
   }
+
+  public boolean deleteUser(String userName) {
+    boolean notFound = false;
+    this.userRepository.deleteById(userName);
+    if (this.userRepository.findById(userName).isEmpty()) {
+      notFound = true;
+    }
+    return notFound;
+  }
 }

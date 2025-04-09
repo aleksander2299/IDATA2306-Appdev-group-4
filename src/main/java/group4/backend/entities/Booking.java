@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,10 +15,10 @@ public class Booking {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int bookingId;
+  private Integer bookingId;
 
   @JoinColumn(name = "room_provider", referencedColumnName = "room_provider_id", foreignKey = @ForeignKey(name = "FK_room_provider_id"))
-  private int roomProviderId;
+  private Integer roomProviderId;
 
   @JoinColumn(name = "room", referencedColumnName = "username", foreignKey = @ForeignKey(name = "FK_username"))
   private String username;
@@ -68,5 +67,15 @@ public class Booking {
 
   public void setCheckOutDate(String checkOutDate) {
     this.checkOutDate = checkOutDate;
+  }
+
+  public boolean isValid() {
+    return (
+        (this.bookingId == null || this.bookingId > 0)
+        && !this.username.isBlank()
+        && this.roomProviderId != null
+        && !this.checkInDate.isBlank()
+        && !this.checkOutDate.isBlank()
+    );
   }
 }
