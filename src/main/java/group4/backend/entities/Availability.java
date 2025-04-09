@@ -1,6 +1,8 @@
 package group4.backend.entities;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
+
 /**
  * class representing availability table in our database.
  */
@@ -14,14 +16,14 @@ public class Availability {
     private int availabilityId;
 
     @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false, foreignKey = @ForeignKey(name = "room_id"))
+    @JoinColumn(name = "room_id", nullable = false, foreignKey = @ForeignKey(name = "room_id_fk"))
     private Room roomId;
 
     @Column(name = "availability_from", nullable = false)
-    private String availabilityFrom;
+    private LocalDate availabilityFrom;
 
     @Column(name = "availability_to", nullable = false)
-    private String availabilityTo;
+    private LocalDate availabilityTo;
 
     /**
      * gets availability
@@ -59,7 +61,7 @@ public class Availability {
      * gets availability_from
      * @return the string availability_from
      */
-    public String getAvailabilityFrom() {
+    public LocalDate getAvailabilityFrom() {
         return availabilityFrom;
     }
 
@@ -67,7 +69,7 @@ public class Availability {
      * sets availability_from to new availability_from
      * @param availabilityFrom the new availabilityFrom
      */
-    public void setAvailabilityFrom(String availabilityFrom) {
+    public void setAvailabilityFrom(LocalDate availabilityFrom) {
         this.availabilityFrom = availabilityFrom;
     }
 
@@ -75,7 +77,7 @@ public class Availability {
      * gets availability_to
      * @return the string availability_to
      */
-    public String getAvailabilityTo() {
+    public LocalDate getAvailabilityTo() {
         return availabilityTo;
     }
 
@@ -83,7 +85,7 @@ public class Availability {
      * sets availability_to to new availability_to
      * @param availabilityTo the new availabilityTo
      */
-    public void setAvailabilityTo(String availabilityTo) {
+    public void setAvailabilityTo(LocalDate availabilityTo) {
         this.availabilityTo = availabilityTo;
     }
 
