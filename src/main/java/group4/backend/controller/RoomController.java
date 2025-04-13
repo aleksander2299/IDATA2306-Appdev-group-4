@@ -27,7 +27,7 @@ public class RoomController {
     }
 
 
-    @GetMapping("/rooms")
+    @GetMapping()
     public ResponseEntity<List<Room>> getAllRooms(){
         List<Room> rooms = roomService.getAllRooms();
         if (rooms.isEmpty()) {
@@ -37,7 +37,7 @@ public class RoomController {
     }
 
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<Room> createRoom(@RequestBody Room room) {
         Room newRoom = roomService.saveRoom(room);
         return ResponseEntity.status(HttpStatus.CREATED).body(newRoom);
