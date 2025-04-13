@@ -1,4 +1,4 @@
-package Repository;
+package group4.backend.repository;
 
 import group4.backend.entities.Favourite;
 import group4.backend.entities.User;
