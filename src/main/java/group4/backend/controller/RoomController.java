@@ -82,7 +82,7 @@ public class RoomController {
      * @return ResponseEntity if room was deleted or not.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteRoom(@PathVariable("id") int id) {
+    public ResponseEntity<Void> deleteRoom(@PathVariable("id") int id) {
        if(roomService.getRoomById(id).isEmpty()){
            return ResponseEntity.noContent().build();
        }
@@ -99,7 +99,7 @@ public class RoomController {
      * @return ResponseEntity if the list of rooms is empty or if it did delete all. 
      */
     @DeleteMapping()
-    public ResponseEntity deleteAllRoom() {
+    public ResponseEntity<Void> deleteAllRoom() {
         List<Room> rooms = roomService.getAllRooms();
         for(Room room : rooms){
             roomService.deleteRoom(room.getRoomId());
