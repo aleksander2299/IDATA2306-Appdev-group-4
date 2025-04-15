@@ -1,7 +1,8 @@
-package Service;
+package group4.backend.service;
 
-import Repository.AvailabilityRepository;
+
 import group4.backend.entities.Availability;
+import group4.backend.repository.AvailabilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;

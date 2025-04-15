@@ -1,7 +1,7 @@
 package group4.backend.controller;
 
-import Service.AvailabilityService;
 import group4.backend.entities.Availability;
+import group4.backend.service.AvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
