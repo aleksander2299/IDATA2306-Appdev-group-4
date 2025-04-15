@@ -1,6 +1,6 @@
 package group4.backend.controller;
 
-import Service.FavouriteService;
+import group4.backend.service.FavouriteService;
 import group4.backend.entities.Favourite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

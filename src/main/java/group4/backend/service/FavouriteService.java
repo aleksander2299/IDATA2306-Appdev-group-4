@@ -1,6 +1,6 @@
-package Service;
+package group4.backend.service;
 
-import Repository.FavouriteRepository;
+import group4.backend.repository.FavouriteRepository;
 //TODO: Uncomment the following import statement when UserRepository is available
 //import Repository.UserRepository;
 import group4.backend.entities.Favourite;
