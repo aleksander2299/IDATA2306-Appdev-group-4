@@ -37,14 +37,14 @@ public class SourceExtraFeaturesService {
     }
 
     public void unlinkSourceToFeature(int sourceId, String featureId){
-        Source source = sourceRepository.findById(sourceId).get();
+        Source sourceID = sourceRepository.findById(sourceId).get();
         ExtraFeatures feature = extraFeaturesRepository.findById(featureId).get();
 
-        if(sourceExtraFeaturesRepository.findBySourceAndFeature(source, feature).isEmpty()){
+        if(sourceExtraFeaturesRepository.findBySourceIDAndFeature(sourceID, feature).isEmpty()){
             throw new IllegalArgumentException("The link does not exist.");
         }
 
-        SourceExtraFeatures sourceExtraFeatures = sourceExtraFeaturesRepository.findBySourceAndFeature(source,feature).get();
+        SourceExtraFeatures sourceExtraFeatures = sourceExtraFeaturesRepository.findBySourceIDAndFeature(sourceID,feature).get();
         sourceExtraFeaturesRepository.delete(sourceExtraFeatures);
     }
 }

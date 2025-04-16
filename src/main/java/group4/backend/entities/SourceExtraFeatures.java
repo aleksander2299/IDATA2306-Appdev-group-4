@@ -17,16 +17,16 @@ public class SourceExtraFeatures {
     private ExtraFeatures feature;
 
     @ManyToOne
-    @MapsId("sourceId")
+    @MapsId("sourceID")
     @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id_2"))
     private Source sourceID;
 
     public SourceExtraFeatures() {}
 
-    public SourceExtraFeatures(ExtraFeatures feature, Source source) {
-        this.id = new SourceExtraFeaturesId(feature.getFeature(), source.getSourceID());
+    public SourceExtraFeatures(ExtraFeatures feature, Source sourceID) {
+        this.id = new SourceExtraFeaturesId(feature.getFeature(), sourceID.getSourceID());
         this.feature = feature;
-        this.sourceID = source;
+        this.sourceID = sourceID;
     }
 
     public SourceExtraFeaturesId getId() {
