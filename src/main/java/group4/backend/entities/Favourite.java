@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "favourite")
 public class Favourite {
-
+//Temp
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "favourite_id", nullable = false)
