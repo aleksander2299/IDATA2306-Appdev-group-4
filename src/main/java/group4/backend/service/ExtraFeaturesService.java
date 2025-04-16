@@ -1,7 +1,6 @@
 package group4.backend.service;
 
 import group4.backend.entities.ExtraFeatures;
-import group4.backend.entities.RoomProvider;
 import group4.backend.repository.ExtraFeaturesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
