@@ -15,6 +15,7 @@ import java.util.Optional;
  * Restcontroller for provider table.
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/providers")
 public class ProviderController {
 
