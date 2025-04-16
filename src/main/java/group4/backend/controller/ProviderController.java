@@ -86,7 +86,7 @@ public class ProviderController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProvider(@PathVariable("{id}") int id) {
+    public ResponseEntity<Void> deleteProvider(@PathVariable("id") int id) {
         if (providerService.getProviderById(id).isPresent()) {
             providerService.deleteProvider(id);
         } else {
