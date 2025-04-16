@@ -1,5 +1,6 @@
 package group4.backend.controller;
 
+import group4.backend.entities.Room;
 import group4.backend.entities.Source;
 import group4.backend.service.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,27 @@ public class SourceController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newSource);
     }
 
+    /**
+     * Method for posting list of sources to the database.
+     * @param sources the list of sources to post.
+     * @return ResponseEntity if it succeeded or not.
+     */
+    @PostMapping("/bulk")
+    public ResponseEntity<List<Source>> createRooms(@RequestBody List<Source> sources){
+        if(sources.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(sources);
+        }
+        for(Source source : sources){
+            sourceService.saveSource(source);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(sources);
+    }
+
+    /**
+     * Deletes source at /api/source/id.
+     * @param id the id of the source to delete.
+     * @return ResponseEntity if source was deleted or not.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Source> deleteSource(@PathVariable("id") int id) {
         if(sourceService.getSourceById(id).isPresent()) {
@@ -47,5 +69,18 @@ public class SourceController {
         else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * Deletes all sources in the database.
+     * @return ResponseEntity if the list of sources is empty or if it did delete all.
+     */
+    @DeleteMapping()
+    public ResponseEntity<Void> deleteAllSources() {
+        List<Source> sources = sourceService.getAllSources();
+        for(Source source : sources){
+            sourceService.deleteSource(source.getSourceID());
+        }
+        return ResponseEntity.ok().build();
     }
 }
