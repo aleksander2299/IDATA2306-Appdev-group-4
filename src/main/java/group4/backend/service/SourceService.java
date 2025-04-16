@@ -1,15 +1,12 @@
 package group4.backend.service;
 
-import group4.backend.entities.ExtraFeatures;
 import group4.backend.entities.Source;
 import group4.backend.repository.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 @Service
 public class SourceService {
@@ -83,5 +80,23 @@ public class SourceService {
 
     public void addSource(Source source) {
         this.sourceRepository.save(source);
+    }
+
+    public List<Source> getAllSources() {
+        List<Source> sources = new ArrayList<>();
+        sourceRepository.findAll().forEach(source -> sources.add((Source) source));
+        return sources;
+    }
+
+    public Optional<Source> getSourceById(int id) {
+        return sourceRepository.findById(id);
+    }
+
+    public Source saveSource(Source source) {
+        return sourceRepository.save(source);
+    }
+
+    public void deleteSource(int id) {
+        sourceRepository.deleteById(id);
     }
 }
