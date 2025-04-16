@@ -1,5 +1,6 @@
 package group4.backend.service;
 
+import group4.backend.entities.ExtraFeatures;
 import group4.backend.entities.Source;
 import group4.backend.repository.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,5 +79,9 @@ public class SourceService {
             throw new IllegalArgumentException("No Source objects provided to delete.");
         }
         sourceRepository.deleteAll(source);
+    }
+
+    public void addSource(Source source) {
+        this.sourceRepository.save(source);
     }
 }
