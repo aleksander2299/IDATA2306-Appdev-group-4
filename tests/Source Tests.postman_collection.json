@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "ae7d5954-3ef6-4414-ace2-662b36cbceec",
+		"name": "Source Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42375213"
+	},
+	"item": [
+		{
+			"name": "Post /api/source",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sourceName\" : \"Thon Hotel Ålesund\",\r\n    \"locationType\" : \"Suite\",\r\n    \"city\" : \"Ålesund\",\r\n    \"country\" : \"Norway\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/source",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get /api/source/1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/source/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete /api/source/1",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/source/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post /api/source/bulk",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"sourceName\" : \"Thon Hotel Ålesund\",\r\n        \"locationType\" : \"Suite\",\r\n        \"city\" : \"Ålesund\",\r\n        \"country\" : \"Norway\"\r\n\r\n    },\r\n\r\n    {\r\n        \"sourceName\" : \"Thon Hotel Oslo\",\r\n        \"locationType\" : \"2-bedroom\",\r\n        \"city\" : \"Oslo\",\r\n        \"country\" : \"Norway\"\r\n    }\r\n\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/source/bulk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source",
+						"bulk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get /api/source",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/source",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete /api/source",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/source",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

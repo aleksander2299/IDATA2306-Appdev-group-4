@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "99bf89ec-c521-48b1-a918-97d32d5dbf29",
+		"name": "Source Extra Features Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42375213"
+	},
+	"item": [
+		{
+			"name": "Post /api/extra_features",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"feature\" : \"internet included.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/extra_features",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"extra_features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post /api/source",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sourceName\" : \"Thon Hotel Ålesund\",\r\n    \"locationType\" : \"Suite\",\r\n    \"city\" : \"Ålesund\",\r\n    \"country\" : \"Norway\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/source",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get /api/source_extra_features/source/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/source_extra_features/source/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source_extra_features",
+						"source",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get /api/source_extra_features/extra_features/internet included.",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/source_extra_features/extra_features/internet included.",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source_extra_features",
+						"extra_features",
+						"internet included."
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Link source to feature",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/source_extra_features/1/internet included.",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source_extra_features",
+						"1",
+						"internet included."
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get /api/source_extra_features",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/source_extra_features",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"source_extra_features"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
