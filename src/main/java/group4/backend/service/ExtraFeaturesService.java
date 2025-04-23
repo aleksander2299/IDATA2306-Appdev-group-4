@@ -81,4 +81,21 @@ public class ExtraFeaturesService {
         this.extraFeaturesRepository.save(extraFeature);
     }
 
+    public Optional<ExtraFeatures> getFeatureById(String id) {
+        return extraFeaturesRepository.findById(id);
+    }
+
+    public List<ExtraFeatures> getAllFeatures() {
+        List<ExtraFeatures> features = new ArrayList<>();
+        extraFeaturesRepository.findAll().forEach(extraFeature -> features.add((ExtraFeatures) extraFeature));
+        return features;
+    }
+
+    public ExtraFeatures saveFeature(ExtraFeatures feature) {
+        return extraFeaturesRepository.save(feature);
+    }
+
+    public void deleteFeature(String id) { extraFeaturesRepository.deleteById(id);
+    }
+
 }
