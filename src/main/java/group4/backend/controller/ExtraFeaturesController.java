@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/extrafeatures")
+@RequestMapping("/api/extra_features")
 public class ExtraFeaturesController {
 
     @Autowired
