@@ -64,10 +64,10 @@ public class UserController {
     return response;
   }
 
-  @PutMapping
-  public ResponseEntity<User> updateUser(User user) {
+  @PutMapping("/user/{username}")
+  public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User user) {
     ResponseEntity<User> response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-    if (this.userService.updateUser(user)) {
+    if (this.userService.updateUser(username, user.getUsername(), user.getPassword(), user.getRole())) {
       response = ResponseEntity.status(HttpStatus.OK).body(user);
     }
     return response;

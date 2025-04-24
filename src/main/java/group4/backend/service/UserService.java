@@ -3,6 +3,7 @@ package group4.backend.service;
 import group4.backend.entities.Role;
 import group4.backend.entities.User;
 import group4.backend.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,10 +45,20 @@ public class UserService {
     return !this.userRepository.existsById(username);
   }
 
-  public boolean updateUser(User user) {
+  public boolean updateUser(String nameOfUserToChange, String newName, String password, Role role) {
     boolean updated = false;
-    if (user != null && this.userRepository.existsById(user.getUsername())) {
-      this.userRepository.save(user);
+    User user = userRepository.findById(nameOfUserToChange)
+        .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    if (!newName.isBlank()) {
+      user.setUsername(newName);
+      updated = true;
+    }
+    if (!password.isBlank()) {
+      user.setPassword(password);
+      updated = true;
+    }
+    if (role != null) {
+      user.setRole(role);
       updated = true;
     }
     return updated;
