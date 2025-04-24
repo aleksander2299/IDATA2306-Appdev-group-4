@@ -13,6 +13,7 @@ import java.util.List;
 public class Room {
 
 
+
     /**
      * set to auto increment for now. primary key roomID
      */
@@ -22,7 +23,9 @@ public class Room {
 
    @ManyToOne
    @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id"))
-    private Source sourceID;
+    private Source source;
+
+
 
 
     @OneToMany(mappedBy = "room")
@@ -43,18 +46,32 @@ public class Room {
     @Column(name = "image_url")
     private String imageurl;
 
+
+
+
+    public Room(){}
+
     /**
      * returns source id
      * @return int source id
      */
-    public Source getSourceID() { return sourceID; }
+    public Source getSource() { return this.source; }
 
 
     /**
      * sets the source id to a new source id
-     * @param sourceID the source id
+     * @param source the source id
      */
-    public void setSourceID(Source sourceID) {this.sourceID = sourceID; }
+    public void setSource(Source source) {this.source = source; }
+
+
+
+
+    @Transient
+    private Integer sourceId;
+
+
+
 
     /**
      * gets the room id;
@@ -137,8 +154,22 @@ public class Room {
     }
 
 
+    public void setImageurl(String imageUrl) {
+        this.imageurl = imageUrl;
+    }
 
 
+    public String getImageUrl(){
+        return this.imageurl;
+    }
+
+    public Integer getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
+    }
 
 
 }
