@@ -7,8 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="booking")
@@ -25,10 +25,10 @@ public class Booking {
   private String username;
 
   @Column(name = "check_in_date")
-  private String checkInDate;
+  private LocalDate checkInDate;
 
   @Column(name = "check_out_date")
-  private String checkOutDate;
+  private LocalDate checkOutDate;
 
   public int getBookingId() {
     return this.bookingId;
@@ -42,11 +42,11 @@ public class Booking {
     return this.username;
   }
 
-  public String getCheckInDate() {
+  public LocalDate getCheckInDate() {
     return this.checkInDate;
   }
 
-  public String getCheckOutDate() {
+  public LocalDate getCheckOutDate() {
     return this.checkOutDate;
   }
 
@@ -62,11 +62,11 @@ public class Booking {
     this.username = username;
   }
 
-  public void setCheckInDate(String checkInDate) {
+  public void setCheckInDate(LocalDate checkInDate) {
     this.checkInDate = checkInDate;
   }
 
-  public void setCheckOutDate(String checkOutDate) {
+  public void setCheckOutDate(LocalDate checkOutDate) {
     this.checkOutDate = checkOutDate;
   }
 }
