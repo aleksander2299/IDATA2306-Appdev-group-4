@@ -25,6 +25,8 @@ public class Provider {
     private List<RoomProvider> roomProviders;
 
 
+    public Provider(){}
+
     /**
      * gets provider
      * @return the int provider_id primary key

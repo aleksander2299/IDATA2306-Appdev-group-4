@@ -113,6 +113,11 @@ public class ProviderController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Provider> updateProvider(@PathVariable("id") int providerId,@RequestParam String newName){
+        Provider updatedProvider = providerService.updateProvider(providerId, newName);
+        return ResponseEntity.ok(updatedProvider);
+    }
 
 
 

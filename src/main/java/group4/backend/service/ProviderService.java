@@ -37,4 +37,21 @@ public class ProviderService {
     }
 
 
+
+
+    public Provider updateProvider(int providerId, String providerName) {
+
+        Optional<Provider> providerOptional = providerRepository.findById(providerId);
+        if(providerOptional.isEmpty()){
+            throw new NullPointerException("no provider found");
+        }
+        Provider provider = providerOptional.get();
+
+
+        if (providerName != null) provider.setProviderName(providerName);
+
+        return providerRepository.save(provider);
+    }
+
+
 }
