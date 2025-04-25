@@ -40,25 +40,27 @@ public class UserService {
         && (this.userRepository.findById(user.getUsername()).isEmpty());
   }
 
-  public boolean deleteUserWithUsername(String username) {
-    this.userRepository.deleteById(username);
-    return !this.userRepository.existsById(username);
+  /**
+   * returns true if deletion attempt goes through.
+   *
+   * @param user the user to delete
+   * @return True if user can be deleted.
+   */
+  public boolean deleteUser(User user) {
+    boolean delete = false;
+    Optional<User> userInDb = getUser(user.getUsername());
+    if (userInDb.isPresent() && user.getPassword().equals(userInDb.get().getPassword())) {
+        this.userRepository.deleteById(user.getUsername());
+        delete = true;
+    }
+    return delete;
   }
 
-  public boolean updateUser(String nameOfUserToChange, String newName, String password, Role role) {
+  public boolean updateUser(String nameOfUserToChange, User userToPut) {
     boolean updated = false;
-    User user = userRepository.findById(nameOfUserToChange)
-        .orElseThrow(() -> new EntityNotFoundException("User not found"));
-    if (!newName.isBlank()) {
-      user.setUsername(newName);
-      updated = true;
-    }
-    if (!password.isBlank()) {
-      user.setPassword(password);
-      updated = true;
-    }
-    if (role != null) {
-      user.setRole(role);
+    if (this.userRepository.findById(nameOfUserToChange).isPresent()) {
+      this.userRepository.deleteById(nameOfUserToChange);
+      this.userRepository.save(userToPut);
       updated = true;
     }
     return updated;

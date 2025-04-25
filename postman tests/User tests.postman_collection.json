@@ -1,0 +1,588 @@
+{
+	"info": {
+		"_postman_id": "00fddca7-671c-4995-94c4-1508cdd3d451",
+		"name": "User tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42432285"
+	},
+	"item": [
+		{
+			"name": "Get every user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Save user count to a local variable\", function() {\r",
+							"    const users = pm.response.json();\r",
+							"    pm.expect(users).to.be.an(\"array\");\r",
+							"    pm.environment.set(\"initial_user_count\", users.length);\r",
+							"    pm.environment.set(\"user_count\", users.length);\r",
+							"    console.log(\"Book count saved to local variable:\", users.length);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/all",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new user 'TestNameTestUsername'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check if user was created\", function () {\r",
+							"    if (pm.response.code === 201) {\r",
+							"        let count = pm.environment.get(\"user_count\") || 0;\r",
+							"        count = parseInt(count);\r",
+							"\r",
+							"        pm.environment.set(\"user_count\", count + 1);\r",
+							"\r",
+							"        console.log(\"User created. Count is now:\", count + 1);\r",
+							"    } else {\r",
+							"        console.log(\"User not created. Status code:\", pm.response.code);\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"TestNameTestUsername\",\r\n    \"password\": \"VerySecretTestPassword2\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}",
+					"host": [
+						"{{BASE_URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fail adding user with existing username",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Forbidden POST request\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"TestNameTestUsername\",\r\n    \"password\": \"DifferentPass\",\r\n    \"role\": \"PROVIDER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}",
+					"host": [
+						"{{BASE_URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add user with same password and role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check if user was created\", function () {\r",
+							"    if (pm.response.code === 201) {\r",
+							"        let count = pm.environment.get(\"user_count\") || 0;\r",
+							"        count = parseInt(count);\r",
+							"\r",
+							"        pm.environment.set(\"user_count\", count + 1);\r",
+							"\r",
+							"        console.log(\"User created. Count is now:\", count + 1);\r",
+							"    } else {\r",
+							"        console.log(\"User not created. Status code:\", pm.response.code);\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"AnotherTestName\",\r\n    \"password\": \"VerySecretTestPassword2\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}",
+					"host": [
+						"{{BASE_URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get every user after POST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"There are more users than before\", function() {\r",
+							"    pm.expect(pm.environment.get(\"user_count\")).greaterThan(pm.environment.get(\"initial_user_count\"));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/all",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get specific user 'TestNameTestUsername'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is the correct user\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"username\");\r",
+							"    pm.expect(jsonData).to.have.property(\"password\");\r",
+							"    pm.expect(jsonData).to.have.property(\"role\");\r",
+							"\r",
+							"    pm.expect(jsonData.username).to.eql(\"TestNameTestUsername\");\r",
+							"    pm.expect(jsonData.password).to.eql(\"VerySecretTestPassword2\");\r",
+							"    pm.expect(jsonData.role).to.eql(\"ADMIN\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/TestNameTestUsername",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"TestNameTestUsername"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alter 'TestNameTestUsername' to 'Readable'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Readable\",\r\n    \"password\": \"Memorable\",\r\n    \"role\": \"USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/TestNameTestUsername",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"TestNameTestUsername"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fail getting altered user 'TestNameTestUsername'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/TestNameTestUsername",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"TestNameTestUsername"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get altered user 'Readable'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is the correct user\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"username\");\r",
+							"    pm.expect(jsonData).to.have.property(\"password\");\r",
+							"    pm.expect(jsonData).to.have.property(\"role\");\r",
+							"\r",
+							"    pm.expect(jsonData.username).to.eql(\"Readable\");\r",
+							"    pm.expect(jsonData.password).to.eql(\"Memorable\");\r",
+							"    pm.expect(jsonData.role).to.eql(\"USER\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/Readable",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"Readable"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user 'AnotherTestName'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check if user was deleted\", function () {\r",
+							"    if (pm.response.code === 200) {\r",
+							"        let count = pm.environment.get(\"user_count\") || 0;\r",
+							"        count = parseInt(count);\r",
+							"\r",
+							"        pm.environment.set(\"user_count\", count - 1);\r",
+							"\r",
+							"        console.log(\"User deleted. Count is now:\", count - 1);\r",
+							"    } else {\r",
+							"        console.log(\"User not deleted. Status code:\", pm.response.code);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"AnotherTestName\",\r\n    \"password\": \"VerySecretTestPassword2\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}",
+					"host": [
+						"{{BASE_URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fail deleting user 'Readable' with wrong password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Readable\",\r\n    \"password\": \"VerySecretTestPassword2\",\r\n    \"role\": \"USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}",
+					"host": [
+						"{{BASE_URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user 'Readable'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check if user was deleted\", function () {\r",
+							"    if (pm.response.code === 200) {\r",
+							"        let count = pm.environment.get(\"user_count\") || 0;\r",
+							"        count = parseInt(count);\r",
+							"\r",
+							"        pm.environment.set(\"user_count\", count - 1);\r",
+							"\r",
+							"        console.log(\"User deleted. Count is now:\", count - 1);\r",
+							"    } else {\r",
+							"        console.log(\"User not deleted. Status code:\", pm.response.code);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Readable\",\r\n    \"password\": \"Memorable\",\r\n    \"role\": \"USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}",
+					"host": [
+						"{{BASE_URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fail deleting user 'Readable' again",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Readable\",\r\n    \"password\": \"Memorable\",\r\n    \"role\": \"USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}",
+					"host": [
+						"{{BASE_URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get every user after DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"There are more users than before\", function() {\r",
+							"    pm.expect(pm.environment.get(\"user_count\")).equal(pm.environment.get(\"initial_user_count\"));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/all",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
