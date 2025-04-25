@@ -2,6 +2,8 @@ package group4.backend.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -14,14 +16,15 @@ public class User {
     private String username;
     @Column(name="password", length=255, nullable=false, unique=false)
     private String password;
+    @Enumerated(EnumType.STRING)
     @Column(name="role", length=255, nullable=false, unique=false)
-    private String role;
+    private Role role;
 
     public String getPassword() {
         return password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -33,7 +36,7 @@ public class User {
         this.password = password;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -49,6 +52,6 @@ public class User {
     public boolean isValid() {
         return (!this.username.isBlank() &&
             !this.password.isBlank() &&
-            !this.role.isBlank());
+            this.role != null);
     }
 }

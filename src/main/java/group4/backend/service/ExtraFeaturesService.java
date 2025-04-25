@@ -1,7 +1,6 @@
 package group4.backend.service;
 
 import group4.backend.entities.ExtraFeatures;
-import group4.backend.entities.RoomProvider;
 import group4.backend.repository.ExtraFeaturesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -80,6 +79,23 @@ public class ExtraFeaturesService {
 
     public void addFeature(ExtraFeatures extraFeature) {
         this.extraFeaturesRepository.save(extraFeature);
+    }
+
+    public Optional<ExtraFeatures> getFeatureById(String id) {
+        return extraFeaturesRepository.findById(id);
+    }
+
+    public List<ExtraFeatures> getAllFeatures() {
+        List<ExtraFeatures> features = new ArrayList<>();
+        extraFeaturesRepository.findAll().forEach(extraFeature -> features.add((ExtraFeatures) extraFeature));
+        return features;
+    }
+
+    public ExtraFeatures saveFeature(ExtraFeatures feature) {
+        return extraFeaturesRepository.save(feature);
+    }
+
+    public void deleteFeature(String id) { extraFeaturesRepository.deleteById(id);
     }
 
 }

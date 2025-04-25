@@ -1,11 +1,12 @@
-package Service;
+package group4.backend.service;
 
-import Repository.FavouriteRepository;
+
 //TODO: Uncomment the following import statement when UserRepository is available
 //import Repository.UserRepository;
 import group4.backend.entities.Favourite;
 import group4.backend.entities.Room;
 import group4.backend.entities.User;
+import group4.backend.repository.FavouriteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

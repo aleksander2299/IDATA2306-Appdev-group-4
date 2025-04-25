@@ -13,20 +13,20 @@ public class SourceExtraFeatures {
 
     @ManyToOne
     @MapsId("feature")
-    @JoinColumn(name = "feature", referencedColumnName = "feature", foreignKey = @ForeignKey(name = "FK_feature"))
+    @JoinColumn(name = "feature", referencedColumnName = "feature", insertable = false, updatable = false, foreignKey = @ForeignKey(name = "FK_feature"))
     private ExtraFeatures feature;
 
     @ManyToOne
-    @MapsId("sourceId")
-    @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id_2"))
+    @MapsId("sourceID")
+    @JoinColumn(name = "source_id", referencedColumnName = "source_id", insertable = false, updatable = false, foreignKey = @ForeignKey(name = "FK_source_id_2"))
     private Source sourceID;
 
     public SourceExtraFeatures() {}
 
-    public SourceExtraFeatures(ExtraFeatures feature, Source source) {
-        this.id = new SourceExtraFeaturesId(feature.getFeature(), source.getSourceID());
+    public SourceExtraFeatures(ExtraFeatures feature, Source sourceID) {
+        this.id = new SourceExtraFeaturesId(feature.getFeature(), sourceID.getSourceID());
         this.feature = feature;
-        this.sourceID = source;
+        this.sourceID = sourceID;
     }
 
     public SourceExtraFeaturesId getId() {
@@ -37,29 +37,15 @@ public class SourceExtraFeatures {
         this.id = id;
     }
 
-    /**
-     * returns feature
-     * @return string feature
-     */
     public ExtraFeatures getFeature() { return feature; }
 
-    /**
-     * sets the feature to a new feature
-     * @param feature the feature
-     */
-    public void setFeature(ExtraFeatures feature) {this.feature = feature; }
+    public void setFeature(ExtraFeatures feature) {
+        this.feature = feature;
+    }
 
-    /**
-     * returns source id
-     * @return int source id
-     */
     public Source getSourceID() { return sourceID; }
 
-    /**
-     * sets the source id to a new source id
-     * @param sourceID the source id
-     */
-    public void setSourceID(Source sourceID) {this.sourceID = sourceID; }
-
-
+    public void setSourceID(Source sourceID) {
+        this.sourceID = sourceID;
+    }
 }

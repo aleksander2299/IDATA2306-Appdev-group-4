@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookingService {
 
-  BookingRepository bookingRepository;
+  private final BookingRepository bookingRepository;
 
   @Autowired
   public BookingService(BookingRepository bookingRepository) {

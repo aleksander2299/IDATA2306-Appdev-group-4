@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "cb7b371e-bafb-4dfc-8973-4335fcfa4e18",
+		"name": "Extra Features Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42375213"
+	},
+	"item": [
+		{
+			"name": "Post /api/extra_features",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"feature\" : \"internet included.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/extra_features",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"extra_features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get /api/extra_features/internet included.",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/extra_features/internet included.",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"extra_features",
+						"internet included."
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete /api/extra_features/string",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/extra_features/internet included.",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"extra_features",
+						"internet included."
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post /api/extra_features/bulk",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"feature\" : \"double bed.\"\r\n    },\r\n\r\n    {\r\n        \"feature\" : \"king sized bed.\"\r\n    }\r\n\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/extra_features/bulk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"extra_features",
+						"bulk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get /api/extra_features",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/extra_features",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"extra_features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete /api/extra_features",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/extra_features",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"extra_features"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,7 +1,10 @@
 package group4.backend.service;
 
+import group4.backend.entities.Role;
 import group4.backend.entities.User;
 import group4.backend.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,14 @@ public class UserService {
   @Autowired
   public UserService(UserRepository userRepository) {
     this.userRepository = userRepository;
+  }
+
+  public Iterable<User> getAllUsers() {
+    return this.userRepository.findAll();
+  }
+
+  public Optional<User> getUser(String username) {
+    return this.userRepository.findById(username);
   }
 
   public boolean addUser(User user) {
@@ -29,12 +40,29 @@ public class UserService {
         && (this.userRepository.findById(user.getUsername()).isEmpty());
   }
 
-  public boolean deleteUser(String userName) {
-    boolean notFound = false;
-    this.userRepository.deleteById(userName);
-    if (this.userRepository.findById(userName).isEmpty()) {
-      notFound = true;
+  /**
+   * returns true if deletion attempt goes through.
+   *
+   * @param user the user to delete
+   * @return True if user can be deleted.
+   */
+  public boolean deleteUser(User user) {
+    boolean delete = false;
+    Optional<User> userInDb = getUser(user.getUsername());
+    if (userInDb.isPresent() && user.getPassword().equals(userInDb.get().getPassword())) {
+        this.userRepository.deleteById(user.getUsername());
+        delete = true;
     }
-    return notFound;
+    return delete;
+  }
+
+  public boolean updateUser(String nameOfUserToChange, User userToPut) {
+    boolean updated = false;
+    if (this.userRepository.findById(nameOfUserToChange).isPresent()) {
+      this.userRepository.deleteById(nameOfUserToChange);
+      this.userRepository.save(userToPut);
+      updated = true;
+    }
+    return updated;
   }
 }

@@ -18,6 +18,12 @@ public class Source {
     @Column(name = "location_type", nullable = false)
     private String locationType;
 
+    @Column(name = "city", nullable = false)
+    private String city;
+
+    @Column(name = "country", nullable = false)
+    private String country;
+
 
     /**
      * returns source id
@@ -63,4 +69,37 @@ public class Source {
     public void setLocationType(String locationType) {
         this.locationType = locationType;
     }
+
+    /**
+     * returns city
+     * @return string city
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * sets the city to a city
+     * @param city the new city
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     * returns country
+     * @return string country
+     */
+    public String getCountry() {
+        return country;
+    }
+
+    /**
+     * sets the country to a country
+     * @param country the new country
+     */
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
 }

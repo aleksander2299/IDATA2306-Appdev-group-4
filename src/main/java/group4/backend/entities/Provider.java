@@ -21,9 +21,11 @@ public class Provider {
     private String providerName;
 
 
-    @OneToMany(mappedBy = "provider")
+    @OneToMany(mappedBy = "provider",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomProvider> roomProviders;
 
+
+    public Provider(){}
 
     /**
      * gets provider

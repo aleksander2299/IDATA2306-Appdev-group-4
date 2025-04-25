@@ -27,15 +27,38 @@ public class RoomProvider {
     private int roomPrice;
 
 
-    public RoomProvider(Room room, Provider provider, int roomPrice) {
-        this.room = room;
-        this.provider = provider;
-        this.roomPrice = roomPrice;
-    }
+    @Transient
+    private int roomId;
+
+
+
+    @Transient
+    private int providerId;
+
+
 
     public RoomProvider() {
 
     }
+
+
+    /**
+     * returns the roomID that will be used for updating roomProvider in controller
+     * @return int roomId
+     */
+    public int getRoomId() {
+        return roomId;
+    }
+
+
+    /**
+     * returns the providerID that will be used for updating the roomProvider in contrller
+     * @return int ProviderId
+     */
+    public int getProviderId() {
+        return providerId;
+    }
+
 
     /**
      * returns RoomProviderId
@@ -102,5 +125,7 @@ public class RoomProvider {
     public void setRoom(Room room) {
         this.room = room;
     }
+
+
 
 }

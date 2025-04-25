@@ -7,7 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="booking")
@@ -17,35 +19,36 @@ public class Booking {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer bookingId;
 
+  @ManyToOne
   @JoinColumn(name = "room_provider", referencedColumnName = "room_provider_id", foreignKey = @ForeignKey(name = "FK_room_provider_id"))
-  private Integer roomProviderId;
+  private RoomProvider roomProvider;
 
   @JoinColumn(name = "room", referencedColumnName = "username", foreignKey = @ForeignKey(name = "FK_username"))
   private String username;
 
   @Column(name = "check_in_date")
-  private String checkInDate;
+  private LocalDate checkInDate;
 
   @Column(name = "check_out_date")
-  private String checkOutDate;
+  private LocalDate checkOutDate;
 
   public int getBookingId() {
     return this.bookingId;
   }
 
-  public int getRoomProviderId() {
-    return this.roomProviderId;
+  public RoomProvider getRoomProvider() {
+    return this.roomProvider;
   }
 
   public String getUsername() {
     return this.username;
   }
 
-  public String getCheckInDate() {
+  public LocalDate getCheckInDate() {
     return this.checkInDate;
   }
 
-  public String getCheckOutDate() {
+  public LocalDate getCheckOutDate() {
     return this.checkOutDate;
   }
 
@@ -53,19 +56,19 @@ public class Booking {
     this.bookingId = bookingId;
   }
 
-  public void setRoomProviderId(int roomProviderId) {
-    this.roomProviderId = roomProviderId;
+  public void setRoomProviderId(RoomProvider roomProvider) {
+    this.roomProvider = roomProvider;
   }
 
   public void setUsername(String username) {
     this.username = username;
   }
 
-  public void setCheckInDate(String checkInDate) {
+  public void setCheckInDate(LocalDate checkInDate) {
     this.checkInDate = checkInDate;
   }
 
-  public void setCheckOutDate(String checkOutDate) {
+  public void setCheckOutDate(LocalDate checkOutDate) {
     this.checkOutDate = checkOutDate;
   }
 
@@ -73,9 +76,9 @@ public class Booking {
     return (
         (this.bookingId == null || this.bookingId > 0)
         && !this.username.isBlank()
-        && this.roomProviderId != null
-        && !this.checkInDate.isBlank()
-        && !this.checkOutDate.isBlank()
+        && this.roomProvider != null
+        && this.checkInDate != null
+        && this.checkOutDate != null
     );
   }
 }

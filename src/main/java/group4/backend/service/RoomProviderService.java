@@ -10,6 +10,7 @@ import group4.backend.repository.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -141,7 +142,7 @@ public class RoomProviderService {
      * @param roomId the room to link to a provider
      * @param providerId the provider to link to a room
      */
-    public void linkRoomToProvider(int roomId, int providerId){
+    public void linkRoomToProvider(int roomId, int providerId, int price){
 
         if(roomRepository.findById(roomId).isEmpty() || providerRepository.findById(providerId).isEmpty()){
             throw new IllegalArgumentException("room or provider doesnt exist");
@@ -153,6 +154,7 @@ public class RoomProviderService {
             RoomProvider roomProvider = new RoomProvider();
             roomProvider.setRoom(room);
             roomProvider.setProvider(provider);
+            roomProvider.setRoomPrice(price);
             roomProviderRepository.save(roomProvider);
     }
 
@@ -175,6 +177,28 @@ public class RoomProviderService {
     }
 
 
+
+    public RoomProvider updateRoomProvider(int roomProviderId, Integer roomPrice,
+                                                           Integer roomId, Integer providerId){
+
+        Optional<RoomProvider> roomProviderOptional = roomProviderRepository.findById(roomProviderId);
+        if(roomProviderOptional.isEmpty()){
+            throw new NullPointerException("no roomProvider instance found");
+        }
+        RoomProvider roomProvider = roomProviderOptional.get();
+
+        if(roomPrice != null){roomProvider.setRoomPrice(roomPrice);}
+        if(roomId != null){
+            Optional<Room> roomOptional = roomRepository.findById(roomId);
+            roomOptional.ifPresent(roomProvider::setRoom);
+        }
+        if(providerId != null){
+            Optional<Provider> providerOptional = providerRepository.findById(providerId);
+            providerOptional.ifPresent(roomProvider::setProvider);
+        }
+
+        return roomProviderRepository.save(roomProvider);
+    }
 
 
 }
