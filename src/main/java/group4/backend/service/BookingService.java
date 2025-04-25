@@ -22,6 +22,6 @@ public class BookingService {
 
 
   public Iterable<Booking> getBookingsWithRoom(Room room) {
-    return bookingRepository.findByRoom(room);
+    return bookingRepository.findByRoomProvider_Room(room);
   }
 }

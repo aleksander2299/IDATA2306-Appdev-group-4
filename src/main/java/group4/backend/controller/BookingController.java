@@ -23,7 +23,7 @@ public class BookingController {
     this.bookingService = bookingService;
   }
 
-  @GetMapping
+  @GetMapping("s")
   public Iterable<Booking> getAll() {
     logger.info("Getting all bookings");
     return bookingService.getBookings();
