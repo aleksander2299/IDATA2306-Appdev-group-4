@@ -15,14 +15,14 @@ import java.util.Optional;
 @Service
 public class RoomService {
 
-    @Autowired
+
     private RoomRepository roomRepository;
 
 
     @Autowired
     private SourceRepository sourceRepository;
 
-
+    @Autowired
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
@@ -39,8 +39,8 @@ public class RoomService {
 
     public Room saveRoom(Room room) {
 
-        if (room.getSourceId() != null) {
-            Optional<Source> sourceOptional = sourceRepository.findById(room.getSourceId());
+        if (room.getSource().getSourceId() != null) {
+            Optional<Source> sourceOptional = sourceRepository.findById(room.getSource().getSourceId());
             if (sourceOptional.isEmpty()) {
                 throw new IllegalArgumentException("Source does not exist");
             }

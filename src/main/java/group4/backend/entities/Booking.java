@@ -23,8 +23,9 @@ public class Booking {
   @JoinColumn(name = "room_provider", referencedColumnName = "room_provider_id", foreignKey = @ForeignKey(name = "FK_room_provider_id"))
   private RoomProvider roomProvider;
 
+  @ManyToOne
   @JoinColumn(name = "room", referencedColumnName = "username", foreignKey = @ForeignKey(name = "FK_username"))
-  private String username;
+  private User user;
 
   @Column(name = "check_in_date")
   private LocalDate checkInDate;
@@ -32,7 +33,7 @@ public class Booking {
   @Column(name = "check_out_date")
   private LocalDate checkOutDate;
 
-  public int getBookingId() {
+  public Integer getBookingId() {
     return this.bookingId;
   }
 
@@ -40,8 +41,8 @@ public class Booking {
     return this.roomProvider;
   }
 
-  public String getUsername() {
-    return this.username;
+  public User getUser() {
+    return this.user;
   }
 
   public LocalDate getCheckInDate() {
@@ -52,16 +53,16 @@ public class Booking {
     return this.checkOutDate;
   }
 
-  public void setBookingId(int bookingId) {
+  public void setBookingId(Integer bookingId) {
     this.bookingId = bookingId;
   }
 
-  public void setRoomProviderId(RoomProvider roomProvider) {
+  public void setRoomProvider(RoomProvider roomProvider) {
     this.roomProvider = roomProvider;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public void setCheckInDate(LocalDate checkInDate) {
@@ -75,7 +76,7 @@ public class Booking {
   public boolean isValid() {
     return (
         (this.bookingId == null || this.bookingId > 0)
-        && !this.username.isBlank()
+        && this.user != null
         && this.roomProvider != null
         && this.checkInDate != null
         && this.checkOutDate != null

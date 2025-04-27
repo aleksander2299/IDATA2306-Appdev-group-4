@@ -15,14 +15,14 @@ public class Room {
 
 
     /**
-     * set to auto increment for now. primary key roomID
+     * set to auto increment for now. primary key roomId
      */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id")
     private int roomId;  // Primary Key
 
-   @ManyToOne
-   @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id"))
+    @ManyToOne
+    @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id"))
     private Source source;
 
 
@@ -65,14 +65,6 @@ public class Room {
     public void setSource(Source source) {this.source = source; }
 
 
-
-
-    @Transient
-    private Integer sourceId;
-
-
-
-
     /**
      * gets the room id;
      * @return the roomId
@@ -82,8 +74,8 @@ public class Room {
     }
 
     /**
-     * sets the roomID to param int
-     * @param roomId the roomID to set it to
+     * sets the roomId to param int
+     * @param roomId the roomId to set it to
      */
     public void setRoomId(int roomId) {
         this.roomId = roomId;
@@ -162,14 +154,4 @@ public class Room {
     public String getImageUrl(){
         return this.imageurl;
     }
-
-    public Integer getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Integer sourceId) {
-        this.sourceId = sourceId;
-    }
-
-
 }

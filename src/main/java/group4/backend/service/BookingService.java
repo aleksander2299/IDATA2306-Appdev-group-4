@@ -26,6 +26,10 @@ public class BookingService {
     return this.bookingRepository.findById(id);
   }
 
+  public Iterable<Booking> getAllBookingsByRoom(Room room) {
+    return this.bookingRepository.findByRoomProvider_Room(room);
+  }
+
   public boolean addBooking(Booking booking) {
     boolean added = false;
     if (canBeAdded(booking)) {
@@ -35,15 +39,10 @@ public class BookingService {
     return added;
   }
 
-  public Iterable<Booking> getAllBookingsByRoom(Room room) {
-    return this.bookingRepository.findByRoomProvider_Room(room);
-  }
-
   private boolean canBeAdded(Booking booking) {
     return (
         booking != null
         && booking.isValid()
-        && this.bookingRepository.existsById(booking.getBookingId())
     );
   }
 
@@ -57,11 +56,21 @@ public class BookingService {
     return deleted;
   }
 
-  public boolean updateUser(Integer bookingId, Booking bookingToPut) {
+  public boolean updateUser(Booking bookingToPut) {
     boolean updated = false;
-    if (this.bookingRepository.findById(bookingId).isPresent()) {
-      this.bookingRepository.deleteById(bookingId);
-      this.bookingRepository.save(bookingToPut);
+    Optional<Booking> existingBookingOpt = this.bookingRepository.findById(
+        bookingToPut.getBookingId());
+    if (existingBookingOpt.isPresent()) {
+      Booking existingBooking = existingBookingOpt.get();
+
+      // Update the fields you want to change
+      existingBooking.setRoomProvider(bookingToPut.getRoomProvider());
+      existingBooking.setUser(bookingToPut.getUser());
+      existingBooking.setCheckInDate(bookingToPut.getCheckInDate());
+      existingBooking.setCheckOutDate(bookingToPut.getCheckOutDate());
+
+      // Save the updated entity
+      this.bookingRepository.save(existingBooking);
       updated = true;
     }
     return updated;

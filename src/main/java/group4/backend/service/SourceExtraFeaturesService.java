@@ -47,13 +47,13 @@ public class SourceExtraFeaturesService {
         Source source = sourceOptional.get();
         ExtraFeatures feature = extraFeaturesOptional.get();
 
-        // Creates the ID for SourceExtraFeatures.
-        SourceExtraFeaturesId id = new SourceExtraFeaturesId(feature.getFeature(), source.getSourceID());
+        // Creates the Id for SourceExtraFeatures.
+        SourceExtraFeaturesId id = new SourceExtraFeaturesId(feature.getFeature(), source.getSourceId());
 
-        // Creates the SourceExtraFeatures object and sets the ID.
+        // Creates the SourceExtraFeatures object and sets the Id.
         SourceExtraFeatures sourceExtraFeatures = new SourceExtraFeatures();
         sourceExtraFeatures.setId(id);
-        sourceExtraFeatures.setSourceID(source);
+        sourceExtraFeatures.setSourceId(source);
         sourceExtraFeatures.setFeature(feature);
 
         // Saves the SourceExtraFeatures entity.
@@ -61,14 +61,14 @@ public class SourceExtraFeaturesService {
     }
 
     public void unlinkSourceToFeature(int sourceId, String featureId){
-        Source sourceID = sourceRepository.findById(sourceId).get();
+        Source source = sourceRepository.findById(sourceId).get();
         ExtraFeatures feature = extraFeaturesRepository.findById(featureId).get();
 
-        if(sourceExtraFeaturesRepository.findBySourceIDAndFeature(sourceID, feature).isEmpty()){
+        if(sourceExtraFeaturesRepository.findBySourceIdAndFeature(source, feature).isEmpty()){
             throw new IllegalArgumentException("The link does not exist.");
         }
 
-        SourceExtraFeatures sourceExtraFeatures = sourceExtraFeaturesRepository.findBySourceIDAndFeature(sourceID,feature).get();
+        SourceExtraFeatures sourceExtraFeatures = sourceExtraFeaturesRepository.findBySourceIdAndFeature(source,feature).get();
         sourceExtraFeaturesRepository.delete(sourceExtraFeatures);
     }
 

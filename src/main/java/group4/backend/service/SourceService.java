@@ -64,7 +64,7 @@ public class SourceService {
         sourceRepository.deleteAll();
     }
 
-    public void deletAllById(Iterable<Integer> integers){
+    public void deleteAllById(Iterable<Integer> integers){
         if(integers == null){
             throw new IllegalArgumentException("No integer found ");
         }

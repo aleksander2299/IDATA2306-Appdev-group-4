@@ -54,12 +54,12 @@ public class BookingController {
   }
 
   @PostMapping
-  public ResponseEntity<String> postBooking(@RequestBody Booking booking) {
-    ResponseEntity<String> response;
+  public ResponseEntity<Booking> postBooking(@RequestBody Booking booking) {
+    ResponseEntity<Booking> response;
     if (this.bookingService.addBooking(booking)) {
-      response = ResponseEntity.status(HttpStatus.CREATED).body("");
+      response = ResponseEntity.status(HttpStatus.CREATED).body(booking);
     } else {
-      response = ResponseEntity.status(HttpStatus.FORBIDDEN).body("");
+      response = ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
     }
     return response;
   }
@@ -80,11 +80,11 @@ public class BookingController {
     return response;
   }
 
-  @PutMapping("{bookingId}")
-  public ResponseEntity<String> updateBooking(@PathVariable Integer bookingId, @RequestBody Booking booking) {
+  @PutMapping()
+  public ResponseEntity<String> updateBooking(@RequestBody Booking booking) {
     ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("A booking with that name was not found");
-    if (this.bookingService.updateUser(bookingId, booking)) {
-      response = ResponseEntity.status(HttpStatus.OK).body("Found and updated booking: " + bookingId);
+    if (this.bookingService.updateUser(booking)) {
+      response = ResponseEntity.status(HttpStatus.OK).body("Found and updated booking: " + booking.getBookingId());
     }
     return response;
   }

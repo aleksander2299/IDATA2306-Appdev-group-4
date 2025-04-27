@@ -31,5 +31,5 @@ public interface SourceExtraFeaturesRepository extends CrudRepository<SourceExtr
     @Override
     void deleteAll();
 
-    Optional<SourceExtraFeatures> findBySourceIDAndFeature(Source sourceID, ExtraFeatures feature);
+    Optional<SourceExtraFeatures> findBySourceIdAndFeature(Source sourceId, ExtraFeatures feature);
 }

@@ -35,7 +35,7 @@ public class RoomProviderService {
 
 
     /**
-     * finds all roomProvider objects with the IDs specified in Iterable<> aka list
+     * finds all roomProvider objects with the Ids specified in Iterable<> aka list
      * @param ids the list of ids to find by
      * @return List of roomProviderObjects
      */
@@ -56,7 +56,7 @@ public class RoomProviderService {
 
     /**
      * finds roomProvider object by ID
-     * @param id the roomProviders Id
+     * @param id the roomProviders ID
      * @return optional of roomProvider
      */
     public Optional<RoomProvider> findById(Integer id){
@@ -95,7 +95,7 @@ public class RoomProviderService {
 
 
     /**
-     * delete roomProvider object by Id
+     * delete roomProvider object by ID
      * @param id the id of the roomProvider object to be deleted
      */
     public void deleteById(Integer id){
@@ -139,23 +139,11 @@ public class RoomProviderService {
 
     /**
      * method that links an existing room to a provider
-     * @param roomId the room to link to a provider
-     * @param providerId the provider to link to a room
+     * @param roomProvider a roomProvider object that holds the room and provider to link
      */
-    public void linkRoomToProvider(int roomId, int providerId, int price){
-
-        if(roomRepository.findById(roomId).isEmpty() || providerRepository.findById(providerId).isEmpty()){
-            throw new IllegalArgumentException("room or provider doesnt exist");
-        }
-        Room room = roomRepository.findById(roomId).get();
-        Provider provider = providerRepository.findById(providerId).get();
-
-
-            RoomProvider roomProvider = new RoomProvider();
-            roomProvider.setRoom(room);
-            roomProvider.setProvider(provider);
-            roomProvider.setRoomPrice(price);
-            roomProviderRepository.save(roomProvider);
+    public void linkRoomToProvider(RoomProvider roomProvider){
+        //TODO fix this to properly check if the roomProvider is fit to be saved/linked
+        roomProviderRepository.save(roomProvider);
     }
 
 

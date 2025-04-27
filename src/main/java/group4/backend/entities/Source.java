@@ -6,11 +6,11 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "source")
-public class Source {
+public class Source implements Comparable<Source>{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "source_id", nullable = false)
-    private int sourceID;
+    private Integer sourceId;
 
     @Column(name = "source_name", nullable = false)
     private String sourceName;
@@ -29,14 +29,14 @@ public class Source {
      * returns source id
      * @return int source id
      */
-    public int getSourceID() { return sourceID; }
+    public Integer getSourceId() { return sourceId; }
 
 
     /**
      * sets the source id to a new source id
-     * @param sourceID the source id
+     * @param sourceId the source id
      */
-    public void setSourceID(int sourceID) {this.sourceID = sourceID; }
+    public void setSourceId(int sourceId) {this.sourceId = sourceId; }
 
     /**
      * returns source name
@@ -102,4 +102,8 @@ public class Source {
         this.country = country;
     }
 
+    @Override
+    public int compareTo(Source other) {
+        return Integer.compare(this.sourceId, other.sourceId);
+    }
 }

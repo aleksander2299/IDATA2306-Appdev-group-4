@@ -59,16 +59,15 @@ public class RoomProviderController {
 
 
     @PostMapping()
-    public ResponseEntity<Void> linkRoomToProvider(@RequestBody RoomProvider roomProvider){
-        roomProviderService.linkRoomToProvider(roomProvider.getRoomId(),roomProvider.getProviderId(),
-                roomProvider.getRoomPrice());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<RoomProvider> linkRoomToProvider(@RequestBody RoomProvider roomProvider){
+        roomProviderService.linkRoomToProvider(roomProvider);
+        return ResponseEntity.ok().body(roomProvider);
     }
 
 
     @DeleteMapping()
     public ResponseEntity<RoomProvider> unlinkRoomToProvider(@RequestBody RoomProvider roomProvider){
-        roomProviderService.unlinkRoomToProvider(roomProvider.getRoomId(),roomProvider.getRoomProviderId());
+        roomProviderService.unlinkRoomToProvider(roomProvider.getRoom().getRoomId(),roomProvider.getRoomProviderId());
         return ResponseEntity.ok().build();
     }
 
@@ -77,8 +76,8 @@ public class RoomProviderController {
     public ResponseEntity<RoomProvider> updateRoomProvider(@PathVariable("id") int roomProviderId,
                                                            @RequestBody RoomProvider roomProvider){
         RoomProvider updatedProvider = roomProviderService.updateRoomProvider(
-                roomProviderId,roomProvider.getRoomPrice(),roomProvider.getRoomId(),
-                roomProvider.getProviderId());
+                roomProviderId,roomProvider.getRoomPrice(),roomProvider.getRoom().getRoomId(),
+                roomProvider.getProvider().getProviderId());
 
         return ResponseEntity.ok(updatedProvider);
 

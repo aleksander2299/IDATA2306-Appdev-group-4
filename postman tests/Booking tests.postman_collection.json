@@ -1,0 +1,483 @@
+{
+	"info": {
+		"_postman_id": "bef15432-02ea-4373-a69e-80108c410d3b",
+		"name": "Booking tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "42432285"
+	},
+	"item": [
+		{
+			"name": "Get every booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Save booking count to a local variable\", function() {\r",
+							"    const users = pm.response.json();\r",
+							"    pm.expect(users).to.be.an(\"array\");\r",
+							"    pm.environment.set(\"initial_booking_count\", users.length);\r",
+							"    pm.environment.set(\"booking_count\", users.length);\r",
+							"    console.log(\"Booking count saved to local variable:\", users.length);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/all"
+			},
+			"response": []
+		},
+		{
+			"name": "Add test source",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"Source\", JSON.stringify(pm.response.json()));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sourceID\": null,\r\n    \"sourceName\": \"TesT\",\r\n    \"locationType\": \"TestType\",\r\n    \"city\": \"TestVille\",\r\n    \"country\": \"Molde\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/source"
+			},
+			"response": []
+		},
+		{
+			"name": "Add test room",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"Room\", JSON.stringify(pm.response.json()));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomId\": null,\r\n    \"source\": {{Source}},\r\n    \"roomName\": \"TesT\",\r\n    \"description\": \"Dank\",\r\n    \"visibility\": false,\r\n    \"roomType\": \"Luxury\",\r\n    \"imageurl\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/rooms"
+			},
+			"response": []
+		},
+		{
+			"name": "Add test provider",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"Provider\", JSON.stringify(pm.response.json()));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"providerId\": null,\r\n    \"providerName\": \"TestName\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/providers"
+			},
+			"response": []
+		},
+		{
+			"name": "Add test roomprovider",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"RoomProvider\", JSON.stringify(pm.response.json()));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomProviderId\": null,\r\n    \"provider\": {{Provider}},\r\n    \"room\": {{Room}},\r\n    \"roomPrice\": 1234\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/roomProvider"
+			},
+			"response": []
+		},
+		{
+			"name": "Add test user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"User\", JSON.stringify(pm.response.json()));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"TestName\",\r\n    \"password\": \"TestPass\",\r\n    \"role\": \"PROVIDER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/user"
+			},
+			"response": []
+		},
+		{
+			"name": "Add new booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check if booking was created\", function () {\r",
+							"    if (pm.response.code === 201) {\r",
+							"        let count = pm.environment.get(\"booking_count\") || 0;\r",
+							"        count = parseInt(count);\r",
+							"\r",
+							"        pm.environment.set(\"booking_count\", count + 1);\r",
+							"        pm.environment.set(\"bookingId\", pm.response.json().bookingId)\r",
+							"\r",
+							"        console.log(\"Booking created. Count is now:\", count + 1);\r",
+							"    } else {\r",
+							"        console.log(\"Booking not created. Status code:\", pm.response.code);\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"bookingId\": null,\r\n    \"roomProvider\": {{RoomProvider}},\r\n    \"user\": {{User}},\r\n    \"checkInDate\": \"2007-01-20\",\r\n    \"checkOutDate\": \"2007-01-25\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASE_URL}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Get every booking after POST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"There are more booking than before\", function() {\r",
+							"    pm.expect(pm.environment.get(\"booking_count\")).greaterThan(pm.environment.get(\"initial_booking_count\"));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/all"
+			},
+			"response": []
+		},
+		{
+			"name": "Get booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is the correct booking\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"bookingId\");\r",
+							"    pm.expect(jsonData).to.have.property(\"roomProvider\");\r",
+							"    pm.expect(jsonData).to.have.property(\"user\");\r",
+							"    pm.expect(jsonData).to.have.property(\"checkInDate\");\r",
+							"    pm.expect(jsonData).to.have.property(\"checkOutDate\");\r",
+							"\r",
+							"    pm.expect(jsonData.bookingId).to.eql(pm.environment.get(\"bookingId\"));\r",
+							"    pm.expect(jsonData.roomProvider).to.eql(pm.environment.get(\"RoomProvider\"));\r",
+							"    pm.expect(jsonData.user).to.eql(pm.environment.get(\"User\"));\r",
+							"    pm.expect(jsonData.checkInDate).to.eql(pm.environment.get(\"2007-01-20\"));\r",
+							"    pm.expect(jsonData.checkOutDate).to.eql(pm.environment.get(\"2007-01-25\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/{{bookingId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Alter booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"bookingId\": {{bookingId}},\r\n    \"roomProvider\": {{RoomProvider}},\r\n    \"user\": {{User}},\r\n    \"checkInDate\": \"2007-01-20\",\r\n    \"checkOutDate\": \"2007-01-23\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASE_URL}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Fail getting unaltered booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is the correct booking\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"bookindId\");\r",
+							"    pm.expect(jsonData).to.have.property(\"roomProvider\");\r",
+							"    pm.expect(jsonData).to.have.property(\"user\");\r",
+							"    pm.expect(jsonData).to.have.property(\"checkInDate\");\r",
+							"    pm.expect(jsonData).to.have.property(\"checkOutDate\");\r",
+							"\r",
+							"    pm.expect(jsonData.bookingId).to.eql(pm.environment.get(\"bookingId\"));\r",
+							"    pm.expect(jsonData.roomProvider).to.eql(pm.environment.get(\"RoomProvider\"));\r",
+							"    pm.expect(jsonData.user).to.eql(pm.environment.get(\"User\"));\r",
+							"    pm.expect(jsonData.checkInDate).to.eql(pm.environment.get(\"2007-01-20\"));\r",
+							"    pm.expect(jsonData.checkOutDate).to.not.eql(pm.environment.get(\"2007-01-25\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/{{bookingId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Get altered booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is the correct booking\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"bookindId\");\r",
+							"    pm.expect(jsonData).to.have.property(\"roomProvider\");\r",
+							"    pm.expect(jsonData).to.have.property(\"user\");\r",
+							"    pm.expect(jsonData).to.have.property(\"checkInDate\");\r",
+							"    pm.expect(jsonData).to.have.property(\"checkOutDate\");\r",
+							"\r",
+							"    pm.expect(jsonData.bookingId).to.eql(pm.environment.get(\"bookingId\"));\r",
+							"    pm.expect(jsonData.roomProvider).to.eql(pm.environment.get(\"RoomProvider\"));\r",
+							"    pm.expect(jsonData.user).to.eql(pm.environment.get(\"User\"));\r",
+							"    pm.expect(jsonData.checkInDate).to.eql(pm.environment.get(\"2007-01-20\"));\r",
+							"    pm.expect(jsonData.checkOutDate).to.eql(pm.environment.get(\"2007-01-23\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/{{bookingId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check if booking was deleted\", function () {\r",
+							"    if (pm.response.code === 200) {\r",
+							"        let count = pm.environment.get(\"booking_count\") || 0;\r",
+							"        count = parseInt(count);\r",
+							"\r",
+							"        pm.environment.set(\"booking_count\", count - 1);\r",
+							"\r",
+							"        console.log(\"Booking deleted. Count is now:\", count - 1);\r",
+							"    } else {\r",
+							"        console.log(\"booking not deleted. Status code:\", pm.response.code);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASE_URL}}/{{bookingId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Get every booking after DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"There are more users than before\", function() {\r",
+							"    pm.expect(pm.environment.get(\"booking_count\")).equal(pm.environment.get(\"initial_booking_count\"));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/all"
+			},
+			"response": []
+		}
+	]
+}

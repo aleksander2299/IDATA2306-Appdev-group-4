@@ -79,7 +79,7 @@ public class SourceController {
     public ResponseEntity<Void> deleteAllSources() {
         List<Source> sources = sourceService.getAllSources();
         for(Source source : sources){
-            sourceService.deleteSource(source.getSourceID());
+            sourceService.deleteSource(source.getSourceId());
         }
         return ResponseEntity.ok().build();
     }

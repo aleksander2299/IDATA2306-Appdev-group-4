@@ -13,7 +13,7 @@ public class RoomProvider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_provider_id", nullable = false)
-    private int roomProviderId;
+    private Integer roomProviderId;
 
     @ManyToOne
     @JoinColumn(name = "provider_id", nullable = false, foreignKey = @ForeignKey(name = "FK_provider_id"))
@@ -24,47 +24,14 @@ public class RoomProvider {
     private Room room;
 
     @Column(name = "room_price")
-    private int roomPrice;
-
-
-    @Transient
-    private int roomId;
-
-
-
-    @Transient
-    private int providerId;
-
-
-
-    public RoomProvider() {
-
-    }
-
-
-    /**
-     * returns the roomID that will be used for updating roomProvider in controller
-     * @return int roomId
-     */
-    public int getRoomId() {
-        return roomId;
-    }
-
-
-    /**
-     * returns the providerID that will be used for updating the roomProvider in contrller
-     * @return int ProviderId
-     */
-    public int getProviderId() {
-        return providerId;
-    }
+    private Integer roomPrice;
 
 
     /**
      * returns RoomProviderId
      * @return the current RoomProviderId
      */
-    public int getRoomProviderId() {
+    public Integer getRoomProviderId() {
         return roomProviderId;
     }
 
@@ -72,7 +39,7 @@ public class RoomProvider {
      * sets RoomProviderId to a new RoomProviderId from parameter
      * @param roomProviderId the new RoomProviderId
      */
-    public void setRoomProviderId(int roomProviderId) {
+    public void setRoomProviderId(Integer roomProviderId) {
         this.roomProviderId = roomProviderId;
     }
 
