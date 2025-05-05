@@ -6,6 +6,7 @@ import group4.backend.service.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class SourceController {
 
     @Autowired
     SourceService sourceService;
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Source> getSource(@PathVariable("id") int id) {
@@ -33,6 +35,7 @@ public class SourceController {
         return ResponseEntity.ok(sources);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<Source> createSource(@RequestBody Source source) {
         Source newSource = sourceService.saveSource(source);
@@ -44,6 +47,7 @@ public class SourceController {
      * @param sources the list of sources to post.
      * @return ResponseEntity if it succeeded or not.
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/bulk")
     public ResponseEntity<List<Source>> createRooms(@RequestBody List<Source> sources){
         if(sources.isEmpty()){
@@ -60,6 +64,7 @@ public class SourceController {
      * @param id the id of the source to delete.
      * @return ResponseEntity if source was deleted or not.
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Source> deleteSource(@PathVariable("id") int id) {
         if(sourceService.getSourceById(id).isPresent()) {
