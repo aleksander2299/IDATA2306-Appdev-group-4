@@ -75,7 +75,7 @@ public class Booking {
 
   public boolean isValid() {
     return (
-        (this.bookingId == null || this.bookingId > 0)
+        this.bookingId == null
         && this.user != null
         && this.roomProvider != null
         && this.checkInDate != null

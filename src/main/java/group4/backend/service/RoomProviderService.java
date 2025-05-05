@@ -139,11 +139,26 @@ public class RoomProviderService {
 
     /**
      * method that links an existing room to a provider
-     * @param roomProvider a roomProvider object that holds the room and provider to link
+     * @param roomId id of the room to be linked to a given provider
+     * @param providerId if of the provider to be linked to a given room
      */
-    public void linkRoomToProvider(RoomProvider roomProvider){
-        //TODO fix this to properly check if the roomProvider is fit to be saved/linked
-        roomProviderRepository.save(roomProvider);
+    public Optional<RoomProvider> linkRoomToProvider(Integer roomId, Integer providerId){
+        if (roomId == null) {
+            throw new IllegalArgumentException("There is no room with id null");
+        }
+        if (providerId == null) {
+            throw new IllegalArgumentException(("There is no provider with id null"));
+        }
+        Optional<Room> room = this.roomRepository.findById(roomId);
+        Optional<Provider> provider = this.providerRepository.findById(providerId);
+        Optional<RoomProvider> roomProvider = Optional.empty();
+
+        if (room.isPresent() && provider.isPresent()) {
+            roomProviderRepository.save(new RoomProvider(null, provider.get(), room.get(), null));
+            roomProvider = this.roomProviderRepository.findByRoomAndProvider(room.get(), provider.get());
+        }
+
+        return roomProvider;
     }
 
 
@@ -152,16 +167,17 @@ public class RoomProviderService {
      * @param roomId the room to unlink from provider
      * @param providerId the provider to unlink from room
      */
-    public void unlinkRoomToProvider(int roomId, int providerId){
-        Room room = roomRepository.findById(roomId).get();
-        Provider provider = providerRepository.findById(providerId).get();
+    public void unlinkRoomToProvider(Integer roomId, Integer providerId){
 
-        if(roomProviderRepository.findByRoomAndProvider(room,provider).isEmpty()){
-          throw new IllegalArgumentException("the link doesnt exist");
+        Optional<Room> room = roomRepository.findById(roomId);
+        Optional<Provider> provider = providerRepository.findById(providerId);
+        Optional<RoomProvider> roomProvider = Optional.empty();
+
+        if (room.isPresent() && provider.isPresent()) {
+            roomProvider = roomProviderRepository.findByRoomAndProvider(room.get(),provider.get());
         }
+        roomProvider.ifPresent(value -> roomProviderRepository.delete(value));
 
-        RoomProvider roomProvider = roomProviderRepository.findByRoomAndProvider(room,provider).get();
-        roomProviderRepository.delete(roomProvider);
     }
 
 

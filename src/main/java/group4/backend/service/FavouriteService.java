@@ -1,13 +1,16 @@
 package group4.backend.service;
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> torsk
 import group4.backend.entities.Favourite;
-import group4.backend.entities.Room;
 import group4.backend.entities.User;
 import group4.backend.repository.FavouriteRepository;
 import group4.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -22,12 +25,15 @@ import java.util.Optional;
 @Service
 public class FavouriteService {
 
-    @Autowired
-    private FavouriteRepository favouriteRepository;
+    private final FavouriteRepository favouriteRepository;
 
-    //TODO: Uncomment the following line when UserRepository is available
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public FavouriteService(FavouriteRepository favouriteRepository, UserRepository userRepository) {
+        this.favouriteRepository = favouriteRepository;
+        this.userRepository = userRepository;
+    }
 
     /**
      * Find all Favourites in the table.
@@ -62,33 +68,23 @@ public class FavouriteService {
         return favourites;
     }
 
-    /**
-     * TODO: Uncomment the following method when UserRepository is available
-     * Find all Favourites by username.
-     * @param username
-     * @return
-     */
-    /**
     public List<Favourite> findAllByUsername(String username) {
         if (username == null) {
             throw new IllegalArgumentException("No username provided.");
         }
 
         // fetch the User object by username
-        User user = userRepository.findById(username);
+        Optional<User> user = userRepository.findById(username);
         if (user.isEmpty()) {
             throw new EntityNotFoundException("User not found with username: " + username);
         }
 
-
-
-        List<Favourite> userFavourites = favouriteRepository.findAllByUsername(user);
+        List<Favourite> userFavourites = favouriteRepository.findAllByUsername(user.get());
         if (userFavourites.isEmpty()) {
-            throw new EmptyResultDataAccessException("No Favourites found for user: " + username);
+            throw new NoSuchElementException("No Favourites found for user: " + username);
         }
         return userFavourites;
     }
-     */
 
     /**
      * Save/Create a Favourite.

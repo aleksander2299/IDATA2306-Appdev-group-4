@@ -2,14 +2,12 @@ package group4.backend.controller;
 
 import group4.backend.entities.Booking;
 import group4.backend.entities.Room;
-import group4.backend.entities.User;
 import group4.backend.service.BookingService;
 
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/booking")
+@RequestMapping("/api/booking")
 public class BookingController {
 
   private static final Logger logger = LoggerFactory.getLogger(BookingController.class);

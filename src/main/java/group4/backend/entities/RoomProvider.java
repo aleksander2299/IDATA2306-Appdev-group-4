@@ -26,6 +26,15 @@ public class RoomProvider {
     @Column(name = "room_price")
     private Integer roomPrice;
 
+    public RoomProvider() {}
+
+    public RoomProvider(Integer roomProviderId, Provider provider, Room room, Integer roomPrice) {
+        this.roomProviderId = roomProviderId;
+        this.provider = provider;
+        this.room = room;
+        this.roomPrice = roomPrice;
+    }
+
 
     /**
      * returns RoomProviderId
@@ -92,7 +101,4 @@ public class RoomProvider {
     public void setRoom(Room room) {
         this.room = room;
     }
-
-
-
 }
