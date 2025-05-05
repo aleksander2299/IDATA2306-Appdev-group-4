@@ -22,8 +22,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest registerRequest) {
-        var user = group4.backend.entities.User.builder().username(registerRequest.getUserName())
-                        .password(passwordEncoder.encode(registerRequest.getPassWord()))
+        var user = group4.backend.entities.User.builder().username(registerRequest.getUsername())
+                        .password(passwordEncoder.encode(registerRequest.getPassword()))
                                 .role(registerRequest.getRole()).build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(new CustomUserDetails(user));
