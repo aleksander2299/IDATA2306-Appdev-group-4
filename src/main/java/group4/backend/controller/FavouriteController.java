@@ -12,23 +12,29 @@ import java.util.Optional;
  * Controller class for handling Favourite endpoints.
  */
 @RestController
-@RequestMapping("/favourite")
+@RequestMapping("/api/favourite")
 public class FavouriteController {
-    //TODO: Fix FavoriteService error
+
+    private final FavouriteService favouriteService;
+
     @Autowired
-    private FavouriteService favouriteService;
+    public FavouriteController(FavouriteService favouriteService) {
+        this.favouriteService = favouriteService;
+    }
 
     /**
      * Find all Favourites
-     * @return
+     *
+     * @return an iterable of favourites.
      */
     @GetMapping
-    public List<Favourite> getAllFavourites() {
+    public Iterable<Favourite> getAllFavourites() {
         return favouriteService.findAll();
     }
 
     /**
      * Find a Favourite by ID
+     *
      * @param id
      * @return
      */
@@ -38,17 +44,16 @@ public class FavouriteController {
     }
 
     /**
-     * TODO: Uncomment the following method when UserRepository is available
      * Find all favourites by username
      * @param username
      * @return
      */
-    /**
+
     @GetMapping("/user/{username}")
     public List<Favourite> getFavouritesByUsername(@PathVariable String username) {
         return favouriteService.findAllByUsername(username);
     }
-    */
+
 
     /**
      * Create a new Favourite
