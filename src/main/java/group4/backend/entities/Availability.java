@@ -13,11 +13,11 @@ public class Availability {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "availability_id", nullable = false)
-    private int availabilityId;
+    private Integer availabilityId;
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false, foreignKey = @ForeignKey(name = "room_id_fk"))
-    private Room roomId;
+    private Room room;
 
     @Column(name = "availability_from", nullable = false)
     private LocalDate availabilityFrom;
@@ -25,11 +25,20 @@ public class Availability {
     @Column(name = "availability_to", nullable = false)
     private LocalDate availabilityTo;
 
+    public Availability(){}
+
+    public Availability(Integer availabilityId, Room room, LocalDate availabilityFrom, LocalDate availabilityTo) {
+        this.availabilityId = availabilityId;
+        this.room = room;
+        this.availabilityFrom = availabilityFrom;
+        this.availabilityTo = availabilityTo;
+    }
+
     /**
      * gets availability
      * @return the int availability_id
      */
-    public int getAvailabilityId() {
+    public Integer getAvailabilityId() {
         return availabilityId;
     }
 
@@ -37,7 +46,7 @@ public class Availability {
      * sets availability_id to new availability_id
      * @param availabilityId the new availabilityId
      */
-    public void setAvailabilityId(int availabilityId) {
+    public void setAvailabilityId(Integer availabilityId) {
         this.availabilityId = availabilityId;
     }
 
@@ -45,16 +54,16 @@ public class Availability {
      * gets room_id
      * @return the int room_id primary key
      */
-    public Room getRoomId() {
-        return roomId;
+    public Room getRoom() {
+        return room;
     }
 
     /**
      * sets room_id to new room_id
-     * @param roomId the new roomId
+     * @param room the new roomId
      */
-    public void setRoomId(Room roomId) {
-        this.roomId = roomId;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     /**
