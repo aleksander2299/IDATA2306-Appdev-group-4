@@ -1,10 +1,6 @@
 package group4.backend.service;
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> torsk
 import group4.backend.entities.Favourite;
 import group4.backend.entities.User;
 import group4.backend.repository.FavouriteRepository;
