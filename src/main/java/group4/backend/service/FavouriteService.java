@@ -1,12 +1,12 @@
 package group4.backend.service;
 
 
-//TODO: Uncomment the following import statement when UserRepository is available
-//import Repository.UserRepository;
+
 import group4.backend.entities.Favourite;
 import group4.backend.entities.Room;
 import group4.backend.entities.User;
 import group4.backend.repository.FavouriteRepository;
+import group4.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,8 +26,8 @@ public class FavouriteService {
     private FavouriteRepository favouriteRepository;
 
     //TODO: Uncomment the following line when UserRepository is available
-    //@Autowired
-    //private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Find all Favourites in the table.
