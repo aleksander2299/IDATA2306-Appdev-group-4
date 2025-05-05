@@ -43,6 +43,11 @@ public class BookingService {
     return (
         booking != null
         && booking.isValid()
+        &&
+            (this.bookingRepository.countOverlappingBookings(booking.getRoomProvider().getRoom(),
+                booking.getCheckInDate(),
+                booking.getCheckOutDate()
+            ) == 0)
     );
   }
 
