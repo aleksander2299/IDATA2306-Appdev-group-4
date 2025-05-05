@@ -6,6 +6,7 @@ import group4.backend.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.Optional;
  * Restcontroller for provider table.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/providers")
 public class ProviderController {
 
@@ -55,6 +55,7 @@ public class ProviderController {
      * @param provider the provider to post
      * @return the responseentity of provider if it worked or not.
      */
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @PostMapping()
     public ResponseEntity<Provider> postProvider(@RequestBody Provider provider) {
         if(provider != null) {
@@ -74,6 +75,7 @@ public class ProviderController {
      * @param providers the list of providers to post
      * @return responsentity if it worked or not.
      */
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @PostMapping("/bulk")
     public ResponseEntity<List<Provider>> createRooms(@RequestBody List<Provider> providers){
         if(providers.isEmpty()){
@@ -86,6 +88,7 @@ public class ProviderController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProvider(@PathVariable("id") int id) {
         if (providerService.getProviderById(id).isPresent()) {
@@ -104,6 +107,7 @@ public class ProviderController {
      * deletes all providers in the database
      * @return ResponseEntity if the list of rooms is empty or if it did delete all.
      */
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping()
     public ResponseEntity<Void> deleteAllRoom() {
         List<Provider> providers = providerService.getAllProviders();
@@ -113,6 +117,7 @@ public class ProviderController {
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @PutMapping("/{id}")
     public ResponseEntity<Provider> updateProvider(@PathVariable("id") int providerId,@RequestParam String newName){
         Provider updatedProvider = providerService.updateProvider(providerId, newName);
