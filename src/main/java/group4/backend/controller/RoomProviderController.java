@@ -1,9 +1,12 @@
 package group4.backend.controller;
 
+import group4.backend.entities.Provider;
 import group4.backend.entities.Room;
 import group4.backend.entities.RoomProvider;
 import group4.backend.service.RoomProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,16 +61,21 @@ public class RoomProviderController {
     }
 
 
-    @PostMapping()
-    public ResponseEntity<RoomProvider> linkRoomToProvider(@RequestBody RoomProvider roomProvider){
-        roomProviderService.linkRoomToProvider(roomProvider);
-        return ResponseEntity.ok().body(roomProvider);
+    @PostMapping("/link/{roomId}/{providerId}")
+    public ResponseEntity<RoomProvider> linkRoomIdAndProviderId(@PathVariable Integer roomId,
+                                                           @PathVariable Integer providerId){
+        ResponseEntity<RoomProvider> response;
+        Optional<RoomProvider> linkedRoomProvider = roomProviderService.linkRoomToProvider(roomId, providerId);
+      response = linkedRoomProvider.map(
+              roomProvider -> ResponseEntity.status(HttpStatus.CREATED).body(roomProvider))
+          .orElseGet(() -> ResponseEntity.status(HttpStatus.FORBIDDEN).build());
+        return response;
     }
 
 
-    @DeleteMapping()
-    public ResponseEntity<RoomProvider> unlinkRoomToProvider(@RequestBody RoomProvider roomProvider){
-        roomProviderService.unlinkRoomToProvider(roomProvider.getRoom().getRoomId(),roomProvider.getRoomProviderId());
+    @DeleteMapping("/unlink/{roomId}/{providerId}")
+    public ResponseEntity<RoomProvider> unlinkRoomIdAndProviderId(@PathVariable Integer roomId, @PathVariable Integer providerId){
+        roomProviderService.unlinkRoomToProvider(roomId, providerId);
         return ResponseEntity.ok().build();
     }
 
