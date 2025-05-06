@@ -6,6 +6,7 @@ import group4.backend.service.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class SourceController {
         return ResponseEntity.ok(sources);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<Source> createSource(@RequestBody Source source) {
         Source newSource = sourceService.saveSource(source);
@@ -44,6 +46,7 @@ public class SourceController {
      * @param sources the list of sources to post.
      * @return ResponseEntity if it succeeded or not.
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/bulk")
     public ResponseEntity<List<Source>> createRooms(@RequestBody List<Source> sources){
         if(sources.isEmpty()){
@@ -60,6 +63,7 @@ public class SourceController {
      * @param id the id of the source to delete.
      * @return ResponseEntity if source was deleted or not.
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Source> deleteSource(@PathVariable("id") int id) {
         if(sourceService.getSourceById(id).isPresent()) {
@@ -75,6 +79,7 @@ public class SourceController {
      * Deletes all sources in the database.
      * @return ResponseEntity if the list of sources is empty or if it did delete all.
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping()
     public ResponseEntity<Void> deleteAllSources() {
         List<Source> sources = sourceService.getAllSources();

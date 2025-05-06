@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class RoomProviderController {
         return ResponseEntity.ok(roomProviderList);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteByiD(@PathVariable("id") int id ){
         if(roomProviderService.findById(id).isEmpty()){
@@ -52,6 +54,7 @@ public class RoomProviderController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     public ResponseEntity<RoomProvider> deleteAll(){
         if(roomProviderService.findAll().isEmpty()){
             return ResponseEntity.noContent().build();
@@ -61,6 +64,7 @@ public class RoomProviderController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @PostMapping("/link/{roomId}/{providerId}")
     public ResponseEntity<RoomProvider> linkRoomIdAndProviderId(@PathVariable Integer roomId,
                                                            @PathVariable Integer providerId){
@@ -73,6 +77,7 @@ public class RoomProviderController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping("/unlink/{roomId}/{providerId}")
     public ResponseEntity<RoomProvider> unlinkRoomIdAndProviderId(@PathVariable Integer roomId, @PathVariable Integer providerId){
         roomProviderService.unlinkRoomToProvider(roomId, providerId);
@@ -80,6 +85,7 @@ public class RoomProviderController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @PutMapping("/{id}")
     public ResponseEntity<RoomProvider> updateRoomProvider(@PathVariable("id") int roomProviderId,
                                                            @RequestBody RoomProvider roomProvider){

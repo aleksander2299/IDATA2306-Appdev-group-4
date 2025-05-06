@@ -5,6 +5,7 @@ import group4.backend.service.UserService;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,8 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUsers());
   }
 
+
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @PostMapping
   public ResponseEntity<User> postUser(@RequestBody User user) {
     ResponseEntity<User> response;
@@ -49,6 +52,7 @@ public class UserController {
     return response;
   }
 
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @DeleteMapping
   public ResponseEntity<String> deleteUser(@RequestBody User user) {
     ResponseEntity<String> response;
@@ -66,6 +70,7 @@ public class UserController {
     return response;
   }
 
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @PutMapping("{username}")
   public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody User user) {
     ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("A user with that name was not found");
