@@ -7,6 +7,116 @@
 	},
 	"item": [
 		{
+			"name": "Register user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newuser\",\r\n    \"password\": \"password123\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/authenticate/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Log in user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"jwt\", pm.response.json().token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newuser\",\r\n    \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/authenticate/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Get test user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"user_id\", pm.response.json().username);\r",
+							"pm.environment.set(\"user\", JSON.stringify(pm.response.json()));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/user/newuser"
+			},
+			"response": []
+		},
+		{
 			"name": "Get every booking",
 			"event": [
 				{
@@ -32,7 +142,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": "{{BASE_URL}}/all"
 			},
 			"response": []
@@ -44,7 +160,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.environment.set(\"Source\", JSON.stringify(pm.response.json()));"
+							"pm.environment.set(\"source_id\", pm.response.json().sourceId);\r",
+							"pm.environment.set(\"source\", JSON.stringify(pm.response.json()));"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -53,7 +170,13 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"sourceID\": null,\r\n    \"sourceName\": \"TesT\",\r\n    \"locationType\": \"TestType\",\r\n    \"city\": \"TestVille\",\r\n    \"country\": \"Molde\"\r\n}",
@@ -74,7 +197,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.environment.set(\"Room\", JSON.stringify(pm.response.json()));"
+							"pm.environment.set(\"room_id\", pm.response.json().roomId);\r",
+							"pm.environment.set(\"room\", JSON.stringify(pm.response.json()));"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -83,17 +207,23 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"roomId\": null,\r\n    \"source\": {{Source}},\r\n    \"roomName\": \"TesT\",\r\n    \"description\": \"Dank\",\r\n    \"visibility\": false,\r\n    \"roomType\": \"Luxury\",\r\n    \"imageurl\": \"\"\r\n}",
+					"raw": "{\r\n    \"roomId\": null,\r\n    \"source\": null,\r\n    \"roomName\": \"TesT\",\r\n    \"description\": \"Dank\",\r\n    \"visibility\": false,\r\n    \"roomType\": \"Luxury\",\r\n    \"imageurl\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/api/rooms"
+				"url": "http://localhost:8080/api/rooms/withSource/{{source_id}}"
 			},
 			"response": []
 		},
@@ -104,7 +234,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.environment.set(\"Provider\", JSON.stringify(pm.response.json()));"
+							"pm.environment.set(\"provider_id\", pm.response.json().providerId);\r",
+							"pm.environment.set(\"provider\", JSON.stringify(pm.response.json()));"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -113,7 +244,13 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"providerId\": null,\r\n    \"providerName\": \"TestName\"\r\n}",
@@ -128,13 +265,14 @@
 			"response": []
 		},
 		{
-			"name": "Add test roomprovider",
+			"name": "Add test roomProvider",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.environment.set(\"RoomProvider\", JSON.stringify(pm.response.json()));"
+							"pm.environment.set(\"room_provider_id\", pm.response.json().roomProviderId);\r",
+							"pm.environment.set(\"room_provider\", JSON.stringify(pm.response.json()));"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -143,47 +281,23 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"roomProviderId\": null,\r\n    \"provider\": {{Provider}},\r\n    \"room\": {{Room}},\r\n    \"roomPrice\": 1234\r\n}",
+					"raw": "{\r\n    \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/api/roomProvider"
-			},
-			"response": []
-		},
-		{
-			"name": "Add test user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.environment.set(\"User\", JSON.stringify(pm.response.json()));"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"TestName\",\r\n    \"password\": \"TestPass\",\r\n    \"role\": \"PROVIDER\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:8080/user"
+				"url": "http://localhost:8080/api/roomProvider/link/{{room_id}}/{{provider_id}}"
 			},
 			"response": []
 		},
@@ -204,7 +318,8 @@
 							"        count = parseInt(count);\r",
 							"\r",
 							"        pm.environment.set(\"booking_count\", count + 1);\r",
-							"        pm.environment.set(\"bookingId\", pm.response.json().bookingId)\r",
+							"        pm.environment.set(\"booking_id\", pm.response.json().bookingId)\r",
+							"        pm.environment.set(\"booking\", JSON.stringify(pm.response.json()));\r",
 							"\r",
 							"        console.log(\"Booking created. Count is now:\", count + 1);\r",
 							"    } else {\r",
@@ -220,17 +335,23 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"bookingId\": null,\r\n    \"roomProvider\": {{RoomProvider}},\r\n    \"user\": {{User}},\r\n    \"checkInDate\": \"2007-01-20\",\r\n    \"checkOutDate\": \"2007-01-25\"\r\n}",
+					"raw": "{\r\n    \"bookingId\": null,\r\n    \"roomProvider\": null,\r\n    \"user\": null,\r\n    \"checkInDate\": \"2007-01-20\",\r\n    \"checkOutDate\": \"2007-01-25\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{BASE_URL}}"
+				"url": "{{BASE_URL}}/withIds/{{room_provider_id}}/{{user_id}}"
 			},
 			"response": []
 		},
@@ -256,7 +377,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": "{{BASE_URL}}/all"
 			},
 			"response": []
@@ -272,20 +399,43 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Response is the correct booking\", function () {\r",
+							"pm.test(\"Response has the correct properties\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
+							"\r",
 							"    pm.expect(jsonData).to.have.property(\"bookingId\");\r",
 							"    pm.expect(jsonData).to.have.property(\"roomProvider\");\r",
 							"    pm.expect(jsonData).to.have.property(\"user\");\r",
 							"    pm.expect(jsonData).to.have.property(\"checkInDate\");\r",
 							"    pm.expect(jsonData).to.have.property(\"checkOutDate\");\r",
 							"\r",
-							"    pm.expect(jsonData.bookingId).to.eql(pm.environment.get(\"bookingId\"));\r",
-							"    pm.expect(jsonData.roomProvider).to.eql(pm.environment.get(\"RoomProvider\"));\r",
-							"    pm.expect(jsonData.user).to.eql(pm.environment.get(\"User\"));\r",
-							"    pm.expect(jsonData.checkInDate).to.eql(pm.environment.get(\"2007-01-20\"));\r",
-							"    pm.expect(jsonData.checkOutDate).to.eql(pm.environment.get(\"2007-01-25\"));\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct bookingId\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.bookingId).to.eql(pm.environment.get(\"booking_id\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is equal to stored booking object\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.eql(JSON.parse(pm.environment.get(\"booking\")));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct roomProvider\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var roomProvider = jsonData.roomProvider;\r",
+							"    pm.expect(roomProvider).to.eql(JSON.parse(pm.environment.get(\"room_provider\")));\r",
+							"});\r",
+							"pm.test(\"Response has the correct user\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var user = jsonData.user;\r",
+							"    pm.expect(user).to.eql(JSON.parse(pm.environment.get(\"user\")));\r",
+							"});\r",
+							"pm.test(\"Response has the correct dates\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.checkInDate).to.eql('2007-01-20');\r",
+							"    pm.expect(jsonData.checkOutDate).to.eql('2007-01-25');\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -294,8 +444,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": "{{BASE_URL}}/{{bookingId}}"
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": "{{BASE_URL}}/{{booking_id}}"
 			},
 			"response": []
 		},
@@ -317,55 +473,38 @@
 			],
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"bookingId\": {{bookingId}},\r\n    \"roomProvider\": {{RoomProvider}},\r\n    \"user\": {{User}},\r\n    \"checkInDate\": \"2007-01-20\",\r\n    \"checkOutDate\": \"2007-01-23\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{BASE_URL}}"
-			},
-			"response": []
-		},
-		{
-			"name": "Fail getting unaltered booking",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response is the correct booking\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.property(\"bookindId\");\r",
-							"    pm.expect(jsonData).to.have.property(\"roomProvider\");\r",
-							"    pm.expect(jsonData).to.have.property(\"user\");\r",
-							"    pm.expect(jsonData).to.have.property(\"checkInDate\");\r",
-							"    pm.expect(jsonData).to.have.property(\"checkOutDate\");\r",
-							"\r",
-							"    pm.expect(jsonData.bookingId).to.eql(pm.environment.get(\"bookingId\"));\r",
-							"    pm.expect(jsonData.roomProvider).to.eql(pm.environment.get(\"RoomProvider\"));\r",
-							"    pm.expect(jsonData.user).to.eql(pm.environment.get(\"User\"));\r",
-							"    pm.expect(jsonData.checkInDate).to.eql(pm.environment.get(\"2007-01-20\"));\r",
-							"    pm.expect(jsonData.checkOutDate).to.not.eql(pm.environment.get(\"2007-01-25\"));\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
+				"url": {
+					"raw": "{{BASE_URL}}?bookingId={{booking_id}}&checkOutDate=2007-01-23",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"query": [
+						{
+							"key": "bookingId",
+							"value": "{{booking_id}}"
+						},
+						{
+							"key": "checkOutDate",
+							"value": "2007-01-23"
+						}
+					]
 				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": "{{BASE_URL}}/{{bookingId}}"
 			},
 			"response": []
 		},
@@ -380,20 +519,43 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Response is the correct booking\", function () {\r",
+							"pm.test(\"Response has the correct properties\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.property(\"bookindId\");\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"bookingId\");\r",
 							"    pm.expect(jsonData).to.have.property(\"roomProvider\");\r",
 							"    pm.expect(jsonData).to.have.property(\"user\");\r",
 							"    pm.expect(jsonData).to.have.property(\"checkInDate\");\r",
 							"    pm.expect(jsonData).to.have.property(\"checkOutDate\");\r",
 							"\r",
-							"    pm.expect(jsonData.bookingId).to.eql(pm.environment.get(\"bookingId\"));\r",
-							"    pm.expect(jsonData.roomProvider).to.eql(pm.environment.get(\"RoomProvider\"));\r",
-							"    pm.expect(jsonData.user).to.eql(pm.environment.get(\"User\"));\r",
-							"    pm.expect(jsonData.checkInDate).to.eql(pm.environment.get(\"2007-01-20\"));\r",
-							"    pm.expect(jsonData.checkOutDate).to.eql(pm.environment.get(\"2007-01-23\"));\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct bookingId\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.bookingId).to.eql(pm.environment.get(\"booking_id\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is not equal to stored booking object\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.not.eql(JSON.parse(pm.environment.get(\"booking_id\")));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct roomProvider\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var roomProvider = jsonData.roomProvider;\r",
+							"    pm.expect(roomProvider).to.eql(JSON.parse(pm.environment.get(\"room_provider\")));\r",
+							"});\r",
+							"pm.test(\"Response has the correct user\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var user = jsonData.user;\r",
+							"    pm.expect(user).to.eql(JSON.parse(pm.environment.get(\"user\")));\r",
+							"});\r",
+							"pm.test(\"Response has the correct dates\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.checkInDate).to.eql('2007-01-20');\r",
+							"    pm.expect(jsonData.checkOutDate).to.eql('2007-01-23');\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -402,8 +564,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": "{{BASE_URL}}/{{bookingId}}"
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": "{{BASE_URL}}/{{booking_id}}"
 			},
 			"response": []
 		},
@@ -438,7 +606,13 @@
 			],
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -448,7 +622,7 @@
 						}
 					}
 				},
-				"url": "{{BASE_URL}}/{{bookingId}}"
+				"url": "{{BASE_URL}}/{{booking_id}}"
 			},
 			"response": []
 		},
@@ -474,8 +648,209 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": "{{BASE_URL}}/all"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete test roomProvider",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/roomProvider/unlink/{{room_id}}/{{provider_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete test provider",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/providers/{{provider_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete test room",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/rooms/{{room_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete test source",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/source/{{source_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete test user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newuser\",\r\n    \"password\": \"password123\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/user"
 			},
 			"response": []
 		}

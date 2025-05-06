@@ -1,21 +1,27 @@
 package group4.backend.service;
 
+import group4.backend.config.jwtService;
 import group4.backend.entities.Role;
 import group4.backend.entities.User;
 import group4.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
   private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   public Iterable<User> getAllUsers() {
@@ -49,7 +55,7 @@ public class UserService {
   public boolean deleteUser(User user) {
     boolean delete = false;
     Optional<User> userInDb = getUser(user.getUsername());
-    if (userInDb.isPresent() && user.getPassword().equals(userInDb.get().getPassword())) {
+    if (userInDb.isPresent() && passwordEncoder.matches(user.getPassword(), userInDb.get().getPassword())) {
         this.userRepository.deleteById(user.getUsername());
         delete = true;
     }

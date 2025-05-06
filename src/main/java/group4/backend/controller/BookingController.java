@@ -2,8 +2,11 @@ package group4.backend.controller;
 
 import group4.backend.entities.Booking;
 import group4.backend.entities.Room;
+import group4.backend.entities.RoomProvider;
+import group4.backend.entities.User;
 import group4.backend.service.BookingService;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -62,6 +66,15 @@ public class BookingController {
     return response;
   }
 
+  @PostMapping("/withIds/{roomProviderId}/{username}")
+  public ResponseEntity<Booking> postBooking(@PathVariable Integer roomProviderId, @PathVariable String username, @RequestBody Booking booking) {
+    ResponseEntity<Booking> response;
+    Optional<Booking> optionalBooking = this.bookingService.addBookingUsingIds(roomProviderId, username, booking);
+    response = optionalBooking.map(value -> ResponseEntity.status(HttpStatus.CREATED).body(value))
+        .orElseGet(() -> ResponseEntity.status(HttpStatus.FORBIDDEN).build());
+    return response;
+  }
+
   @DeleteMapping("/{bookingId}")
   public ResponseEntity<String> deleteBooking(@PathVariable Integer bookingId) {
     ResponseEntity<String> response;
@@ -79,10 +92,16 @@ public class BookingController {
   }
 
   @PutMapping()
-  public ResponseEntity<String> updateBooking(@RequestBody Booking booking) {
+  public ResponseEntity<String> updateBooking(
+      @RequestParam(required = true) Integer bookingId,
+      @RequestParam(required = false) RoomProvider roomProvider,
+      @RequestParam(required = false) User user,
+      @RequestParam(required = false) LocalDate checkInDate,
+      @RequestParam(required = false) LocalDate checkOutDate) {
+
     ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("A booking with that name was not found");
-    if (this.bookingService.updateUser(booking)) {
-      response = ResponseEntity.status(HttpStatus.OK).body("Found and updated booking: " + booking.getBookingId());
+    if (this.bookingService.updateUser(bookingId, roomProvider, user, checkInDate, checkOutDate)) {
+      response = ResponseEntity.status(HttpStatus.OK).body("Found and updated booking: " + bookingId);
     }
     return response;
   }

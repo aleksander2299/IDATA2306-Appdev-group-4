@@ -30,7 +30,7 @@ public class UserController {
     Optional<User> user = this.userService.getUser(username);
     ResponseEntity<User> response;
     response = user.map(value -> ResponseEntity.status(HttpStatus.OK).body(value))
-        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     return response;
   }
 

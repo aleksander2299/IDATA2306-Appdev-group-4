@@ -80,6 +80,7 @@ public class Booking {
         && this.roomProvider != null
         && this.checkInDate != null
         && this.checkOutDate != null
+        && this.checkInDate.isBefore(this.checkOutDate)
     );
   }
 }

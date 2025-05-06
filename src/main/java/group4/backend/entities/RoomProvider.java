@@ -56,7 +56,7 @@ public class RoomProvider {
      * returns current RoomPrice
      * @return the currentRoomPrice int
      */
-    public int getRoomPrice() {
+    public Integer getRoomPrice() {
         return roomPrice;
     }
 
@@ -64,7 +64,7 @@ public class RoomProvider {
      * sets roomPrice to new roomPrice in parameter
      * @param roomPrice the new roomPrice
      */
-    public void setRoomPrice(int roomPrice) {
+    public void setRoomPrice(Integer roomPrice) {
         this.roomPrice = roomPrice;
     }
 

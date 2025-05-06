@@ -5,6 +5,7 @@ import group4.backend.entities.Room;
 import group4.backend.entities.Source;
 import group4.backend.repository.RoomRepository;
 import group4.backend.repository.SourceRepository;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,16 @@ public class RoomService {
             }
             room.setSource(sourceOptional.get());
         }
+        return roomRepository.save(room);
+    }
+
+    public Room saveRoomWithSourceId(Integer sourceId, Room room) {
+
+        Optional<Source> source = this.sourceRepository.findById(sourceId);
+
+
+        source.ifPresentOrElse(room::setSource, () -> {throw new NoSuchElementException();});
+
         return roomRepository.save(room);
     }
 

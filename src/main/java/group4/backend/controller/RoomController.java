@@ -62,6 +62,13 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newRoom);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PostMapping("/withSource/{sourceId}")
+    public ResponseEntity<Room> createRoomWithSourceId(@PathVariable Integer sourceId, @RequestBody Room room) {
+        Room newRoom = roomService.saveRoomWithSourceId(sourceId, room);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newRoom);
+    }
+
     /**
      *method for posting list of room to database
      * @param rooms the list of rooms to post
