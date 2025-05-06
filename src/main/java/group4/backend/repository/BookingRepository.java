@@ -14,9 +14,9 @@ public interface BookingRepository extends CrudRepository<Booking, Integer> {
   public Iterable<Booking> findByRoomProvider_Room(Room room);
 
   @Query("SELECT COUNT(b) FROM Booking b " +
-      "WHERE b.room = :room " +
-      "AND b.dateFrom <= :newTo " +
-      "AND b.dateTo >= :newFrom")
+      "WHERE b.roomProvider.room = :room " +
+      "AND b.checkInDate <= :newTo " +
+      "AND b.checkOutDate >= :newFrom")
   long countOverlappingBookings(
       @Param("room") Room room,
       @Param("newFrom") LocalDate newFrom,

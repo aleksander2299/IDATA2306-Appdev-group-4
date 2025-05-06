@@ -66,7 +66,7 @@ public class RoomProviderController {
                                                            @PathVariable Integer providerId){
         ResponseEntity<RoomProvider> response;
         Optional<RoomProvider> linkedRoomProvider = roomProviderService.linkRoomToProvider(roomId, providerId);
-      response = linkedRoomProvider.map(
+        response = linkedRoomProvider.map(
               roomProvider -> ResponseEntity.status(HttpStatus.CREATED).body(roomProvider))
           .orElseGet(() -> ResponseEntity.status(HttpStatus.FORBIDDEN).build());
         return response;
