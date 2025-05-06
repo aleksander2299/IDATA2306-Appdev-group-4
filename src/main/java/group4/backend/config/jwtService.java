@@ -1,5 +1,6 @@
 package group4.backend.config;
 
+import group4.backend.security.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -63,6 +64,11 @@ public class jwtService {
 
     public String generateToken(Map<String,Object> extraClaims,
                                 UserDetails userDetails){
+
+        CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
+
+        extraClaims.put("role", customUserDetails.getAuthorities());
+
         return Jwts.builder().setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                         .setIssuedAt(new Date(System.currentTimeMillis()))
