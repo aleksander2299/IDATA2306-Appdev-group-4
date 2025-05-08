@@ -65,14 +65,15 @@ public class RoomProviderController {
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
-    @PostMapping("/link/{roomId}/{providerId}")
+    @PostMapping("/link/{roomId}/{providerId}/{roomPrice}")
     public ResponseEntity<RoomProvider> linkRoomIdAndProviderId(@PathVariable Integer roomId,
-                                                           @PathVariable Integer providerId){
+                                                           @PathVariable Integer providerId,@PathVariable Integer roomPrice){
         ResponseEntity<RoomProvider> response;
         Optional<RoomProvider> linkedRoomProvider = roomProviderService.linkRoomToProvider(roomId, providerId);
+        linkedRoomProvider.get().setRoomPrice(roomPrice);
         response = linkedRoomProvider.map(
               roomProvider -> ResponseEntity.status(HttpStatus.CREATED).body(roomProvider))
-          .orElseGet(() -> ResponseEntity.status(HttpStatus.FORBIDDEN).build());
+          .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
         return response;
     }
 
