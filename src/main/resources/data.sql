@@ -1,6 +1,22 @@
 -- This file was AI-generated to create filler/sample data for the Spring Boot application.
 -- All user passwords are 'password' (Bcrypt hash: $2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG)
 
+
+SET FOREIGN_KEY_CHECKS=0;
+TRUNCATE TABLE booking;
+TRUNCATE TABLE favourite;
+TRUNCATE TABLE room_provider;
+TRUNCATE TABLE room;
+TRUNCATE TABLE source_extra_features;
+TRUNCATE TABLE extra_features;
+TRUNCATE TABLE source;
+TRUNCATE TABLE provider;
+TRUNCATE TABLE user;
+SET FOREIGN_KEY_CHECKS=1;
+
+
+
+
 -- Users
 -- Note: Passwords should be Bcrypt hashed. The example hash is for 'password'.
 -- $2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG is a hash for 'password'
