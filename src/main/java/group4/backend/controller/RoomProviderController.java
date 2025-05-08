@@ -69,8 +69,8 @@ public class RoomProviderController {
     public ResponseEntity<RoomProvider> linkRoomIdAndProviderId(@PathVariable Integer roomId,
                                                            @PathVariable Integer providerId,@PathVariable Integer roomPrice){
         ResponseEntity<RoomProvider> response;
-        Optional<RoomProvider> linkedRoomProvider = roomProviderService.linkRoomToProvider(roomId, providerId);
-        linkedRoomProvider.get().setRoomPrice(roomPrice);
+        Optional<RoomProvider> linkedRoomProvider = roomProviderService.linkRoomToProvider(roomId, providerId,roomPrice);
+
         response = linkedRoomProvider.map(
               roomProvider -> ResponseEntity.status(HttpStatus.CREATED).body(roomProvider))
           .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build());

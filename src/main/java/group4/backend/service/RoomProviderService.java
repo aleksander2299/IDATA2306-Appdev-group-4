@@ -142,7 +142,7 @@ public class RoomProviderService {
      * @param roomId id of the room to be linked to a given provider
      * @param providerId if of the provider to be linked to a given room
      */
-    public Optional<RoomProvider> linkRoomToProvider(Integer roomId, Integer providerId){
+    public Optional<RoomProvider> linkRoomToProvider(Integer roomId, Integer providerId, Integer roomPrice){
         if (roomId == null) {
             throw new IllegalArgumentException("There is no room with id null");
         }
@@ -154,7 +154,7 @@ public class RoomProviderService {
         Optional<RoomProvider> roomProvider = Optional.empty();
 
         if (room.isPresent() && provider.isPresent()) {
-            roomProviderRepository.save(new RoomProvider(null, provider.get(), room.get(), null));
+            roomProviderRepository.save(new RoomProvider(null, provider.get(), room.get(), roomPrice));
             roomProvider = this.roomProviderRepository.findByRoomAndProvider(room.get(), provider.get());
         }
 
