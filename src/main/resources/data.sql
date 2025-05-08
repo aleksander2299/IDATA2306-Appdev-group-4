@@ -42,10 +42,10 @@ INSERT INTO source (source_name, location_type, city, country) VALUES
 -- Room
 -- Assuming source_id 1, 2, 3 correspond to the sources inserted above
 INSERT INTO room (source_id, room_name, description, visibility, room_type, image_url) VALUES
-(1, 'Standard Double Room', 'A comfortable double room with city view.', true, 'Double', 'http://example.com/images/room1.jpg'),
-(1, 'Deluxe Suite', 'Spacious suite with a king bed and living area.', true, 'Suite', 'http://example.com/images/room2.jpg'),
-(2, 'Two-Bedroom Apartment', 'Modern apartment with two bedrooms and a kitchen.', true, 'Apartment', 'http://example.com/images/room3.jpg'),
-(3, 'Rustic Cabin', 'Cozy cabin with mountain views and fireplace.', true, 'Cabin', 'http://example.com/images/room4.jpg');
+(1, 'Standard Double Room', 'A comfortable double room with city view.', true, 'Double', 'https://picsum.photos/800/600'),
+(1, 'Deluxe Suite', 'Spacious suite with a king bed and living area.', true, 'Suite', 'https://picsum.photos/800/600'),
+(2, 'Two-Bedroom Apartment', 'Modern apartment with two bedrooms and a kitchen.', true, 'Apartment', 'https://picsum.photos/800/600'),
+(3, 'Rustic Cabin', 'Cozy cabin with mountain views and fireplace.', true, 'Cabin', 'https://picsum.photos/800/600');
 
 -- Provider
 INSERT INTO provider (provider_name) VALUES
