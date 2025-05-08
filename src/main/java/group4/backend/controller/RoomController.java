@@ -1,6 +1,7 @@
 package group4.backend.controller;
 
 import group4.backend.entities.Room;
+import group4.backend.entities.RoomProvider;
 import group4.backend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,25 @@ public class RoomController {
     public ResponseEntity<Room> getRoom(@PathVariable("id") int id) {
         Optional<Room> roomOptional = roomService.getRoomById(id);
         return roomOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * gets the roomProviders for a room
+     * @param id the id of the room to get
+     * @return Responseentity of room
+     */
+    @GetMapping("/{id}/roomProviders")
+    public ResponseEntity<List<RoomProvider>> getRoomProviders(@PathVariable("id") int id) {
+        List<RoomProvider> providers= roomService.getRoomById(id).get().getRoomProviders();
+        if (providers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (providers == null || providers.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Optional: return 204 if no providers
+        }
+
+        return ResponseEntity.ok(providers);
     }
 
 

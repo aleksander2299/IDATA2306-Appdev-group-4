@@ -2,6 +2,7 @@ package group4.backend.service;
 
 
 import group4.backend.entities.Room;
+import group4.backend.entities.RoomProvider;
 import group4.backend.entities.Source;
 import group4.backend.repository.RoomRepository;
 import group4.backend.repository.SourceRepository;
@@ -34,7 +35,11 @@ public class RoomService {
         return rooms;
     }
 
+  public List<RoomProvider> getRoomProviders(int id){
+        return roomRepository.findById(id).get().getRoomProviders();
+  }
     public Optional<Room> getRoomById(int id) {
+
         return roomRepository.findById(id);
     }
 

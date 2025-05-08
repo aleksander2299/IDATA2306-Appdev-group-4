@@ -1,6 +1,7 @@
 package group4.backend.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class Room {
 
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "room")
     private List<RoomProvider> roomProviders;
 
@@ -153,5 +155,9 @@ public class Room {
 
     public String getImageUrl(){
         return this.imageurl;
+    }
+
+    public List<RoomProvider> getRoomProviders() {
+        return this.roomProviders;
     }
 }
