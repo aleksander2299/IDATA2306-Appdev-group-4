@@ -24,7 +24,7 @@ public class Booking {
   private RoomProvider roomProvider;
 
   @ManyToOne
-  @JoinColumn(name = "room", referencedColumnName = "username", foreignKey = @ForeignKey(name = "FK_username"))
+  @JoinColumn(name = "username", referencedColumnName = "username", foreignKey = @ForeignKey(name = "FK_username"))
   private User user;
 
   @Column(name = "check_in_date")
