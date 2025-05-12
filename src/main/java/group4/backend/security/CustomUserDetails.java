@@ -22,7 +22,7 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.role = String.valueOf(user.getRole());
+        this.role = "ROLE_" + user.getRole();
         this.user = user;
     }
 

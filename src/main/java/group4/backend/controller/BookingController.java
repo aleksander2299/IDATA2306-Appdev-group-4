@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,6 +67,8 @@ public class BookingController {
     return response;
   }
 
+
+  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
   @PostMapping("/withIds/{roomProviderId}/{username}")
   public ResponseEntity<Booking> postBooking(@PathVariable Integer roomProviderId, @PathVariable String username, @RequestBody Booking booking) {
     ResponseEntity<Booking> response;
