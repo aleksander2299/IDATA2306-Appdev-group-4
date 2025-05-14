@@ -1,8 +1,15 @@
 package group4.backend.controller;
 
+import group4.backend.entities.Room;
 import group4.backend.service.FavouriteService;
 import group4.backend.entities.Favourite;
+import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +24,7 @@ import java.util.Optional;
 public class FavouriteController {
 
     private final FavouriteService favouriteService;
+    Logger logger = LoggerFactory.getLogger(FavouriteController.class);
 
     @Autowired
     public FavouriteController(FavouriteService favouriteService) {
@@ -49,10 +57,24 @@ public class FavouriteController {
      * @param username
      * @return
      */
-
+    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/user/{username}")
-    public List<Favourite> getFavouritesByUsername(@PathVariable String username) {
-        return favouriteService.findAllByUsername(username);
+    public ResponseEntity<Iterable<Room>> getFavouriteRoomsByUsername(@PathVariable String username) {
+        ResponseEntity<Iterable<Room>> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+        Iterable<Room> favouriteRooms = null;
+        try {
+            favouriteRooms = favouriteService.findAllByUsername(username);
+        } catch (IllegalArgumentException iAe){
+            logger.error(iAe.getMessage());
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (EntityNotFoundException | NoSuchElementException nFe) {
+            logger.error(nFe.getMessage());
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+      if (favouriteRooms != null) {
+            response = ResponseEntity.status(HttpStatus.FOUND).body(favouriteRooms);
+        }
+        return response;
     }
 
 

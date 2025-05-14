@@ -7,6 +7,7 @@ import group4.backend.entities.User;
 import group4.backend.service.BookingService;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,26 @@ public class BookingController {
   public ResponseEntity<Iterable<Booking>> getWithRoom(@RequestBody Room room) {
     logger.info("Getting all the bookings with room {}", room.getRoomName());
     return ResponseEntity.status(HttpStatus.OK).body(bookingService.getAllBookingsByRoom(room));
+  }
+
+  @GetMapping("/user/{username}")
+  public ResponseEntity<Iterable<Booking>> getWithUserId(@PathVariable String username) {
+    logger.info("Getting all the bookings with room id: {}", username);
+    ResponseEntity<Iterable<Booking>> response = null;
+    Iterable<Booking> bookings = null;
+    try {
+      bookings = this.bookingService.getAllBookingsBelongingToUsername(username);
+    } catch (IllegalArgumentException iAe) {
+      logger.error(iAe.getMessage());
+      response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    } catch (NoSuchElementException nSeE) {
+      logger.error(nSeE.getMessage());
+      response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+    if (bookings != null) {
+      response = ResponseEntity.status(HttpStatus.OK).body(bookings);
+    }
+    return response;
   }
 
   @PostMapping

@@ -8,6 +8,7 @@ import group4.backend.entities.User;
 import group4.backend.repository.BookingRepository;
 import group4.backend.repository.UserRepository;
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,17 @@ public class BookingService {
 
   public Iterable<Booking> getAllBookingsByRoom(Room room) {
     return this.bookingRepository.findByRoomProvider_Room(room);
+  }
+
+  public Iterable<Booking> getAllBookingsBelongingToUsername(String username) {
+    if (username == null) {
+      throw new IllegalArgumentException("No username provided.");
+    }
+    Iterable<Booking> bookings = this.bookingRepository.findByUser_Username(username);
+    if (!bookings.iterator().hasNext()) {
+      throw new NoSuchElementException("Could not find any bookings belonging to that username");
+    }
+    return bookings;
   }
 
   public boolean addBooking(Booking booking) {

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookingRepository extends CrudRepository<Booking, Integer> {
 
+  public Iterable<Booking> findByUser_Username(String username);
+
   public Iterable<Booking> findByRoomProvider_Room(Room room);
 
   @Query("SELECT COUNT(b) FROM Booking b " +

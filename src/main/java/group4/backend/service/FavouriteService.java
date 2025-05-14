@@ -2,8 +2,10 @@ package group4.backend.service;
 
 
 import group4.backend.entities.Favourite;
+import group4.backend.entities.Room;
 import group4.backend.entities.User;
 import group4.backend.repository.FavouriteRepository;
+import group4.backend.repository.RoomRepository;
 import group4.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.NoSuchElementException;
@@ -22,13 +24,14 @@ import java.util.Optional;
 public class FavouriteService {
 
     private final FavouriteRepository favouriteRepository;
-
     private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
 
     @Autowired
-    public FavouriteService(FavouriteRepository favouriteRepository, UserRepository userRepository) {
+    public FavouriteService(FavouriteRepository favouriteRepository, UserRepository userRepository, RoomRepository roomRepository) {
         this.favouriteRepository = favouriteRepository;
         this.userRepository = userRepository;
+        this.roomRepository = roomRepository;
     }
 
     /**
@@ -64,7 +67,7 @@ public class FavouriteService {
         return favourites;
     }
 
-    public List<Favourite> findAllByUsername(String username) {
+    public Iterable<Room> findAllByUsername(String username) {
         if (username == null) {
             throw new IllegalArgumentException("No username provided.");
         }
@@ -79,7 +82,9 @@ public class FavouriteService {
         if (userFavourites.isEmpty()) {
             throw new NoSuchElementException("No Favourites found for user: " + username);
         }
-        return userFavourites;
+
+        List<Integer> roomIds = userFavourites.stream().map(f -> f.getRoomId().getRoomId()).toList();
+        return roomRepository.findAllById(roomIds);
     }
 
     /**
