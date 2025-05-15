@@ -44,9 +44,22 @@ public class SourceExtraFeaturesController {
     }
 
     @GetMapping("/extra_features/{id}")
-    public ResponseEntity<ExtraFeatures> getFeature(@PathVariable("id") String id) {
+    public ResponseEntity<ExtraFeatures> getFeatures(@PathVariable("id") String id) {
         Optional<ExtraFeatures> extraFeaturesOptional = extraFeaturesService.getFeatureById(id);
         return extraFeaturesOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/extra_features/sourceFeatures/{SourceId}")
+    public ResponseEntity<List<ExtraFeatures>> getFeaturesForSource(@PathVariable("SourceId") int SourceId) {
+        Optional<Source> sourceOptional = sourceService.getSourceById(SourceId);
+        if (sourceOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Source source = sourceOptional.get();
+
+        List<ExtraFeatures> extraFeatures = sourceExtraFeaturesService.getFeaturesForSource(source);
+
+        return ResponseEntity.ok(extraFeatures);
     }
 
     @GetMapping("/extra_features")

@@ -78,4 +78,15 @@ public class SourceExtraFeaturesService {
         return sourceExtraFeatures;
     }
 
+    public List<ExtraFeatures> getFeaturesForSource(Source source) {
+        List<ExtraFeatures> features = new ArrayList<>();
+
+        for (SourceExtraFeatures sourceExtraFeatures : sourceExtraFeaturesRepository.findAll()) {
+            if (sourceExtraFeatures.getSourceId().equals(source)) {
+                features.add(sourceExtraFeatures.getFeature());
+            }
+        }
+        return features;
+    }
+
 }

@@ -46,8 +46,11 @@ public class SecurityConfig {
                 //.authorizeHttpRequests((auth) -> auth.requestMatchers("/api/booking/**").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/authenticate/login").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/authenticate/register").permitAll())
+                .authorizeHttpRequests((auth) -> auth.requestMatchers(HttpMethod.GET, "/api/source").permitAll())
+                .authorizeHttpRequests((auth) -> auth.requestMatchers(HttpMethod.GET, "/api/source_extra_features/**").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/rooms").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/rooms/**").permitAll())
+                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/booking/**").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(HttpMethod.OPTIONS).permitAll())
                 .authorizeHttpRequests((auth) -> auth.anyRequest().authenticated())
                 .sessionManagement((session) ->
