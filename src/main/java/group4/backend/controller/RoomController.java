@@ -2,6 +2,7 @@ package group4.backend.controller;
 
 import group4.backend.entities.Room;
 import group4.backend.entities.RoomProvider;
+import group4.backend.entities.Source;
 import group4.backend.service.RoomService;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
@@ -39,6 +40,13 @@ public class RoomController {
     public ResponseEntity<Room> getRoom(@PathVariable("id") int id) {
         Optional<Room> roomOptional = roomService.getRoomById(id);
         return roomOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
+    @GetMapping("/{id}/source")
+    public ResponseEntity<Source> getSource(@PathVariable("id") int id){
+        Optional<Source> source = Optional.ofNullable(roomService.getRoomById(id).get().getSource());
+        return source.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**

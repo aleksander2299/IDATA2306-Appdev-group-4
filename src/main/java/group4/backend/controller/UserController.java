@@ -52,7 +52,7 @@ public class UserController {
     return response;
   }
 
-  @PreAuthorize("hasAnyRole('ADMIN')")
+  @PreAuthorize("hasAnyRole('ADMIN','USER')")
   @DeleteMapping
   public ResponseEntity<String> deleteUser(@RequestBody User user) {
     ResponseEntity<String> response;
@@ -70,7 +70,7 @@ public class UserController {
     return response;
   }
 
-  @PreAuthorize("hasAnyRole('ADMIN')")
+  @PreAuthorize("hasAnyRole('ADMIN','USER)")
   @PutMapping("{username}")
   public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody User user) {
     ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("A user with that name was not found");

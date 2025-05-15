@@ -7,10 +7,89 @@
 	},
 	"item": [
 		{
-			"name": "Post /api/source",
+			"name": "Admin register",
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newadmin\",\r\n    \"password\": \"password1234\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/authenticate/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"authenticate",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const json = pm.response.json();\r",
+							"pm.environment.set(\"jwt\", json.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newadmin\",\r\n    \"password\": \"password1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/authenticate/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"authenticate",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post /api/source",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"sourceName\" : \"Thon Hotel Ålesund\",\r\n    \"locationType\" : \"Suite\",\r\n    \"city\" : \"Ålesund\",\r\n    \"country\" : \"Norway\"\r\n}\r\n\r\n",
@@ -42,7 +121,13 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -72,7 +157,13 @@
 			"name": "Delete /api/source/1",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/source/1",
 					"protocol": "http",
@@ -93,7 +184,13 @@
 			"name": "Post /api/source/bulk",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "[\r\n    {\r\n        \"sourceName\" : \"Thon Hotel Ålesund\",\r\n        \"locationType\" : \"Suite\",\r\n        \"city\" : \"Ålesund\",\r\n        \"country\" : \"Norway\"\r\n\r\n    },\r\n\r\n    {\r\n        \"sourceName\" : \"Thon Hotel Oslo\",\r\n        \"locationType\" : \"2-bedroom\",\r\n        \"city\" : \"Oslo\",\r\n        \"country\" : \"Norway\"\r\n    }\r\n\r\n]",
@@ -123,7 +220,13 @@
 			"name": "Get /api/source",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/source",
 					"protocol": "http",
@@ -143,7 +246,13 @@
 			"name": "Delete /api/source",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/source",
 					"protocol": "http",

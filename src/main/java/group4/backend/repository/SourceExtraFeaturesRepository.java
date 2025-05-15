@@ -3,6 +3,7 @@ package group4.backend.repository;
 import group4.backend.entities.*;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface SourceExtraFeaturesRepository extends CrudRepository<SourceExtraFeatures, SourceExtraFeaturesId> {
