@@ -7,10 +7,89 @@
 	},
 	"item": [
 		{
-			"name": "Post /api/extra_features",
+			"name": "Admin register",
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newadmin\",\r\n    \"password\": \"password1234\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/authenticate/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"authenticate",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const json = pm.response.json();\r",
+							"pm.environment.set(\"jwt\", json.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newadmin\",\r\n    \"password\": \"password1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/authenticate/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"authenticate",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post /api/extra_features",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"feature\" : \"internet included.\"\r\n}",
@@ -39,7 +118,13 @@
 			"name": "Get /api/extra_features/internet included.",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/extra_features/internet included.",
 					"protocol": "http",
@@ -51,6 +136,13 @@
 						"api",
 						"extra_features",
 						"internet included."
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -60,7 +152,13 @@
 			"name": "Delete /api/extra_features/string",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/extra_features/internet included.",
 					"protocol": "http",
@@ -81,7 +179,13 @@
 			"name": "Post /api/extra_features/bulk",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "[\r\n    {\r\n        \"feature\" : \"double bed.\"\r\n    },\r\n\r\n    {\r\n        \"feature\" : \"king sized bed.\"\r\n    }\r\n\r\n]",
@@ -111,7 +215,13 @@
 			"name": "Get /api/extra_features",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/extra_features",
 					"protocol": "http",
@@ -131,7 +241,13 @@
 			"name": "Delete /api/extra_features",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/extra_features",
 					"protocol": "http",
