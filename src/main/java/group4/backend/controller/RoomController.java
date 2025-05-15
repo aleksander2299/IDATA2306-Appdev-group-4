@@ -3,6 +3,8 @@ package group4.backend.controller;
 import group4.backend.entities.Room;
 import group4.backend.entities.RoomProvider;
 import group4.backend.service.RoomService;
+import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,12 @@ import java.util.Optional;
 @RequestMapping("/api/rooms")
 public class RoomController {
 
+    private final RoomService roomService;
 
     @Autowired
-    RoomService roomService;
+    public RoomController(RoomService roomService) {
+        this.roomService = roomService;
+    }
 
 
     /**
@@ -67,6 +72,24 @@ public class RoomController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(rooms);
+    }
+
+    @GetMapping("/{roomId}/dates")
+    public ResponseEntity<List<LocalDate[]>> getOccupiedDates(@PathVariable Integer roomId) {
+        ResponseEntity<List<LocalDate[]>> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+        List<LocalDate[]> dates = null;
+        try {
+            dates = this.roomService.getOccupiedRoomDates(roomId);
+        } catch (IllegalArgumentException iAe) {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (NoSuchElementException iSeE) {
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        if (dates != null) {
+            response = ResponseEntity.status(HttpStatus.OK).body(dates);
+        }
+
+        return response;
     }
 
 

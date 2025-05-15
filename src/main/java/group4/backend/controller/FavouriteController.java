@@ -72,7 +72,7 @@ public class FavouriteController {
             response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
       if (favouriteRooms != null) {
-            response = ResponseEntity.status(HttpStatus.FOUND).body(favouriteRooms);
+            response = ResponseEntity.status(HttpStatus.OK).body(favouriteRooms);
         }
         return response;
     }

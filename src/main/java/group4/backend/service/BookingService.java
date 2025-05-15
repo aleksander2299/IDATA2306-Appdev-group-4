@@ -8,6 +8,7 @@ import group4.backend.entities.User;
 import group4.backend.repository.BookingRepository;
 import group4.backend.repository.UserRepository;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;

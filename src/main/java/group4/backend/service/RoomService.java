@@ -4,97 +4,128 @@ package group4.backend.service;
 import group4.backend.entities.Room;
 import group4.backend.entities.RoomProvider;
 import group4.backend.entities.Source;
+import group4.backend.repository.BookingRepository;
 import group4.backend.repository.RoomRepository;
 import group4.backend.repository.SourceRepository;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RoomService {
 
 
-    private RoomRepository roomRepository;
+  private final BookingRepository bookingRepository;
+  private final RoomRepository roomRepository;
+  private final SourceRepository sourceRepository;
 
-
-    @Autowired
-    private SourceRepository sourceRepository;
-
-    @Autowired
-    public RoomService(RoomRepository roomRepository) {
-        this.roomRepository = roomRepository;
-    }
-
-    public List<Room> getAllRooms() {
-            List<Room> rooms = new ArrayList<>();
-        roomRepository.findAll().forEach(room -> rooms.add((Room) room));
-        return rooms;
-    }
-
-  public List<RoomProvider> getRoomProviders(int id){
-        return roomRepository.findById(id).get().getRoomProviders();
+  @Autowired
+  public RoomService(BookingRepository bookingRepository, RoomRepository roomRepository,
+                     SourceRepository sourceRepository) {
+    this.bookingRepository = bookingRepository;
+    this.roomRepository = roomRepository;
+    this.sourceRepository = sourceRepository;
   }
-    public Optional<Room> getRoomById(int id) {
 
-        return roomRepository.findById(id);
+  public List<Room> getAllRooms() {
+    List<Room> rooms = new ArrayList<>();
+    roomRepository.findAll().forEach(rooms::add);
+    return rooms;
+  }
+
+  public List<RoomProvider> getRoomProviders(int id) {
+    return roomRepository.findById(id).get().getRoomProviders();
+  }
+
+  public Optional<Room> getRoomById(int id) {
+
+    return roomRepository.findById(id);
+  }
+
+  public List<LocalDate[]> getOccupiedRoomDates(Integer roomId) {
+    if (roomId == null) {
+      throw new IllegalArgumentException(
+          "A number id must be given to find occupied dates belonging to a room");
     }
 
-    public Room saveRoom(Room room) {
+    List<LocalDate[]> rows = bookingRepository.findRoomBookingDatesByRoomId(roomId);
 
-        if (room.getSource().getSourceId() != null) {
-            Optional<Source> sourceOptional = sourceRepository.findById(room.getSource().getSourceId());
-            if (sourceOptional.isEmpty()) {
-                throw new IllegalArgumentException("Source does not exist");
-            }
-            room.setSource(sourceOptional.get());
-        }
-        return roomRepository.save(room);
+    if (rows.isEmpty()) {
+      throw new NoSuchElementException("Room has no booked dates");
+    }
+    return rows;
+  }
+
+  public Room saveRoom(Room room) {
+
+    if (room.getSource().getSourceId() != null) {
+      Optional<Source> sourceOptional = sourceRepository.findById(room.getSource().getSourceId());
+      if (sourceOptional.isEmpty()) {
+        throw new IllegalArgumentException("Source does not exist");
+      }
+      room.setSource(sourceOptional.get());
+    }
+    return roomRepository.save(room);
+  }
+
+  public Room saveRoomWithSourceId(Integer sourceId, Room room) {
+
+    Optional<Source> source = this.sourceRepository.findById(sourceId);
+
+
+    source.ifPresentOrElse(room::setSource, () -> {
+      throw new NoSuchElementException();
+    });
+
+    return roomRepository.save(room);
+  }
+
+  public void deleteRoom(int id) {
+    roomRepository.deleteById(id);
+  }
+
+
+  public Room updateRoom(int roomId, String roomName, Integer sourceId, String description,
+                         Boolean visibility, String roomType, String imageUrl) {
+
+    Optional<Room> roomOptional = roomRepository.findById(roomId);
+    if (roomOptional.isEmpty()) {
+      throw new NullPointerException("room does not exist");
+    }
+    Room room = roomOptional.get();
+
+    if (sourceId != null) {
+      Optional<Source> sourceOptional = sourceRepository.findById(sourceId);
+      if (sourceOptional.isEmpty()) {
+        throw new IllegalArgumentException("Source does not exist");
+      }
+      room.setSource(sourceOptional.get());
     }
 
-    public Room saveRoomWithSourceId(Integer sourceId, Room room) {
-
-        Optional<Source> source = this.sourceRepository.findById(sourceId);
-
-
-        source.ifPresentOrElse(room::setSource, () -> {throw new NoSuchElementException();});
-
-        return roomRepository.save(room);
+    if (roomName != null) {
+      room.setRoomName(roomName);
+    }
+    if (description != null) {
+      room.setDescription(description);
+    }
+    if (visibility != null) {
+      room.setVisibility(visibility);
+    }
+    if (roomType != null) {
+      room.setRoomType(roomType);
+    }
+    if (imageUrl != null) {
+      room.setImageurl(imageUrl);
     }
 
-    public void deleteRoom(int id) {
-        roomRepository.deleteById(id);
-    }
-
-
-
-    public Room updateRoom(int roomId, String roomName, Integer sourceId, String description,
-                                  Boolean visibility, String roomType, String imageUrl) {
-
-        Optional<Room> roomOptional = roomRepository.findById(roomId);
-        if (roomOptional.isEmpty()) {
-            throw new NullPointerException("room does not exist");
-        }
-        Room room = roomOptional.get();
-
-        if (sourceId != null) {
-            Optional<Source> sourceOptional = sourceRepository.findById(sourceId);
-            if (sourceOptional.isEmpty()) {
-                throw new IllegalArgumentException("Source does not exist");
-            }
-            room.setSource(sourceOptional.get());
-        }
-
-        if (roomName != null) room.setRoomName(roomName);
-        if (description != null) room.setDescription(description);
-        if (visibility != null) room.setVisibility(visibility);
-        if (roomType != null) room.setRoomType(roomType);
-        if (imageUrl != null) room.setImageurl(imageUrl);
-
-        return roomRepository.save(room);
-    }
+    return roomRepository.save(room);
+  }
 
 }
