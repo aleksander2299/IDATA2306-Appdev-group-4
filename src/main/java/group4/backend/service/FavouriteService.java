@@ -1,6 +1,7 @@
 package group4.backend.service;
 
 
+import group4.backend.customExceptions.ExpectedDeletedEntityException;
 import group4.backend.entities.Favourite;
 import group4.backend.entities.Room;
 import group4.backend.entities.User;
@@ -67,7 +68,7 @@ public class FavouriteService {
         return favourites;
     }
 
-    public Iterable<Room> findAllByUsername(String username) {
+    public Iterable<Favourite> findAllByUsername(String username) {
         if (username == null) {
             throw new IllegalArgumentException("No username provided.");
         }
@@ -78,13 +79,11 @@ public class FavouriteService {
             throw new EntityNotFoundException("User not found with username: " + username);
         }
 
-        List<Favourite> userFavourites = favouriteRepository.findAllByUsername(user.get());
+        List<Favourite> userFavourites = favouriteRepository.findAllByUser(user.get());
         if (userFavourites.isEmpty()) {
             throw new NoSuchElementException("No Favourites found for user: " + username);
         }
-
-        List<Integer> roomIds = userFavourites.stream().map(f -> f.getRoomId().getRoomId()).toList();
-        return roomRepository.findAllById(roomIds);
+        return userFavourites;
     }
 
     /**
@@ -119,6 +118,9 @@ public class FavouriteService {
             throw new IllegalArgumentException("No Favourite ID provided.");
         }
         favouriteRepository.deleteById(id);
+        if (this.favouriteRepository.findById(id).isPresent()) {
+            throw new ExpectedDeletedEntityException("The favourite object meant to be deleted was found after repository deletion method");
+        }
     }
 
     /**

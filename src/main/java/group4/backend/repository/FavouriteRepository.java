@@ -38,5 +38,5 @@ public interface FavouriteRepository extends CrudRepository<Favourite, Integer> 
      * @param username
      * @return List of favourites
      */
-    List<Favourite> findAllByUsername(User username);
+    List<Favourite> findAllByUser(User username);
 }
