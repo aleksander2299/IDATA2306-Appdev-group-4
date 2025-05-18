@@ -132,4 +132,21 @@ public class FavouriteController {
         }
         return response;
     }
+
+    @PreAuthorize("hasAnyRole('USER')")
+    @DeleteMapping("/withIds")
+    public ResponseEntity<String> deleteFavouriteWithIds(@RequestBody FavouriteWithOnlyIds basicFavourite) {
+        ResponseEntity<String> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+        try {
+            favouriteService.deleteFavouriteWithOnlyIds(basicFavourite);
+            response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Deleted");
+        } catch (IllegalArgumentException iAe) {
+            logger.error(iAe.getMessage());
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (ExpectedDeletedEntityException eDeE) {
+            logger.error(eDeE.getMessage());
+            response = ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        }
+        return response;
+    }
 }

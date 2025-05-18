@@ -1,6 +1,7 @@
 package group4.backend.repository;
 
 import group4.backend.entities.Favourite;
+import group4.backend.entities.Room;
 import group4.backend.entities.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -39,4 +40,6 @@ public interface FavouriteRepository extends CrudRepository<Favourite, Integer> 
      * @return List of favourites
      */
     List<Favourite> findAllByUser(User username);
+
+    List<Favourite> findAllByUserAndRoom(User user, Room room);
 }
