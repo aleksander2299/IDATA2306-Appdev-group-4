@@ -1,6 +1,7 @@
 package group4.backend.controller;
 
 import group4.backend.customExceptions.ExpectedDeletedEntityException;
+import group4.backend.dtos.FavouriteWithOnlyIds;
 import group4.backend.entities.Room;
 import group4.backend.service.FavouriteService;
 import group4.backend.entities.Favourite;
@@ -87,6 +88,23 @@ public class FavouriteController {
     @PostMapping
     public Favourite createFavourite(@RequestBody Favourite favourite) {
         return favouriteService.saveFavourite(favourite);
+    }
+
+    @PostMapping("/withIds")
+    public ResponseEntity<Favourite> createFavouriteWithIds(@RequestBody FavouriteWithOnlyIds basicFavourite) {
+        ResponseEntity<Favourite> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+        Favourite favourite = null;
+        try {
+            favourite = this.favouriteService.saveFavouriteWithOnlyIds(basicFavourite);
+            response = ResponseEntity.status(HttpStatus.CREATED).body(favourite);
+        } catch (IllegalArgumentException iAe) {
+            logger.error(iAe.getMessage());
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (NoSuchElementException nSeE) {
+            logger.error(nSeE.getMessage());
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return response;
     }
 
     /**
