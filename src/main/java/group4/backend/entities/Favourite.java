@@ -16,11 +16,11 @@ public class Favourite {
 
         @ManyToOne
         @JoinColumn(name = "room_id", nullable = false, foreignKey = @ForeignKey(name = "user_id_fk"))
-        private Room roomId;
+        private Room room;
 
         @ManyToOne
         @JoinColumn(name = "username", nullable = false, foreignKey = @ForeignKey(name = "username"))
-        private User username;
+        private User user;
 
         /**
          * gets favourite
@@ -45,17 +45,17 @@ public class Favourite {
          *
          * @return the int room_id primary key
          */
-        public Room getRoomId() {
-            return roomId;
+        public Room getRoom() {
+            return room;
         }
 
         /**
          * sets room_id to new room_id
          *
-         * @param roomId the new roomId
+         * @param room the new roomId
          */
-        public void setRoomId(Room roomId) {
-            this.roomId = roomId;
+        public void setRoom(Room room) {
+            this.room = room;
         }
 
         /**
@@ -63,17 +63,17 @@ public class Favourite {
          *
          * @return the string username
          */
-        public User getUsername() {
-            return username;
+        public User getUser() {
+            return user;
         }
 
         /**
          * sets username to new username
          *
-         * @param username the new username
+         * @param user the new username
          */
-        public void setUsername(User username) {
-            this.username = username;
+        public void setUser(User user) {
+            this.user = user;
         }
     }
 

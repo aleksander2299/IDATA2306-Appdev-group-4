@@ -1,5 +1,6 @@
 package group4.backend.controller;
 
+import group4.backend.customExceptions.ExpectedDeletedEntityException;
 import group4.backend.entities.Room;
 import group4.backend.service.FavouriteService;
 import group4.backend.entities.Favourite;
@@ -59,9 +60,9 @@ public class FavouriteController {
      */
     @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/user/{username}")
-    public ResponseEntity<Iterable<Room>> getFavouriteRoomsByUsername(@PathVariable String username) {
-        ResponseEntity<Iterable<Room>> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
-        Iterable<Room> favouriteRooms = null;
+    public ResponseEntity<Iterable<Favourite>> getFavouriteRoomsByUsername(@PathVariable String username) {
+        ResponseEntity<Iterable<Favourite>> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+        Iterable<Favourite> favouriteRooms = null;
         try {
             favouriteRooms = favouriteService.findAllByUsername(username);
         } catch (IllegalArgumentException iAe){
@@ -93,7 +94,22 @@ public class FavouriteController {
      * @param id
      */
     @DeleteMapping("/{id}")
-    public void deleteFavouriteById(@PathVariable Integer id) {
-        favouriteService.deleteById(id);
+    public ResponseEntity<Integer> deleteFavouriteById(@PathVariable Integer id) {
+        ResponseEntity<Integer> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+        Integer idOfDeletedFavourite =  null;
+        try {
+            favouriteService.deleteById(id);
+            idOfDeletedFavourite = id;
+        } catch (IllegalArgumentException iAe) {
+            logger.error(iAe.getMessage());
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (ExpectedDeletedEntityException eDeE) {
+            logger.error(eDeE.getMessage());
+            response = ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        }
+        if (idOfDeletedFavourite != null) {
+            response = ResponseEntity.status(HttpStatus.NO_CONTENT).body(idOfDeletedFavourite);
+        }
+        return response;
     }
 }
