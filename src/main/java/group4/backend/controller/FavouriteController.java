@@ -90,6 +90,7 @@ public class FavouriteController {
         return favouriteService.saveFavourite(favourite);
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/withIds")
     public ResponseEntity<Favourite> createFavouriteWithIds(@RequestBody FavouriteWithOnlyIds basicFavourite) {
         ResponseEntity<Favourite> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
