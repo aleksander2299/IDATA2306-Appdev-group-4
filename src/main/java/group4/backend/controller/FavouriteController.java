@@ -93,7 +93,7 @@ public class FavouriteController {
     @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/withIds")
     public ResponseEntity<Favourite> createFavouriteWithIds(@RequestBody FavouriteWithOnlyIds basicFavourite) {
-        ResponseEntity<Favourite> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+        ResponseEntity<Favourite> response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         Favourite favourite = null;
         try {
             favourite = this.favouriteService.saveFavouriteWithOnlyIds(basicFavourite);
@@ -112,6 +112,7 @@ public class FavouriteController {
      * Delete a Favourite by ID
      * @param id
      */
+    @PreAuthorize("hasAnyRole('USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteFavouriteById(@PathVariable Integer id) {
         ResponseEntity<Integer> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
