@@ -65,6 +65,7 @@ public class UserService {
   public boolean updateUser(String nameOfUserToChange, User userToPut) {
     boolean updated = false;
     if (this.userRepository.findById(nameOfUserToChange).isPresent()) {
+      userToPut.setPassword(passwordEncoder.encode(userToPut.getPassword()));
       this.userRepository.deleteById(nameOfUserToChange);
       this.userRepository.save(userToPut);
       updated = true;
