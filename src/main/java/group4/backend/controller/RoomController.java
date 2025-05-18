@@ -90,7 +90,7 @@ public class RoomController {
             dates = this.roomService.getOccupiedRoomDates(roomId);
         } catch (IllegalArgumentException iAe) {
             response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } catch (NoSuchElementException iSeE) {
+        } catch (NoSuchElementException nSeE) {
             response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         if (dates != null) {
