@@ -55,17 +55,18 @@ public class RoomController {
      * @return Responseentity of room
      */
     @GetMapping("/{id}/roomProviders")
-    public ResponseEntity<List<RoomProvider>> getRoomProviders(@PathVariable("id") int id) {
-        List<RoomProvider> providers= roomService.getRoomById(id).get().getRoomProviders();
-        if (providers.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Iterable<RoomProvider>> getRoomProviders(@PathVariable("id") int id) {
+        ResponseEntity<Iterable<RoomProvider>> response = null;
+        try {
+            Iterable<RoomProvider> providers = roomService.getRoomProviders(id);
+            response = ResponseEntity.status(HttpStatus.OK).body(providers);
+        } catch (IllegalArgumentException iAe) {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (NoSuchElementException nSeE) {
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        if (providers == null || providers.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Optional: return 204 if no providers
-        }
-
-        return ResponseEntity.ok(providers);
+        return response;
     }
 
 

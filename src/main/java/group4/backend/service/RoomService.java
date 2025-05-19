@@ -5,6 +5,7 @@ import group4.backend.entities.Room;
 import group4.backend.entities.RoomProvider;
 import group4.backend.entities.Source;
 import group4.backend.repository.BookingRepository;
+import group4.backend.repository.RoomProviderRepository;
 import group4.backend.repository.RoomRepository;
 import group4.backend.repository.SourceRepository;
 import java.time.LocalDate;
@@ -24,13 +25,15 @@ public class RoomService {
 
   private final BookingRepository bookingRepository;
   private final RoomRepository roomRepository;
+  private final RoomProviderRepository roomProviderRepository;
   private final SourceRepository sourceRepository;
 
   @Autowired
   public RoomService(BookingRepository bookingRepository, RoomRepository roomRepository,
-                     SourceRepository sourceRepository) {
+                     RoomProviderRepository roomProviderRepository, SourceRepository sourceRepository) {
     this.bookingRepository = bookingRepository;
     this.roomRepository = roomRepository;
+    this.roomProviderRepository = roomProviderRepository;
     this.sourceRepository = sourceRepository;
   }
 
@@ -40,8 +43,18 @@ public class RoomService {
     return rooms;
   }
 
-  public List<RoomProvider> getRoomProviders(int id) {
-    return roomRepository.findById(id).get().getRoomProviders();
+  public Iterable<RoomProvider> getRoomProviders(int id) {
+    Optional<Room> room = this.roomRepository.findById(id);
+    Iterable<RoomProvider> roomProviders = null;
+    if (room.isPresent()) {
+      roomProviders = this.roomProviderRepository.findByRoom(room.get());
+    } else {
+      throw new IllegalArgumentException("Id does not belong to any saved rooms");
+    }
+    if (!roomProviders.iterator().hasNext()) {
+      throw new NoSuchElementException("There are no room provider for the given room");
+    }
+    return roomProviders;
   }
 
   public Optional<Room> getRoomById(int id) {
