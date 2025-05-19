@@ -26,7 +26,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 /**
- * Restcontroller for rooms, can add and remove rooms.
+ * The RoomController is a REST controller responsible for handling
+ * HTTP requests related to Room entities. This includes functionality for
+ * retrieving, creating, updating, and deleting rooms. It communicates with
+ * the {@link RoomService} to perform underlying operations.
+ * NOTE: Java documentation was generated with help from ai to make sure it follows java documentation guidelines.
  */
 @RestController
 @RequestMapping("/api/rooms")
@@ -51,7 +55,13 @@ public class RoomController {
         return roomOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
+    /**
+     * Retrieves the source associated with a specific room identified by its ID.
+     *
+     * @param id the ID of the room whose source is to be fetched
+     * @return a ResponseEntity containing the Source object if found, or
+     *         a 404 NOT FOUND response if the source is not available
+     */
     @GetMapping("/{id}/source")
     public ResponseEntity<Source> getSource(@PathVariable("id") int id){
         Optional<Source> source = Optional.ofNullable(roomService.getRoomById(id).get().getSource());
@@ -92,6 +102,16 @@ public class RoomController {
         return ResponseEntity.ok(rooms);
     }
 
+    /**
+     * Retrieves the occupied date ranges for a room identified by its ID.
+     *
+     * @param roomId The ID of the room whose occupied dates are to be fetched.
+     * @return A ResponseEntity containing a list of date ranges,
+     *         where each date range is represented by an array of two LocalDate objects indicating
+     *         the start and end dates (inclusive). Returns a 200 OK response with the list,
+     *         400 BAD REQUEST if the roomId is invalid, 404 NOT FOUND if no such room exists,
+     *         or other HTTP status codes as required.
+     */
     @GetMapping("/{roomId}/dates")
     public ResponseEntity<List<LocalDate[]>> getOccupiedDates(@PathVariable Integer roomId) {
         ResponseEntity<List<LocalDate[]>> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
@@ -131,7 +151,7 @@ public class RoomController {
     }
 
     /**
-     *method for posting list of room to database
+     * method for posting list of room to database
      * @param rooms the list of rooms to post
      * @return responsentity if it worked or not.
      */
@@ -236,8 +256,16 @@ public class RoomController {
         return ResponseEntity.ok().build();
     }
 
-
-
+    /**
+     * Updates the details of an existing room identified by its ID.
+     *
+     * @param roomId The ID of the room to be updated.
+     * @param room   The room object containing updated information such as
+     *               room name, source ID, description, visibility, room type,
+     *               and image URL.
+     * @return A ResponseEntity containing the updated Room object with a status
+     *         of 200 OK upon successful update.
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Room> updateRoom(@PathVariable("id") int roomId,@RequestBody Room room){
