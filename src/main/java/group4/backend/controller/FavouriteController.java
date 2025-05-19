@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Controller class for handling Favourite endpoints.
+ * This controller handles operations related to "Favourite" entities.
+ * It provides endpoints for retrieving, creating, and deleting Favourites.
+ * NOTE: Java documentation was generated with help from ai to make sure it follows java documentation guidelines.
  */
 @RestController
 @RequestMapping("/api/favourite")
@@ -34,9 +36,9 @@ public class FavouriteController {
     }
 
     /**
-     * Find all Favourites
+     * Retrieves all Favourite entities from the database.
      *
-     * @return an iterable of favourites.
+     * @return an Iterable containing all Favourite entities
      */
     @GetMapping
     public Iterable<Favourite> getAllFavourites() {
@@ -44,10 +46,10 @@ public class FavouriteController {
     }
 
     /**
-     * Find a Favourite by ID
+     * Retrieves a Favourite entity by its ID.
      *
-     * @param id
-     * @return
+     * @param id the ID of the Favourite to be retrieved
+     * @return an Optional containing the Favourite entity if found, or an empty Optional if no entity is found
      */
     @GetMapping("/{id}")
     public Optional<Favourite> getFavouriteById(@PathVariable Integer id) {
@@ -55,9 +57,12 @@ public class FavouriteController {
     }
 
     /**
-     * Find all favourites by username
-     * @param username
-     * @return
+     * Retrieves the list of favourite rooms associated with a specific username.
+     * Handles potential exceptions for invalid input, entity not found, or server errors.
+     *
+     * @param username the username of the user whose favourite rooms are to be retrieved
+     * @return a ResponseEntity containing an Iterable of Favourite entities if found,
+     *         or an appropriate HTTP status in case of errors
      */
     @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/user/{username}")
@@ -81,15 +86,24 @@ public class FavouriteController {
 
 
     /**
-     * Create a new Favourite
-     * @param favourite
-     * @return
+     * Creates a new Favourite entity.
+     *
+     * @param favourite the Favourite entity to be created
+     * @return the created Favourite entity
      */
     @PostMapping
     public Favourite createFavourite(@RequestBody Favourite favourite) {
         return favouriteService.saveFavourite(favourite);
     }
 
+    /**
+     * Creates a new Favourite entity based on provided IDs.
+     * Handles exceptions related to invalid input or missing required entities.
+     *
+     * @param basicFavourite the DTO containing only IDs required to create a Favourite entity
+     * @return a ResponseEntity containing the created Favourite entity with HTTP status CREATED upon success,
+     *         BAD_REQUEST in case of invalid input, NOT_FOUND if an entity is missing, or INTERNAL_SERVER_ERROR for other errors
+     */
     @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/withIds")
     public ResponseEntity<Favourite> createFavouriteWithIds(@RequestBody FavouriteWithOnlyIds basicFavourite) {
@@ -109,8 +123,13 @@ public class FavouriteController {
     }
 
     /**
-     * Delete a Favourite by ID
-     * @param id
+     * Deletes a Favourite entity by its ID.
+     * Handles exceptions related to invalid input or expected issues during the deletion process.
+     *
+     * @param id the ID of the Favourite entity to be deleted
+     * @return a ResponseEntity containing the ID of the deleted Favourite entity with HTTP status NO_CONTENT upon success,
+     *         BAD_REQUEST if the input is invalid, EXPECTATION_FAILED for expected issues during deletion,
+     *         or other appropriate HTTP status codes in case of errors
      */
     @PreAuthorize("hasAnyRole('USER')")
     @DeleteMapping("/{id}")
@@ -133,6 +152,15 @@ public class FavouriteController {
         return response;
     }
 
+    /**
+     * Deletes a Favourite entity based on the given IDs.
+     * Handles exceptions related to invalid input or expected issues during the deletion process.
+     *
+     * @param basicFavourite the DTO containing only the IDs required to delete a Favourite entity
+     * @return a ResponseEntity containing a confirmation message "Deleted" with HTTP status NO_CONTENT upon success,
+     *         BAD_REQUEST if the input is invalid, EXPECTATION_FAILED for expected issues during deletion,
+     *         or other appropriate HTTP status codes in case of errors
+     */
     @PreAuthorize("hasAnyRole('USER')")
     @DeleteMapping("/withIds")
     public ResponseEntity<String> deleteFavouriteWithIds(@RequestBody FavouriteWithOnlyIds basicFavourite) {
