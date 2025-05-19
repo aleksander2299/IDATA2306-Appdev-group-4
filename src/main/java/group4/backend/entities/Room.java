@@ -29,9 +29,7 @@ public class Room {
 
 
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "room")
-    private List<RoomProvider> roomProviders;
+
 
     @Column(name = "room_name", nullable = false)
     private String roomName;
@@ -157,7 +155,4 @@ public class Room {
         return this.imageurl;
     }
 
-    public List<RoomProvider> getRoomProviders() {
-        return this.roomProviders;
-    }
 }

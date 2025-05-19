@@ -4,6 +4,7 @@ package group4.backend.service;
 import group4.backend.entities.Provider;
 import group4.backend.entities.RoomProvider;
 import group4.backend.repository.ProviderRepository;
+import group4.backend.repository.RoomProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class ProviderService {
     @Autowired
     private ProviderRepository providerRepository;
 
+    @Autowired
+    private RoomProviderRepository roomProviderRepository;
+
 
 
     public List<Provider> getAllProviders() {
@@ -25,14 +29,22 @@ public class ProviderService {
         return providers;
     }
 
-    public List<RoomProvider> getRoomProviders(int id) {
-        return providerRepository.findById(id).get().getRoomProviders();
+    public Iterable<RoomProvider> getRoomProviders(String name) {
+        Optional<Provider> providerOptional = this.providerRepository.findByProviderName(name);
+        Iterable<RoomProvider> roomProviders = null;
+        if(providerOptional.isPresent()){
+            roomProviders = this.roomProviderRepository.findByProvider(providerOptional.get());
+        }
+        else{
+            throw new IllegalArgumentException("no roomprovider found");
+        }
+        return roomProviders;
     }
     public Optional<Provider> getProviderById(int id) {
         return providerRepository.findById(id);
     }
 
-    public Optional<Provider> getProvicerByName(String name)
+    public Optional<Provider> getProviderByName(String name)
     {
         return providerRepository.findByProviderName(name);
     }

@@ -59,7 +59,7 @@ public class ProviderController {
     @PreAuthorize("hasAnyRole('PROVIDER')")
     @GetMapping("/{provider_name}/roomProviders")
     public ResponseEntity<List<RoomProvider>> getRoomProviders(@PathVariable("provider_name") String providerName) {
-        List<RoomProvider> rooms= providerService.getProvicerByName(providerName).get().getRoomProviders();
+        List<RoomProvider> rooms= providerService.getProviderByName(providerName).get().getRoomProviders();
         if (rooms.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
