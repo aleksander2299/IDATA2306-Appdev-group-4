@@ -104,6 +104,21 @@ public class RoomService {
     roomRepository.deleteById(id);
   }
 
+  public void updateRoomImageUrl(Integer roomId, String url) {
+    Room room = this.roomRepository.findById(roomId)
+        .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+    room.setImageurl(url);
+    this.roomRepository.save(room);
+  }
+
+
+  public void clearImageUrl(int roomId) {
+    Room room = this.roomRepository.findById(roomId)
+        .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+    room.setImageurl("");
+    roomRepository.save(room);
+  }
+
 
   public Room updateRoom(int roomId, String roomName, Integer sourceId, String description,
                          Boolean visibility, String roomType, String imageUrl) {

@@ -182,7 +182,7 @@ public class RoomController {
 
         try(InputStream input = file.getInputStream()) {
             Files.copy(input, uploadPath, StandardCopyOption.REPLACE_EXISTING);
-            this.roomService.updateRoom(roomId, null, null, null, null, null, "/images/" + filename);
+            this.roomService.updateRoomImageUrl(roomId, "/images/" + filename);
             response = ResponseEntity.status(HttpStatus.CREATED).body(filename);
         } catch (IOException ioE) {
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -211,7 +211,7 @@ public class RoomController {
         Optional<Room> room = this.roomService.getRoomById(roomId);
         if (room.isPresent()) {
             String filename = room.get().getImageUrl().replaceFirst("/images/", "");
-            this.roomService.updateRoom(roomId, null, null, null, null, null, "");
+            this.roomService.clearImageUrl(roomId);
             Path path = Paths.get("C:/webAttempt/epicProject/uploads", filename);
             try {
                 Files.deleteIfExists(path);
