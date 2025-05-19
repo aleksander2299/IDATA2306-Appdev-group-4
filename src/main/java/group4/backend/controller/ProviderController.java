@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Restcontroller for provider table.
+ * The ProviderController class handles HTTP requests related to operations on providers.
+ * This includes retrieving, creating, updating, and deleting providers or their associated data.
+ * It provides REST endpoints for interacting with the Provider entity.
+ * NOTE: Java documentation was generated with help from ai to make sure it follows java documentation guidelines.
  */
 @RestController
 @RequestMapping("/api/providers")
@@ -111,7 +114,13 @@ public class ProviderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(providers);
     }
 
-
+    /**
+     * Deletes a provider with the specified ID if it exists.
+     *
+     * @param id the ID of the provider to be deleted
+     * @return ResponseEntity with status 200 if the provider was successfully deleted,
+     *         204 if no provider with the specified ID is found
+     */
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProvider(@PathVariable("id") int id) {
