@@ -27,4 +27,6 @@ public interface ProviderRepository extends CrudRepository<Provider,Integer> {
     @Override
     void deleteAllById(Iterable iterable);
 
+
+    Optional<Provider> findByProviderName(String name);
 }

@@ -29,7 +29,6 @@ public class RoomProviderController {
     public ResponseEntity<RoomProvider> findById(@PathVariable("id") int id){
         Optional<RoomProvider> roomProvider = roomProviderService.findById(id);
         return roomProvider.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-
     }
 
 

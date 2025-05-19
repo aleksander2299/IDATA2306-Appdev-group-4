@@ -59,4 +59,8 @@ public class Provider {
     public void setProviderName(String providerName) {
         this.providerName = providerName;
     }
+
+    public List<RoomProvider> getRoomProviders() {
+        return this.roomProviders;
+    }
 }

@@ -2,6 +2,7 @@ package group4.backend.controller;
 
 import group4.backend.entities.Provider;
 import group4.backend.entities.Room;
+import group4.backend.entities.RoomProvider;
 import group4.backend.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,27 @@ public class ProviderController {
         return ResponseEntity.ok(providerList);
     }
 
+    /**
+     * gets the roomProviders for a provider
+     * @param providerName the name of the provider to get the rooms from
+     * @return Responseentity of room
+     */
+    @PreAuthorize("hasAnyRole('PROVIDER')")
+    @GetMapping("/{provider_name}/roomProviders")
+    public ResponseEntity<List<RoomProvider>> getRoomProviders(@PathVariable("provider_name") String providerName) {
+        List<RoomProvider> rooms= providerService.getProvicerByName(providerName).get().getRoomProviders();
+        if (rooms.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (rooms == null || rooms.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Optional: return 204 if no rooms
+        }
+
+        return ResponseEntity.ok(rooms);
+    }
+
+
 
     /**
      * gets provider at /api/providers/id
@@ -48,6 +70,8 @@ public class ProviderController {
         return providerOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
     }
+
+
 
 
     /**

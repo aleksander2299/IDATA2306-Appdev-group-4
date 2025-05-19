@@ -50,8 +50,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/rooms/**").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/source_extra_features/**").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/source/**").permitAll())
+                .authorizeHttpRequests((auth) -> auth.requestMatchers(HttpMethod.POST, "/api/providers").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/extra_features/**").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/user/**").permitAll())
+                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/providers").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(HttpMethod.OPTIONS).permitAll())
                 .authorizeHttpRequests((auth) -> auth.anyRequest().authenticated())
                 .sessionManagement((session) ->
