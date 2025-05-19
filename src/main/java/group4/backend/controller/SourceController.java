@@ -12,6 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * SourceController is a REST controller that handles HTTP requests associated with
+ * the Source entity. This includes retrieving, creating, updating, and deleting
+ * Source objects in the application. The operations are exposed under the
+ * "/api/source" base path.
+ *
+ * It leverages SourceService to interact with the data layer for Source entities
+ * and provides role-based access control for specific endpoints.
+ * NOTE: Java documentation was generated with help from ai to make sure it follows java documentation guidelines.
+ */
 @RestController
 @RequestMapping("/api/source")
 public class SourceController {
@@ -19,12 +29,24 @@ public class SourceController {
     @Autowired
     SourceService sourceService;
 
+    /**
+     * Retrieves a Source entity based on its unique ID.
+     *
+     * @param id the unique identifier of the Source to be retrieved
+     * @return a ResponseEntity containing the Source if found, or a 404 Not Found response if the Source does not exist
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Source> getSource(@PathVariable("id") int id) {
         Optional<Source> sourceOptional = sourceService.getSourceById(id);
         return sourceOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * Retrieves all Source entities from the database.
+     *
+     * @return a ResponseEntity containing a list of all Source objects if present;
+     *         a 204 No Content response if no sources are found.
+     */
     @GetMapping()
     public ResponseEntity<List<Source>> getAllSources(){
         List<Source> sources = sourceService.getAllSources();
@@ -34,6 +56,13 @@ public class SourceController {
         return ResponseEntity.ok(sources);
     }
 
+    /**
+     * Creates a new Source entity and saves it to the database.
+     * Requires ADMIN role for access.
+     *
+     * @param source the Source entity to be created
+     * @return a ResponseEntity containing the created Source entity with a 201 Created status code
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<Source> createSource(@RequestBody Source source) {
