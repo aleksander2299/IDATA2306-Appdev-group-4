@@ -3,12 +3,12 @@ package group4.backend.dtos;
 import group4.backend.entities.Room;
 import group4.backend.entities.RoomProvider;
 
-public class RoomWithRoomProviderDTO {
+public class SingleRoomWithMultipleRoomProviderDTO {
 
   private Room room;
   private RoomProvider roomProvider;
 
-  public RoomWithRoomProviderDTO(Room room, RoomProvider roomProvider) {
+  public SingleRoomWithMultipleRoomProviderDTO(Room room, RoomProvider roomProvider) {
     this.room = room;
     this.roomProvider = roomProvider;
   }

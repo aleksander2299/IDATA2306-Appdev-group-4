@@ -40,6 +40,6 @@ public interface RoomProviderRepository extends CrudRepository<RoomProvider,Inte
     Optional<RoomProvider> findByRoomAndProvider(Room room, Provider provider);
 
     Iterable<RoomProvider> findByProvider(Provider provider);
-
+    Iterable<RoomProvider> findByRoom(Room room);
 
 }
