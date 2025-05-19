@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The BookingController class is a REST controller for handling API requests related to booking operations,
  * such as retrieving, creating, updating, and deleting bookings. It communicates with the BookingService
  * for the business logic.
- * NOTE: Java documentation was generated with help from ai to make sure it follows guidelines.
+ * NOTE: Java documentation was generated with help from ai to make sure it follows java documentation guidelines.
  */
 @RestController
 @RequestMapping("/api/booking")
