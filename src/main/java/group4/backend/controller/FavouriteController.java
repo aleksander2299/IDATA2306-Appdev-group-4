@@ -1,6 +1,7 @@
 package group4.backend.controller;
 
 import group4.backend.customExceptions.ExpectedDeletedEntityException;
+import group4.backend.dtos.FavouriteWithOnlyIds;
 import group4.backend.entities.Room;
 import group4.backend.service.FavouriteService;
 import group4.backend.entities.Favourite;
@@ -89,10 +90,29 @@ public class FavouriteController {
         return favouriteService.saveFavourite(favourite);
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
+    @PostMapping("/withIds")
+    public ResponseEntity<Favourite> createFavouriteWithIds(@RequestBody FavouriteWithOnlyIds basicFavourite) {
+        ResponseEntity<Favourite> response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        Favourite favourite = null;
+        try {
+            favourite = this.favouriteService.saveFavouriteWithOnlyIds(basicFavourite);
+            response = ResponseEntity.status(HttpStatus.CREATED).body(favourite);
+        } catch (IllegalArgumentException iAe) {
+            logger.error(iAe.getMessage());
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (NoSuchElementException nSeE) {
+            logger.error(nSeE.getMessage());
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return response;
+    }
+
     /**
      * Delete a Favourite by ID
      * @param id
      */
+    @PreAuthorize("hasAnyRole('USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteFavouriteById(@PathVariable Integer id) {
         ResponseEntity<Integer> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
@@ -109,6 +129,23 @@ public class FavouriteController {
         }
         if (idOfDeletedFavourite != null) {
             response = ResponseEntity.status(HttpStatus.NO_CONTENT).body(idOfDeletedFavourite);
+        }
+        return response;
+    }
+
+    @PreAuthorize("hasAnyRole('USER')")
+    @DeleteMapping("/withIds")
+    public ResponseEntity<String> deleteFavouriteWithIds(@RequestBody FavouriteWithOnlyIds basicFavourite) {
+        ResponseEntity<String> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+        try {
+            favouriteService.deleteFavouriteWithOnlyIds(basicFavourite);
+            response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Deleted");
+        } catch (IllegalArgumentException iAe) {
+            logger.error(iAe.getMessage());
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (ExpectedDeletedEntityException eDeE) {
+            logger.error(eDeE.getMessage());
+            response = ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return response;
     }

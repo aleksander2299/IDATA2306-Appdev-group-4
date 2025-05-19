@@ -2,6 +2,7 @@ package group4.backend.service;
 
 
 import group4.backend.customExceptions.ExpectedDeletedEntityException;
+import group4.backend.dtos.FavouriteWithOnlyIds;
 import group4.backend.entities.Favourite;
 import group4.backend.entities.Room;
 import group4.backend.entities.User;
@@ -86,6 +87,30 @@ public class FavouriteService {
         return userFavourites;
     }
 
+    public Favourite saveFavouriteWithOnlyIds(FavouriteWithOnlyIds basicFavourite) {
+        if (basicFavourite == null) {
+            throw new IllegalArgumentException("Null was passed as favourite DTO when trying to post favourite");
+        }
+        if (basicFavourite.getRoomId() == null) {
+            throw new IllegalArgumentException("DTO has room id: null");
+        }
+        if (basicFavourite.getUsername().isBlank()) {
+            throw new IllegalArgumentException("DTO has username: null or blank");
+        }
+        Optional<Room> room = this.roomRepository.findById(basicFavourite.getRoomId());
+        if (room.isEmpty()) {
+            throw new NoSuchElementException("Passed room id was not found in database");
+        }
+        Optional<User> user = this.userRepository.findByUsername(basicFavourite.getUsername());
+        if (user.isEmpty()) {
+            throw new NoSuchElementException("Passed username was not found in database");
+        }
+        Favourite favourite = new Favourite(basicFavourite.getFavouriteId(), room.get(), user.get());
+        this.favouriteRepository.save(favourite);
+
+        return favourite;
+    }
+
     /**
      * Save/Create a Favourite.
      * @param favourite
@@ -120,6 +145,38 @@ public class FavouriteService {
         favouriteRepository.deleteById(id);
         if (this.favouriteRepository.findById(id).isPresent()) {
             throw new ExpectedDeletedEntityException("The favourite object meant to be deleted was found after repository deletion method");
+        }
+    }
+
+    public void deleteFavouriteWithOnlyIds(FavouriteWithOnlyIds basicFavourite) {
+        if (basicFavourite == null) {
+            throw new IllegalArgumentException("Null was passed as favourite DTO when trying to post favourite");
+        }
+        if (basicFavourite.getRoomId() == null) {
+            throw new IllegalArgumentException("DTO has room id: null");
+        }
+        if (basicFavourite.getUsername().isBlank()) {
+            throw new IllegalArgumentException("DTO has username: null or blank");
+        }
+        Optional<Room> room = this.roomRepository.findById(basicFavourite.getRoomId());
+        if (room.isEmpty()) {
+            throw new NoSuchElementException("Passed room id was not found in database");
+        }
+        Optional<User> user = this.userRepository.findByUsername(basicFavourite.getUsername());
+        if (user.isEmpty()) {
+            throw new NoSuchElementException("Passed username was not found in database");
+        }
+
+
+        List<Favourite> favourites = this.favouriteRepository.findAllByUserAndRoom(user.get(), room.get());
+        if (favourites.isEmpty()) {
+            throw new NoSuchElementException("Found no favourites of that room with that user");
+        }
+        for (Favourite favourite : favourites) {
+            this.favouriteRepository.delete(favourite);
+        }
+        if (!this.favouriteRepository.findAllByUserAndRoom(user.get(), room.get()).isEmpty()) {
+            throw new ExpectedDeletedEntityException("Supposedly deleted favourite is found after deletion");
         }
     }
 
