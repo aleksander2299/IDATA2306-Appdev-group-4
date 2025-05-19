@@ -37,6 +37,20 @@ public class ProviderController {
         return ResponseEntity.ok(providerList);
     }
 
+    @GetMapping("/withId/{numericId}/roomProviders`)")
+    public ResponseEntity<List<RoomProvider>> getRoomProvidersId(@PathVariable("numericId") int numericId) {
+        List<RoomProvider> rooms= providerService.getRoomProviders(numericId);
+        if (rooms.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (rooms == null || rooms.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Optional: return 204 if no rooms
+        }
+
+        return ResponseEntity.ok(rooms);
+    }
+
     /**
      * gets the roomProviders for a provider
      * @param providerName the name of the provider to get the rooms from
