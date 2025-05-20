@@ -20,7 +20,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service class for handling Favourite entity operations.
+ * Service class for managing Favourite entity operations in the application.
+ * Provides methods for creating, reading, updating, and deleting favourites,
+ * as well as managing relationships between users and their favourite rooms.
+ *
+ * NOTE: Java documentation was generated with help from AI to ensure it follows
+ * Java documentation guidelines.
  */
 @Service
 public class FavouriteService {
@@ -29,6 +34,13 @@ public class FavouriteService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
 
+    /**
+     * Constructs a new FavouriteService with required repositories.
+     *
+     * @param favouriteRepository Repository for Favourite entity operations
+     * @param userRepository      Repository for User entity operations
+     * @param roomRepository      Repository for Room entity operations
+     */
     @Autowired
     public FavouriteService(FavouriteRepository favouriteRepository, UserRepository userRepository, RoomRepository roomRepository) {
         this.favouriteRepository = favouriteRepository;
@@ -50,7 +62,14 @@ public class FavouriteService {
         return favourites;
     }
 
-    // Example: find a Favourite by ID
+
+    /**
+     * Retrieves a Favourite by its ID.
+     *
+     * @param id The ID of the Favourite to retrieve
+     * @return An Optional containing the found Favourite, or empty if not found
+     * @throws IllegalArgumentException if the provided ID is null
+     */
     public Optional<Favourite> findById(Integer id) {
         if (id == null) {
             throw new IllegalArgumentException("No Favourite ID provided.");
@@ -58,7 +77,15 @@ public class FavouriteService {
         return favouriteRepository.findById(id);
     }
 
-    // Example: find all Favourites by a list of IDs
+
+
+    /**
+     * Retrieves all Favourites matching the provided IDs.
+     *
+     * @param ids Collection of Favourite IDs to retrieve
+     * @return List of found Favourites
+     * @throws EmptyResultDataAccessException if no Favourites are found for the given IDs
+     */
     public List<Favourite> findAllById(Iterable<Integer> ids) {
         List<Favourite> favourites = new ArrayList<>();
         favouriteRepository.findAllById(ids).forEach(favourites::add);
@@ -69,6 +96,15 @@ public class FavouriteService {
         return favourites;
     }
 
+    /**
+     * Retrieves all Favourites associated with a specific username.
+     *
+     * @param username The username whose favourites are to be retrieved
+     * @return Iterable collection of Favourites belonging to the user
+     * @throws IllegalArgumentException if the username is null
+     * @throws EntityNotFoundException  if the user is not found
+     * @throws NoSuchElementException   if no favourites are found for the user
+     */
     public Iterable<Favourite> findAllByUsername(String username) {
         if (username == null) {
             throw new IllegalArgumentException("No username provided.");
@@ -87,6 +123,16 @@ public class FavouriteService {
         return userFavourites;
     }
 
+    /**
+     * Creates a new Favourite using only IDs from a DTO object.
+     * This method validates the input, retrieves the associated User and Room entities,
+     * and creates a new Favourite entity.
+     *
+     * @param basicFavourite DTO containing the favourite's ID, room ID, and username
+     * @return The saved Favourite entity
+     * @throws IllegalArgumentException if the DTO is null or contains invalid data
+     * @throws NoSuchElementException   if the referenced room or user is not found
+     */
     public Favourite saveFavouriteWithOnlyIds(FavouriteWithOnlyIds basicFavourite) {
         if (basicFavourite == null) {
             throw new IllegalArgumentException("Null was passed as favourite DTO when trying to post favourite");
