@@ -154,6 +154,9 @@ public class RoomProviderService {
         Optional<RoomProvider> roomProvider = Optional.empty();
 
         if (room.isPresent() && provider.isPresent()) {
+            if (this.roomProviderRepository.findByRoomAndProvider(room.get(), provider.get()).isPresent()) {
+                throw new IllegalStateException("That room provider already exist");
+            }
             roomProviderRepository.save(new RoomProvider(null, provider.get(), room.get(), roomPrice));
             roomProvider = this.roomProviderRepository.findByRoomAndProvider(room.get(), provider.get());
         }
