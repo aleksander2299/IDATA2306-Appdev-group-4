@@ -19,6 +19,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class responsible for managing room-related operations including CRUD operations,
+ * room provider management, and room availability checks.
+ * NOTE: Java documentation was generated with help from AI to make sure it follows Java documentation guidelines.
+ */
 @Service
 public class RoomService {
 
@@ -28,6 +33,14 @@ public class RoomService {
   private final RoomProviderRepository roomProviderRepository;
   private final SourceRepository sourceRepository;
 
+  /**
+   * Constructs a RoomService with required repositories.
+   *
+   * @param bookingRepository      Repository for managing booking operations
+   * @param roomRepository         Repository for managing room operations
+   * @param roomProviderRepository Repository for managing room provider operations
+   * @param sourceRepository       Repository for managing source operations
+   */
   @Autowired
   public RoomService(BookingRepository bookingRepository, RoomRepository roomRepository,
                      RoomProviderRepository roomProviderRepository, SourceRepository sourceRepository) {
@@ -37,12 +50,25 @@ public class RoomService {
     this.sourceRepository = sourceRepository;
   }
 
+  /**
+   * Retrieves all rooms from the database.
+   *
+   * @return A list containing all available rooms
+   */
   public List<Room> getAllRooms() {
     List<Room> rooms = new ArrayList<>();
     roomRepository.findAll().forEach(rooms::add);
     return rooms;
   }
 
+  /**
+   * Retrieves all room providers associated with a specific room.
+   *
+   * @param id The ID of the room
+   * @return An Iterable of RoomProvider objects associated with the room
+   * @throws IllegalArgumentException if the room ID doesn't exist
+   * @throws NoSuchElementException   if no providers are found for the room
+   */
   public Iterable<RoomProvider> getRoomProviders(int id) {
     Optional<Room> room = this.roomRepository.findById(id);
     Iterable<RoomProvider> roomProviders = null;
@@ -57,11 +83,25 @@ public class RoomService {
     return roomProviders;
   }
 
+  /**
+   * Retrieves a room by its ID.
+   *
+   * @param id The ID of the room to retrieve
+   * @return An Optional containing the room if found, empty otherwise
+   */
   public Optional<Room> getRoomById(int id) {
 
     return roomRepository.findById(id);
   }
 
+  /**
+   * Retrieves the occupied dates for a specific room.
+   *
+   * @param roomId The ID of the room to check
+   * @return A list of date ranges (start and end dates) when the room is occupied
+   * @throws IllegalArgumentException if roomId is null
+   * @throws NoSuchElementException   if the room has no bookings
+   */
   public List<LocalDate[]> getOccupiedRoomDates(Integer roomId) {
     if (roomId == null) {
       throw new IllegalArgumentException(
@@ -76,6 +116,13 @@ public class RoomService {
     return rows;
   }
 
+  /**
+   * Saves a new room or updates an existing one.
+   *
+   * @param room The room entity to save
+   * @return The saved room entity
+   * @throws IllegalArgumentException if the specified source doesn't exist
+   */
   public Room saveRoom(Room room) {
 
     if (room.getSource().getSourceId() != null) {
@@ -88,6 +135,14 @@ public class RoomService {
     return roomRepository.save(room);
   }
 
+  /**
+   * Saves a room with a specific source ID.
+   *
+   * @param sourceId The ID of the source to associate with the room
+   * @param room     The room entity to save
+   * @return The saved room entity
+   * @throws NoSuchElementException if the source ID doesn't exist
+   */
   public Room saveRoomWithSourceId(Integer sourceId, Room room) {
 
     Optional<Source> source = this.sourceRepository.findById(sourceId);
@@ -100,6 +155,11 @@ public class RoomService {
     return roomRepository.save(room);
   }
 
+  /**
+   * Deletes a room by its ID.
+   *
+   * @param id The ID of the room to delete
+   */
   public void deleteRoom(int id) {
     roomRepository.deleteById(id);
   }
@@ -120,6 +180,20 @@ public class RoomService {
   }
 
 
+  /**
+   * Updates an existing room's properties.
+   *
+   * @param roomId      The ID of the room to update
+   * @param roomName    The new name for the room (optional)
+   * @param sourceId    The new source ID for the room (optional)
+   * @param description The new description for the room (optional)
+   * @param visibility  The new visibility status for the room (optional)
+   * @param roomType    The new room type (optional)
+   * @param imageUrl    The new image URL for the room (optional)
+   * @return The updated room entity
+   * @throws NullPointerException     if the room doesn't exist
+   * @throws IllegalArgumentException if the specified source doesn't exist
+   */
   public Room updateRoom(int roomId, String roomName, Integer sourceId, String description,
                          Boolean visibility, String roomType, String imageUrl) {
 
