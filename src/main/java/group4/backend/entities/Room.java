@@ -38,7 +38,7 @@ public class Room {
     private String description;
 
     @Column(name = "visibility", nullable = false)
-    private boolean visibility = true;
+    private boolean visibility;
 
     @Column(name = "room_type", nullable = false)
     private String roomType;
@@ -117,7 +117,7 @@ public class Room {
      * returns the visibility status of the room, so if the room should be visible on the website or not
      * @return the visibility boolean of the room(default is true on creation).
      */
-    public boolean isVisible() {
+    public boolean getVisibility() {
         return visibility;
     }
 
