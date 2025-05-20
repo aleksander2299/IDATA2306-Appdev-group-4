@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * A REST controller for managing user-related operations.
+ * Provides endpoints to create, retrieve, update, and delete user data.
+ * Supports role-based authorization for certain operations.
+ * NOTE: Java documentation was generated with help from ai to make sure it follows java documentation guidelines.
+ */
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -25,6 +31,13 @@ public class UserController {
     this.userService = userService;
   }
 
+  /**
+   * Retrieves a user by their username.
+   *
+   * @param username The username of the user to be retrieved.
+   * @return A {@link ResponseEntity} containing the user with an HTTP status of OK if found,
+   * or a {@link ResponseEntity} with an HTTP status of NOT FOUND if the user does not exist.
+   */
   @GetMapping("/{username}")
   public ResponseEntity<User> getUser(@PathVariable String username) {
     Optional<User> user = this.userService.getUser(username);
@@ -34,12 +47,24 @@ public class UserController {
     return response;
   }
 
+  /**
+   * Retrieves all users.
+   *
+   * @return A {@link ResponseEntity} containing an {@link Iterable} of {@link User} objects
+   * with an HTTP status of OK.
+   */
   @GetMapping("/all")
   public ResponseEntity<Iterable<User>> getAll() {
     return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUsers());
   }
 
-
+  /**
+   * Adds a new user to the system. Only users with the 'ADMIN' role are authorized to perform this operation.
+   *
+   * @param user The {@link User} object to be added. The user object should contain necessary details such as username, password, and role.
+   * @return A {@link ResponseEntity} containing the added {@link User} object with an HTTP status of CREATED if the operation is successful;
+   * otherwise, it returns the same {@link User} object with an HTTP status of FORBIDDEN if the user could not be added.
+   */
   @PreAuthorize("hasAnyRole('ADMIN')")
   @PostMapping
   public ResponseEntity<User> postUser(@RequestBody User user) {
@@ -52,6 +77,17 @@ public class UserController {
     return response;
   }
 
+  /**
+   * Deletes a user from the system. This operation is accessible to users with 'ADMIN' or 'USER' roles.
+   * The deletion process verifies if the user exists and removes the corresponding record if valid.
+   *
+   * @param user The {@link User} object to be deleted. The user object must include
+   * the username and a valid password for authentication.
+   * @return A {@link ResponseEntity} containing:
+   * - An HTTP status of OK with an empty body if the user is successfully deleted.
+   * - An HTTP status of BAD_REQUEST if the user does not exist or could not be deleted.
+   * - An HTTP status of I_AM_A_TEAPOT if the user still appears in the database after deletion.
+   */
   @PreAuthorize("hasAnyRole('ADMIN','USER')")
   @DeleteMapping
   public ResponseEntity<String> deleteUser(@RequestBody User user) {
@@ -70,6 +106,16 @@ public class UserController {
     return response;
   }
 
+  /**
+   * Updates the information of an existing user in the system.
+   * This operation is accessible to users with 'ADMIN' or 'USER' roles.
+   *
+   * @param username The username of the user to be updated.
+   * @param user The {@link User} object containing the updated details of the user.
+   * @return A {@link ResponseEntity} containing:
+   * - A message with an HTTP status of OK if the user is successfully found and updated.
+   * - A message with an HTTP status of NOT FOUND if the user does not exist.
+   */
   @PreAuthorize("hasAnyRole('ADMIN','USER')")
   @PutMapping("{username}")
   public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody User user) {
