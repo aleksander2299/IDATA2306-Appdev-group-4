@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service class responsible for managing room-related operations including CRUD operations,
@@ -193,6 +194,7 @@ public class RoomService {
    * @throws NullPointerException     if the room doesn't exist
    * @throws IllegalArgumentException if the specified source doesn't exist
    */
+  @Transactional
   public Room updateRoom(int roomId, String roomName, Integer sourceId, String description,
                          Boolean visibility, String roomType, String imageUrl) {
 
