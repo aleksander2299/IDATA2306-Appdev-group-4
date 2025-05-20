@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -47,6 +50,13 @@ public class BookingController {
    * Returns all bookings.
    * @return A ResponseEntity containing an iterable of all bookings and HTTP status OK.
    */
+  @Operation(
+          summary = "Get all bookings",
+          description = "Fetches all bookings from bookingservice",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "List of bookings (empty of no bookings found)")
+          }
+  )
   @GetMapping("/all")
   public ResponseEntity<Iterable<Booking>> getAll() {
     logger.info("Getting all bookings");
@@ -59,6 +69,14 @@ public class BookingController {
    * @return A ResponseEntity containing the booking with a (HTTP status OK)
    *         or a (HTTP status NOT_FOUND) if it is not found.
    */
+  @Operation(
+          summary = "Get booking by booking ID",
+          description = "Fetches a booking based on booking id from parameter",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "A booking instance"),
+                  @ApiResponse(responseCode = "404", description = "No booking instance found")
+          }
+  )
   @GetMapping("/{bookingId}")
   public ResponseEntity<Booking> getBooking(@PathVariable Integer bookingId) {
     ResponseEntity<Booking> response;
@@ -73,6 +91,14 @@ public class BookingController {
    * @param room The room entity to find bookings
    * @return A ResponseEntity containing an iterable array of bookings for the room and a (HTTP status OK)
    */
+  @Operation(
+          summary = "Get all bookings for a specific room",
+          description = "Fetches all bookings for a room and return an iterable of said bookings",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "An iterable of the bookings for the room" +
+                          " an empty iterable in the case there is no bookings for that room")
+          }
+  )
   @GetMapping("/room")
   public ResponseEntity<Iterable<Booking>> getWithRoom(@RequestBody Room room) {
     logger.info("Getting all the bookings with room {}", room.getRoomName());
@@ -84,6 +110,14 @@ public class BookingController {
    * @param username The username connected to the bookings
    * @return A ResponseEntity containing an iterable array of bookings for the user and a (HTTP status OK)
    */
+  @Operation(
+          summary = "Get all bookings a specific user has ",
+          description = "Fetches all bookings for a single user and returns it as an iterable",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "An iterable of the bookings for the user" +
+                          " an empty iterable in the case there is no bookings for that room")
+          }
+  )
   @GetMapping("/user/{username}")
   public ResponseEntity<Iterable<Booking>> getWithUserId(@PathVariable String username) {
     logger.info("Getting all the bookings with room id: {}", username);
@@ -111,6 +145,14 @@ public class BookingController {
    * @return A ResponseEntity containing the created booking with HTTP status CREATED if successful,
    *         or a ResponseEntity with HTTP status FORBIDDEN if the booking could not be added.
    */
+  @Operation(
+          summary = "Post a booking ",
+          description = "Send a requestbody of booking as parameter and it will then post the booking to the repository",
+          responses = {
+                  @ApiResponse(responseCode = "201", description = "The booking has been successfully posted"),
+                  @ApiResponse(responseCode = "403", description = "The booking wasnt created and saved for various reasons I.E(security, wrong request body")
+          }
+  )
   @PostMapping
   public ResponseEntity<Booking> postBooking(@RequestBody Booking booking) {
     ResponseEntity<Booking> response;
@@ -132,6 +174,14 @@ public class BookingController {
    * @return A ResponseEntity containing the created booking with HTTP status CREATED if successful,
    *         or a ResponseEntity with HTTP status FORBIDDEN if the booking could not be added.
    */
+  @Operation(
+          summary = "Post a booking ",
+          description = "This method unlike the other post method posts a booking based on pathvariables of roomproviderid and username, and requestbody of booking",
+          responses = {
+                  @ApiResponse(responseCode = "201", description = "The booking has been successfully posted"),
+                  @ApiResponse(responseCode = "403", description = "The booking wasnt created and saved for various reasons I.E(security, wrong request body")
+          }
+  )
   @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
   @PostMapping("/withIds/{roomProviderId}/{username}")
   public ResponseEntity<Booking> postBooking(@PathVariable Integer roomProviderId, @PathVariable String username, @RequestBody Booking booking) {
@@ -151,6 +201,14 @@ public class BookingController {
    *         - A string message with HTTP status I_AM_A_TEAPOT if the booking is still unexpectedly present after attempted deletion.
    *         - A string message with HTTP status BAD_REQUEST if the booking was not found or could not be deleted.
    */
+  @Operation(
+          summary = "Delete a booking by ID",
+          description = "Deletes a booking with the given booking ID if it exists.",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "Booking successfully deleted"),
+                  @ApiResponse(responseCode = "400", description = "Booking was not found or could not be deleted")
+          }
+  )
   @DeleteMapping("/{bookingId}")
   public ResponseEntity<String> deleteBooking(@PathVariable Integer bookingId) {
     ResponseEntity<String> response;
@@ -181,6 +239,15 @@ public class BookingController {
    *         if the booking was updated, or a failure message with HTTP status NOT FOUND if no booking
    *         with the specified ID exists.
    */
+  @Operation(
+          summary = "Update an existing booking",
+          description = "Updates the booking with the provided booking ID. Optional parameters (roomProvider, user, check-in and check-out dates) can be supplied to update specific fields. Only provided fields will be updated.",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "Booking was successfully found and updated"),
+                  @ApiResponse(responseCode = "404", description = "Booking with the given ID was not found")
+          }
+  )
+
   @PutMapping()
   public ResponseEntity<String> updateBooking(
       @RequestParam(required = true) Integer bookingId,

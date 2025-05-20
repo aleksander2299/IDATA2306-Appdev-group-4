@@ -2,6 +2,8 @@ package group4.backend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 /**
  * class representing a room and provider relationship.
  * IE a room and a provider listing the room with a price
@@ -25,6 +27,9 @@ public class RoomProvider {
 
     @Column(name = "room_price")
     private Integer roomPrice;
+
+    @OneToMany(mappedBy = "roomProvider", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Booking> bookings;
 
     public RoomProvider() {}
 

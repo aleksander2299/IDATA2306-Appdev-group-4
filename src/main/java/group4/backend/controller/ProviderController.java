@@ -88,6 +88,12 @@ public class ProviderController {
     }
 
 
+    @GetMapping("/byName/{providerName}")
+    public ResponseEntity<Provider> getProviderByName(@PathVariable("providerName") String providerName){
+        Optional<Provider> providerOptional = providerService.getProviderByName(providerName);
+        return providerOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+    }
 
 
     /**
