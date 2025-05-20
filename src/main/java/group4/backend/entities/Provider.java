@@ -21,8 +21,7 @@ public class Provider {
     private String providerName;
 
 
-    @OneToMany(mappedBy = "provider",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RoomProvider> roomProviders;
+
 
 
     public Provider(){}
@@ -60,7 +59,5 @@ public class Provider {
         this.providerName = providerName;
     }
 
-    public List<RoomProvider> getRoomProviders() {
-        return this.roomProviders;
-    }
+
 }

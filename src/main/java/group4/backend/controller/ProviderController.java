@@ -1,7 +1,6 @@
 package group4.backend.controller;
 
 import group4.backend.entities.Provider;
-import group4.backend.entities.Room;
 import group4.backend.entities.RoomProvider;
 import group4.backend.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +39,20 @@ public class ProviderController {
         return ResponseEntity.ok(providerList);
     }
 
+    @GetMapping("/withId/{numericId}/roomProviders`)")
+    public ResponseEntity<Optional<Provider>> getRoomProvidersId(@PathVariable("numericId") int numericId) {
+        Optional<Provider> rooms= providerService.getProviderById(numericId);
+        if (rooms.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (rooms == null || rooms.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Optional: return 204 if no rooms
+        }
+
+        return ResponseEntity.ok(rooms);
+    }
+
     /**
      * gets the roomProviders for a provider
      * @param providerName the name of the provider to get the rooms from
@@ -47,13 +60,13 @@ public class ProviderController {
      */
     @PreAuthorize("hasAnyRole('PROVIDER')")
     @GetMapping("/{provider_name}/roomProviders")
-    public ResponseEntity<List<RoomProvider>> getRoomProviders(@PathVariable("provider_name") String providerName) {
-        List<RoomProvider> rooms= providerService.getProvicerByName(providerName).get().getRoomProviders();
-        if (rooms.isEmpty()) {
+    public ResponseEntity<Iterable<RoomProvider>> getRoomProviders(@PathVariable("provider_name") String providerName) {
+        Iterable<RoomProvider> rooms= providerService.getRoomProviders(providerName);
+        if (!rooms.iterator().hasNext()) {
             return ResponseEntity.notFound().build();
         }
 
-        if (rooms == null || rooms.isEmpty()) {
+        if (rooms == null) {
             return ResponseEntity.noContent().build(); // Optional: return 204 if no rooms
         }
 
