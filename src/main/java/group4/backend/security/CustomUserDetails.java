@@ -18,12 +18,16 @@ import java.util.Map;
  */
 public class CustomUserDetails implements UserDetails {
 
-
+    /** The username of the authenticated user */
     private final String username;
 
+    /** The password of the authenticated user */
     private final String password;
 
+    /** The role of the authenticated user prefixed with "ROLE_" */
     private final String role;
+
+    /** The original User entity associated with this UserDetails */
     private final User user;
 
     /**
@@ -53,7 +57,7 @@ public class CustomUserDetails implements UserDetails {
     /**
      * Returns the user's password.
      *
-     * @return The password
+     * @return The password used for authentication
      */
     @Override
     public String getPassword() {
@@ -61,7 +65,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     /**
-     * Returns the user's username.
+     * Returns the username used to authenticate the user.
      *
      * @return The username
      */
