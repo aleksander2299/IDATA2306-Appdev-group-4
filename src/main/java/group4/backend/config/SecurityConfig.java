@@ -54,6 +54,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/extra_features/**").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/user/**").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/providers/**").permitAll())
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**"
+                        ).permitAll())
                  //.authorizeHttpRequests((auth) -> auth.requestMatchers("/api/roomProvider/**").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(HttpMethod.OPTIONS).permitAll())
                 .authorizeHttpRequests((auth) -> auth.anyRequest().authenticated())
