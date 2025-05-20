@@ -26,11 +26,6 @@ public class Room {
     @JoinColumn(name = "source_id", referencedColumnName = "source_id", foreignKey = @ForeignKey(name = "FK_source_id"))
     private Source source;
 
-
-
-
-
-
     @Column(name = "room_name", nullable = false)
     private String roomName;
 
@@ -47,6 +42,13 @@ public class Room {
     private String imageurl;
 
 
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<RoomProvider> roomProviders;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<Favourite> favourites;
 
 
     public Room(){}

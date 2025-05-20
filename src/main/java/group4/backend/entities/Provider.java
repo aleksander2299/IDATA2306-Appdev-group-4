@@ -1,5 +1,6 @@
 package group4.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -21,7 +22,9 @@ public class Provider {
     private String providerName;
 
 
-
+    @OneToMany(mappedBy = "provider", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<RoomProvider> roomProviders;
 
 
     public Provider(){}
