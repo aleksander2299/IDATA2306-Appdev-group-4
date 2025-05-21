@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -130,8 +131,14 @@ public class RoomProviderController {
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping("/unlink/{roomId}/{providerId}")
     public ResponseEntity<RoomProvider> unlinkRoomIdAndProviderId(@PathVariable Integer roomId, @PathVariable Integer providerId){
-        roomProviderService.unlinkRoomToProvider(roomId, providerId);
-        return ResponseEntity.ok().build();
+        try {
+            roomProviderService.unlinkRoomToProvider(roomId, providerId);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     /**
