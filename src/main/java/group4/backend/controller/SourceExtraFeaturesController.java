@@ -6,6 +6,8 @@ import group4.backend.entities.SourceExtraFeatures;
 import group4.backend.service.ExtraFeaturesService;
 import group4.backend.service.SourceExtraFeaturesService;
 import group4.backend.service.SourceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,14 @@ public class SourceExtraFeaturesController {
      *
      * @param id the unique identifier of the Source to retrieve
      * @return ResponseEntity containing the Source if found, or a ResponseEntity with a not found status
-     */
+     */@Operation(
+            summary = "Get source from Source id ",
+            description = "gets a source from pathVariable id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "source found and returned"),
+                    @ApiResponse(responseCode = "404", description = "source not found")
+            }
+    )
     @GetMapping("/source/{id}")
     public ResponseEntity<Source> getSource(@PathVariable("id") int id) {
         Optional<Source> sourceOptional = sourceService.getSourceById(id);
@@ -56,6 +65,14 @@ public class SourceExtraFeaturesController {
      * @return ResponseEntity containing a list of Source objects if any exist,
      *         or a ResponseEntity with no content status if the list is empty.
      */
+    @Operation(
+            summary = "Get sources from database",
+            description = "gets all sources as a list of sources",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "sources found and returned"),
+                    @ApiResponse(responseCode = "204", description = "No content")
+            }
+    )
     @GetMapping("/source")
     public ResponseEntity<List<Source>> getAllSources(){
         List<Source> sources = sourceService.getAllSources();
@@ -73,6 +90,14 @@ public class SourceExtraFeaturesController {
      * @param id the unique identifier of the ExtraFeatures entity to retrieve
      * @return ResponseEntity containing the ExtraFeatures entity if found, or a ResponseEntity with a not found status
      */
+    @Operation(
+            summary = "Get a feature from feature id",
+            description = "gets a feature from the pathvariable feature id, searching database and returning it",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "feature found and returned"),
+                    @ApiResponse(responseCode = "404", description = "feature not found")
+            }
+    )
     @GetMapping("/extra_features/{id}")
     public ResponseEntity<ExtraFeatures> getFeatures(@PathVariable("id") String id) {
         Optional<ExtraFeatures> extraFeaturesOptional = extraFeaturesService.getFeatureById(id);
@@ -87,6 +112,14 @@ public class SourceExtraFeaturesController {
      * @return ResponseEntity containing a list of ExtraFeatures if the source is found,
      *         otherwise a ResponseEntity with a not found status
      */
+    @Operation(
+            summary = "returns the features linked to a source ",
+            description = "return a list of extra features that are linked to a source found by source id",
+            responses = {
+                    @ApiResponse(responseCode = "404", description = "source not found"),
+                    @ApiResponse(responseCode = "200", description = "found extra features and returned")
+            }
+    )
     @GetMapping("/extra_features/sourceFeatures/{SourceId}")
     public ResponseEntity<List<ExtraFeatures>> getFeaturesForSource(@PathVariable("SourceId") int SourceId) {
         Optional<Source> sourceOptional = sourceService.getSourceById(SourceId);
@@ -107,6 +140,15 @@ public class SourceExtraFeaturesController {
      * @return ResponseEntity containing a list of ExtraFeatures if any exist,
      *         or a ResponseEntity with no content status if none are available.
      */
+    @Operation(
+            summary = "Get all extra features in database ",
+            description = "gets all the extra features in the database and returns them as " +
+                    "list of extra feature",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "extra features found"),
+                    @ApiResponse(responseCode = "204", description = "no content")
+            }
+    )
     @GetMapping("/extra_features")
     public ResponseEntity<List<ExtraFeatures>> getAllFeatures() {
         List<ExtraFeatures> features = extraFeaturesService.getAllFeatures();
@@ -127,6 +169,15 @@ public class SourceExtraFeaturesController {
      * @return ResponseEntity containing a success message if the source and feature are linked successfully,
      *         or a bad request status with an error message if the linking process fails
      */
+    @Operation(
+            summary = "link a source to a extra feature ",
+            description = "finds source from source id and feature from feature id and links them together " +
+                    "in database",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "successfully linked source and feature"),
+                    @ApiResponse(responseCode = "403", description = "expectations not met")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/{sourceId}/{featureId}")
     public ResponseEntity<String> linkSourceToFeature(@PathVariable int sourceId, @PathVariable String featureId) {
@@ -145,6 +196,14 @@ public class SourceExtraFeaturesController {
      * @return ResponseEntity containing a list of SourceExtraFeatures objects if any exist,
      *         or a ResponseEntity with no content status if the list is empty.
      */
+    @Operation(
+            summary = "get all source and extra feature links, so all sourceExtraFeatures ",
+            description = "returns a list of all source-feature links",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "successfully returned list of content"),
+                    @ApiResponse(responseCode = "204", description = "no content")
+            }
+    )
     @GetMapping()
     public ResponseEntity<List<SourceExtraFeatures>> getAllSourceExtraFeatures() {
         List<SourceExtraFeatures> sourceExtraFeatures = sourceExtraFeaturesService.getAllSourceExtraFeatures();
