@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>group4</groupId>
 	<artifactId>backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<name>BackendGroup4Idata2306</name>
 	<description>Spring boot project for appdev </description>
 	<url/>
