@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/authenticate/**").permitAll())
-                //.authorizeHttpRequests((auth) -> auth.requestMatchers("/api/booking/**").permitAll())
+                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/booking/**").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/authenticate/login").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/authenticate/register").permitAll())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/rooms").permitAll())
