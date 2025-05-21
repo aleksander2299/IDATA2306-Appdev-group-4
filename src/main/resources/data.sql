@@ -115,7 +115,8 @@ INSERT INTO provider (provider_name) VALUES
 ('TripAdvisor'),
 ('The Thief Website'),
 ('Trip.com'),
-('Marina Bay Sands Website');
+('Marina Bay Sands Website'),
+('norris');
 
 -- RoomProvider
 -- Linking rooms (IDs 1-4) with providers (IDs 1-3) and setting prices
