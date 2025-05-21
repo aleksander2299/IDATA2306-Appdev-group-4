@@ -23,7 +23,10 @@ SET FOREIGN_KEY_CHECKS=1;
 INSERT INTO user (username, password, role) VALUES
 ('admin_user', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'ADMIN'),
 ('normal_user', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'USER'),
-('provider_user', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'PROVIDER');
+('provider_user', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'PROVIDER'),
+('chuck', '$2a$12$yNcVUc0M9FuOUJP.MZgID.8cZoNAdmGtNLJiBsD8dmbYHgAjigz4q', 'ADMIN' ),
+('dave', '$2a$12$wf4itG5Lb1dqmp7fWOpiZee6ZFmIgUBlTWVtHZ8UElfN/5QINfnKK', 'USER'),
+('norris', '$2a$12$if.r2XLlrjU2yJ.chwFtGef6drPQ0wGwFD7tIZ0nJSE/DjkJtPMD.', 'PROVIDER');
 
 -- ExtraFeatures
 INSERT INTO extra_features (feature) VALUES
