@@ -1,14 +1,9 @@
 package group4.backend.service;
 
-import group4.backend.config.jwtService;
-import group4.backend.entities.Role;
 import group4.backend.entities.User;
 import group4.backend.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
