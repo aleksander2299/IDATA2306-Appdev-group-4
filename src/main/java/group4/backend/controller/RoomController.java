@@ -29,11 +29,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 /**
- * The RoomController is a REST controller responsible for handling
- * HTTP requests related to Room entities. This includes functionality for
- * retrieving, creating, updating, and deleting rooms. It communicates with
- * the {@link RoomService} to perform underlying operations.
- * NOTE: Java documentation was generated with help from ai to make sure it follows java documentation guidelines.
+ * Controller for managing room-related operations. Provides endpoints for retrieving, creating, updating,
+ * and deleting rooms, as well as handling associated data like room providers, sources, occupied dates,
+ * and images.
  */
 @RestController
 @RequestMapping("/api/rooms")
@@ -391,6 +389,33 @@ public class RoomController {
 
         return ResponseEntity.ok(updatedRoom);
 
+    }
+
+    /**
+     * Searches for rooms that match the given query.
+     *
+     * @param query The search query to filter the rooms. It should not be null or empty.
+     * @return A {@link ResponseEntity} containing a list of rooms that match the query, or a response with no content if no rooms are found.
+     * NOTE: This class was made with AI assistance
+     */
+    @Operation(
+            summary = "search rooms",
+            description = "search rooms by query",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Matching rooms found and returned"),
+                    @ApiResponse(responseCode = "204", description = "No rooms match the query")
+            }
+    )
+    @GetMapping("/search")
+    public ResponseEntity<List<Room>> searchRooms(@RequestParam("query") String query) {
+        if (query == null || query.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        List<Room> rooms = roomService.searchRoomsByQuery(query);
+        if (rooms.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(rooms);
     }
 
 }

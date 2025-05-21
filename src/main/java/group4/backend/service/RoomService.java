@@ -231,4 +231,21 @@ public class RoomService {
     return roomRepository.save(room);
   }
 
+  /**
+   * Searches for rooms where the query matches room name, description,
+   * or associated source's name, city, or country.
+   * This is a basic example; more advanced searching might use full-text search capabilities
+   * or more complex criteria.
+   *
+   * @param query The search term.
+   * @return A list of matching rooms.
+   */
+  @Transactional(readOnly = true)
+  public List<Room> searchRoomsByQuery(String query) {
+    if (query == null || query.trim().isEmpty()) {
+      return new ArrayList<>();
+    }
+    return roomRepository.searchByKeyword(query.toLowerCase());
+  }
+
 }
