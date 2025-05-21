@@ -3,6 +3,8 @@ package group4.backend.controller;
 import group4.backend.entities.Provider;
 import group4.backend.entities.RoomProvider;
 import group4.backend.service.ProviderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.Optional;
  * The ProviderController class handles HTTP requests related to operations on providers.
  * This includes retrieving, creating, updating, and deleting providers or their associated data.
  * It provides REST endpoints for interacting with the Provider entity.
+ * NOTE: @Operation documentation was helped by AI
  * NOTE: Java documentation was generated with help from ai to make sure it follows java documentation guidelines.
  */
 @RestController
@@ -30,6 +33,14 @@ public class ProviderController {
      * gets all the providers
      * @return responseentity if there are providers or not.
      */
+    @Operation(
+            summary = "Get all providers",
+            description = "Retrieves a list of all providers in the system.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Providers retrieved successfully"),
+                    @ApiResponse(responseCode = "204", description = "No providers found")
+            }
+    )
     @GetMapping()
     public ResponseEntity<List<Provider>> getProviders(){
         List<Provider> providerList = providerService.getAllProviders();
@@ -39,7 +50,15 @@ public class ProviderController {
         return ResponseEntity.ok(providerList);
     }
 
-    @GetMapping("/withId/{numericId}/roomProviders`)")
+    @Operation(
+            summary = "Get a provider by ID",
+            description = "Retrieves a provider by its numeric ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Provider retrieved successfully"),
+                    @ApiResponse(responseCode = "404", description = "Provider not found")
+            }
+    )
+    @GetMapping("/withId/{numericId}/roomProviders)")
     public ResponseEntity<Optional<Provider>> getRoomProvidersId(@PathVariable("numericId") int numericId) {
         Optional<Provider> rooms= providerService.getProviderById(numericId);
         if (rooms.isEmpty()) {
@@ -58,6 +77,14 @@ public class ProviderController {
      * @param providerName the name of the provider to get the rooms from
      * @return Responseentity of room
      */
+    @Operation(
+            summary = "Get room providers for a given provider name",
+            description = "Returns the room providers associated with the specified provider.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Room providers retrieved successfully"),
+                    @ApiResponse(responseCode = "404", description = "No room providers found for the given provider")
+            }
+    )
     @PreAuthorize("hasAnyRole('PROVIDER')")
     @GetMapping("/{provider_name}/roomProviders")
     public ResponseEntity<Iterable<RoomProvider>> getRoomProviders(@PathVariable("provider_name") String providerName) {
@@ -80,6 +107,14 @@ public class ProviderController {
      * @param id the id of the provider to get
      * @return repsonseEntity if the provider was found or not
      */
+    @Operation(
+            summary = "Get a provider by ID",
+            description = "Retrieves a single provider by its ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Provider retrieved successfully"),
+                    @ApiResponse(responseCode = "404", description = "Provider not found")
+            }
+    )
     @GetMapping("/{id}")
     public ResponseEntity<Provider> getProvider(@PathVariable("id") int id){
         Optional<Provider> providerOptional = providerService.getProviderById(id);
@@ -88,6 +123,14 @@ public class ProviderController {
     }
 
 
+    @Operation(
+            summary = "Get a provider by name",
+            description = "Retrieves a provider using its name.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Provider retrieved successfully"),
+                    @ApiResponse(responseCode = "404", description = "Provider not found")
+            }
+    )
     @GetMapping("/byName/{providerName}")
     public ResponseEntity<Provider> getProviderByName(@PathVariable("providerName") String providerName){
         Optional<Provider> providerOptional = providerService.getProviderByName(providerName);
@@ -101,6 +144,14 @@ public class ProviderController {
      * @param provider the provider to post
      * @return the responseentity of provider if it worked or not.
      */
+    @Operation(
+            summary = "Create a new provider",
+            description = "Creates and saves a new provider based on the request body.",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Provider created successfully"),
+                    @ApiResponse(responseCode = "400", description = "Invalid provider data")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @PostMapping()
     public ResponseEntity<Provider> postProvider(@RequestBody Provider provider) {
@@ -121,6 +172,14 @@ public class ProviderController {
      * @param providers the list of providers to post
      * @return responsentity if it worked or not.
      */
+    @Operation(
+            summary = "Create providers in bulk",
+            description = "Accepts a list of providers and saves them all to the database.",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Providers created successfully"),
+                    @ApiResponse(responseCode = "400", description = "Invalid provider list")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @PostMapping("/bulk")
     public ResponseEntity<List<Provider>> createRooms(@RequestBody List<Provider> providers){
@@ -140,6 +199,14 @@ public class ProviderController {
      * @return ResponseEntity with status 200 if the provider was successfully deleted,
      *         204 if no provider with the specified ID is found
      */
+    @Operation(
+            summary = "Delete a provider by ID",
+            description = "Deletes the provider identified by the given ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Provider deleted successfully"),
+                    @ApiResponse(responseCode = "404", description = "Provider not found")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProvider(@PathVariable("id") int id) {
@@ -159,6 +226,14 @@ public class ProviderController {
      * deletes all providers in the database
      * @return ResponseEntity if the list of rooms is empty or if it did delete all.
      */
+    @Operation(
+            summary = "Delete all providers",
+            description = "Deletes all providers currently stored in the database.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "All providers deleted successfully"),
+                    @ApiResponse(responseCode = "204", description = "No providers to delete")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping()
     public ResponseEntity<Void> deleteAllRoom() {
@@ -169,6 +244,14 @@ public class ProviderController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(
+            summary = "Update a provider",
+            description = "Updates the name of a provider identified by ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Provider updated successfully"),
+                    @ApiResponse(responseCode = "404", description = "Provider not found")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @PutMapping("/{id}")
     public ResponseEntity<Provider> updateProvider(@PathVariable("id") int providerId,@RequestParam String newName){

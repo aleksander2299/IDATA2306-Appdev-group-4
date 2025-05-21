@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.Optional;
  * class representing roomProviderService, a service class for roomProvider Table
  */
 @Service
+@Transactional
 public class RoomProviderService {
 
     @Autowired
@@ -39,6 +41,7 @@ public class RoomProviderService {
      * @param ids the list of ids to find by
      * @return List of roomProviderObjects
      */
+    @Transactional(readOnly = true)
     public List<RoomProvider> findAllById(Iterable<Integer> ids){
         if(ids == null){
             throw new IllegalArgumentException("no ids found ");
@@ -59,6 +62,7 @@ public class RoomProviderService {
      * @param id the roomProviders ID
      * @return optional of roomProvider
      */
+    @Transactional(readOnly = true)
     public Optional<RoomProvider> findById(Integer id){
         if(id == null){
             throw new IllegalArgumentException("no id found ");
