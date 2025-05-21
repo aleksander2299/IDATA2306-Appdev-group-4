@@ -13,6 +13,9 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +52,14 @@ public class RoomController {
      * @param id the id of the room to get
      * @return Responseentity of room
      */
+    @Operation(
+            summary = "Get room by ID",
+            description = "Retrieves a room by its ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Room found and returned"),
+                    @ApiResponse(responseCode = "404", description = "Room not found")
+            }
+    )
     @GetMapping("/{id}")
     public ResponseEntity<Room> getRoom(@PathVariable("id") int id) {
         Optional<Room> roomOptional = roomService.getRoomById(id);
@@ -62,6 +73,14 @@ public class RoomController {
      * @return a ResponseEntity containing the Source object if found, or
      *         a 404 NOT FOUND response if the source is not available
      */
+    @Operation(
+            summary = "Get a rooms source",
+            description = "Retrieves a rooms source by roomId",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "source found and returned"),
+                    @ApiResponse(responseCode = "404", description = "source not found")
+            }
+    )
     @GetMapping("/{id}/source")
     public ResponseEntity<Source> getSource(@PathVariable("id") int id){
         Optional<Source> source = Optional.ofNullable(roomService.getRoomById(id).get().getSource());
@@ -73,6 +92,14 @@ public class RoomController {
      * @param id the id of the room to get
      * @return Responseentity of room
      */
+    @Operation(
+            summary = "Gets roomProviders for a room",
+            description = "Retrieves a Iterable of roomProviders from a rooms id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "list of roomProviders found and returned"),
+                    @ApiResponse(responseCode = "403",description = "expectations not met")
+            }
+    )
     @GetMapping("/{id}/roomProviders")
     public ResponseEntity<Iterable<RoomProvider>> getRoomProviders(@PathVariable("id") int id) {
         ResponseEntity<Iterable<RoomProvider>> response = null;
@@ -93,6 +120,14 @@ public class RoomController {
      * returns all rooms at /api/rooms.
      * @return Responsentity message depending on if there are rooms or not.
      */
+    @Operation(
+            summary = "Get all rooms in database",
+            description = "gets all rooms in the database and returns a list of them",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "rooms found and returned"),
+                    @ApiResponse(responseCode = "204", description = "no rooms in list")
+            }
+    )
     @GetMapping()
     public ResponseEntity<List<Room>> getAllRooms(){
         List<Room> rooms = roomService.getAllRooms();
@@ -104,7 +139,6 @@ public class RoomController {
 
     /**
      * Retrieves the occupied date ranges for a room identified by its ID.
-     *
      * @param roomId The ID of the room whose occupied dates are to be fetched.
      * @return A ResponseEntity containing a list of date ranges,
      *         where each date range is represented by an array of two LocalDate objects indicating
@@ -112,6 +146,13 @@ public class RoomController {
      *         400 BAD REQUEST if the roomId is invalid, 404 NOT FOUND if no such room exists,
      *         or other HTTP status codes as required.
      */
+    @Operation(
+            summary = "Get all the dates the room is booked, i.e its occupied dates",
+            description = "returns a list of localDates, the dates the room is occupied",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "list of dates returned"),
+            }
+    )
     @GetMapping("/{roomId}/dates")
     public ResponseEntity<List<LocalDate[]>> getOccupiedDates(@PathVariable Integer roomId) {
         ResponseEntity<List<LocalDate[]>> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
@@ -136,6 +177,14 @@ public class RoomController {
      * @param room the room to be posted
      * @return Responsentity if it was created.
      */
+    @Operation(
+            summary = "creates a room",
+            description = "Creates and saves room to database based on requestBody of room data",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Room created and saved"),
+                    @ApiResponse(responseCode = "403", description = "expectations not med")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<Room> createRoom(@RequestBody Room room) {
@@ -143,6 +192,15 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newRoom);
     }
 
+    @Operation(
+            summary = "creates a room with a source linked by sourceId ",
+            description = "sourceID is used to find a source and if found creates a room from requestBody " +
+                    "and saves it with source linked",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "created and saved room with source"),
+                    @ApiResponse(responseCode = "403", description = "expectations not met")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/withSource/{sourceId}")
     public ResponseEntity<Room> createRoomWithSourceId(@PathVariable Integer sourceId, @RequestBody Room room) {
@@ -155,6 +213,14 @@ public class RoomController {
      * @param rooms the list of rooms to post
      * @return responsentity if it worked or not.
      */
+    @Operation(
+            summary = "Creates rooms in bulk from list",
+            description = "requestBody of list of room is used to create rooms ",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "successfully created rooms from list"),
+                    @ApiResponse(responseCode = "403", description = "expectations not met")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/bulk")
     public ResponseEntity<List<Room>> createRooms(@RequestBody List<Room> rooms){
@@ -173,6 +239,14 @@ public class RoomController {
      * @param file
      * @return
      */
+    @Operation(
+            summary = "uploads image to room",
+            description = "Uploads image to room from roomID with multipartfile",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "successfully uploaded image"),
+                    @ApiResponse(responseCode = "403", description = "Expectations not met")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @PostMapping("/{roomId}/images")
     public ResponseEntity<String> uploadImage(@PathVariable Integer roomId, @RequestParam MultipartFile file) {
@@ -190,6 +264,15 @@ public class RoomController {
         return response;
     }
 
+
+    @Operation(
+            summary = "delete image from /images",
+            description = "deletes image from images",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "deleted image"),
+                    @ApiResponse(responseCode = "403", description = "expectations not met")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping("/images/{filename}")
     public ResponseEntity<String> deleteImage(@PathVariable String filename) {
@@ -204,6 +287,14 @@ public class RoomController {
         return response;
     }
 
+    @Operation(
+            summary = "delete image from room",
+            description = "deletes image from room found from roomId",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "deleted image"),
+                    @ApiResponse(responseCode = "403", description = "expectations not met")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping("/images/room/{roomId}")
     public ResponseEntity<String> deleteImage(@PathVariable Integer roomId) {
@@ -228,6 +319,16 @@ public class RoomController {
      * @param id the id of the room to delete
      * @return ResponseEntity if room was deleted or not.
      */
+    @Operation(
+            summary = "Delete room from database",
+            description = "finds room from roomid in database and deletes it",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "deleted room"),
+                    @ApiResponse(responseCode = "403", description = "expectations not met"),
+                    @ApiResponse(responseCode = "204", description = "room not found")
+
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable("id") int id) {
@@ -242,6 +343,14 @@ public class RoomController {
     }
 
 
+    @Operation(
+            summary = "delete all rooms",
+            description = "deletes all rooms",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "all rooms deleted"),
+                    @ApiResponse(responseCode = "403", description = "expectations not met")
+            }
+    )
     /**
      * deletes all room in the database
      * @return ResponseEntity if the list of rooms is empty or if it did delete all. 
@@ -266,6 +375,14 @@ public class RoomController {
      * @return A ResponseEntity containing the updated Room object with a status
      *         of 200 OK upon successful update.
      */
+    @Operation(
+            summary = "update room",
+            description = "update room by finding from roomid and updates to requestbody room",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "updated room"),
+                    @ApiResponse(responseCode = "403", description = "expectations not met")
+            }
+    )
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Room> updateRoom(@PathVariable("id") int roomId,@RequestBody Room room){
