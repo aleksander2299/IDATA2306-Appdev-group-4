@@ -20,6 +20,8 @@ To go to the website with backend and frontend combined the url is: http://10.21
 - Lombok
 - OpenAPI (Swagger UI)
 
+# Running locally
+
 ## Prerequisites
 
 Before running this project, ensure you have:
