@@ -14,6 +14,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class for managing booking-related operations in the system.
+ * Handles creation, retrieval, update, and deletion of bookings.
+ * Provides business logic for booking validation and management.
+ * NOTE: Java documentation was generated with help from AI to make sure it follows java documentation guidelines.
+ */
 @Service
 public class BookingService {
 
@@ -21,6 +27,13 @@ public class BookingService {
   private final RoomProviderRepository roomProviderRepository;
   private final UserRepository userRepository;
 
+  /**
+   * Constructs a new BookingService with the required repositories.
+   *
+   * @param bookingRepository      Repository for booking operations
+   * @param roomProviderRepository Repository for room provider operations
+   * @param userRepository         Repository for user operations
+   */
   @Autowired
   public BookingService(BookingRepository bookingRepository, RoomProviderRepository roomProviderRepository, UserRepository userRepository) {
     this.bookingRepository = bookingRepository;
@@ -28,18 +41,43 @@ public class BookingService {
     this.userRepository = userRepository;
   }
 
+  /**
+   * Retrieves all bookings from the system.
+   *
+   * @return An Iterable containing all booking records
+   */
   public Iterable<Booking> getAllBookings() {
     return this.bookingRepository.findAll();
   }
 
+  /**
+   * Retrieves a specific booking by its ID.
+   *
+   * @param id The ID of the booking to retrieve
+   * @return An Optional containing the booking if found, empty otherwise
+   */
   public Optional<Booking> getBooking(Integer id) {
     return this.bookingRepository.findById(id);
   }
 
+  /**
+   * Retrieves all bookings for a specific room.
+   *
+   * @param room The room to find bookings for
+   * @return An Iterable containing all bookings for the specified room
+   */
   public Iterable<Booking> getAllBookingsByRoom(Room room) {
     return this.bookingRepository.findByRoomProvider_Room(room);
   }
 
+  /**
+   * Retrieves all bookings associated with a specific username.
+   *
+   * @param username The username to find bookings for
+   * @return An Iterable containing all bookings for the specified username
+   * @throws IllegalArgumentException if username is null
+   * @throws NoSuchElementException   if no bookings are found for the username
+   */
   public Iterable<Booking> getAllBookingsBelongingToUsername(String username) {
     if (username == null) {
       throw new IllegalArgumentException("No username provided.");
@@ -51,6 +89,12 @@ public class BookingService {
     return bookings;
   }
 
+  /**
+   * Adds a new booking to the system if it meets all validity criteria.
+   *
+   * @param booking The booking to be added
+   * @return true if the booking was successfully added, false otherwise
+   */
   public boolean addBooking(Booking booking) {
     boolean added = false;
     if (canBeAdded(booking)) {
@@ -60,6 +104,15 @@ public class BookingService {
     return added;
   }
 
+  /**
+   * Creates and adds a new booking using provided IDs and booking details.
+   *
+   * @param roomProviderId The ID of the room provider
+   * @param username       The username of the user making the booking
+   * @param booking        The booking details to be added
+   * @return An Optional containing the created booking if successful
+   * @throws IllegalArgumentException if the booking parameters are invalid
+   */
   public Optional<Booking> addBookingUsingIds(Integer roomProviderId, String username, Booking booking) {
     Optional<Booking> optionalBooking = Optional.of(prepareBookingWithIds(roomProviderId, username, booking));
 
@@ -101,6 +154,12 @@ public class BookingService {
     return preparedBooking;
   }
 
+  /**
+   * Deletes a booking by its ID.
+   *
+   * @param id The ID of the booking to delete
+   * @return true if the booking was successfully deleted, false if not found
+   */
   public boolean deleteBookingById(Integer id) {
     boolean deleted = false;
     Optional<Booking> bookingInDb = getBooking(id);
@@ -111,6 +170,16 @@ public class BookingService {
     return deleted;
   }
 
+  /**
+   * Updates an existing booking with new information.
+   *
+   * @param bookingId    The ID of the booking to update
+   * @param roomProvider The new room provider (optional)
+   * @param user         The new user (optional)
+   * @param checkInDate  The new check-in date (optional)
+   * @param checkOutDate The new check-out date (optional)
+   * @return true if any changes were made and saved, false otherwise
+   */
   public boolean updateUser(Integer bookingId, RoomProvider roomProvider, User user, LocalDate checkInDate, LocalDate checkOutDate) {
     boolean altered = false;
     Optional<Booking> existingBookingOpt = this.bookingRepository.findById(bookingId);

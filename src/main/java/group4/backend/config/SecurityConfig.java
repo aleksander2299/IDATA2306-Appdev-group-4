@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,6 +22,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfig {
 
 
@@ -36,32 +38,34 @@ public class SecurityConfig {
      *
      * @param http HttpSecurity setting builder
      * @throws Exception When security configuration fails
+     * NOTE: AI was used to help fix errors with the deleting methods
      */
     @Bean
     public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/authenticate/**").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/booking/**").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/authenticate/login").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/authenticate/register").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/rooms").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/rooms/**").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/source_extra_features/**").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/source/**").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers(HttpMethod.POST, "/api/providers").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/extra_features/**").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/user/**").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/providers/**").permitAll())
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**"
-                        ).permitAll())
-                 //.authorizeHttpRequests((auth) -> auth.requestMatchers("/api/roomProvider/**").permitAll())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers(HttpMethod.OPTIONS).permitAll())
-                .authorizeHttpRequests((auth) -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests((auth) -> auth
+                        // Will change however need to test this first
+                        .requestMatchers("/api/authenticate/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/roomProviders/unlink/**").hasAnyRole("ADMIN", "PROVIDER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/roomProviders/*").hasAnyRole("ADMIN", "PROVIDER")
+                        .requestMatchers("/api/rooms").permitAll()
+                        .requestMatchers("/api/rooms/**").permitAll()
+                        .requestMatchers("/api/source_extra_features/**").permitAll()
+                        .requestMatchers("/api/source/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/providers").permitAll()
+                        .requestMatchers("/api/extra_features/**").permitAll()
+                        .requestMatchers("/api/user/**").permitAll()
+                        .requestMatchers("/api/providers/**").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .sessionManagement((session) ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
-                authenticationProvider(authenticationProvider)
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
