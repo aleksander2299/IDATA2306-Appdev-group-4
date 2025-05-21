@@ -48,13 +48,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         // Will change however need to test this first
                         .requestMatchers("/api/authenticate/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/roomProviders/unlink/**").hasAnyRole("ADMIN", "PROVIDER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/roomProviders/*").hasAnyRole("ADMIN", "PROVIDER")
-                        .requestMatchers("/api/rooms").permitAll()
-                        .requestMatchers("/api/rooms/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/roomProvider/unlink/**").hasAnyRole("ADMIN", "PROVIDER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/roomProvider/*").hasAnyRole("ADMIN", "PROVIDER")
+                        .requestMatchers("/api/room").permitAll()
+                        .requestMatchers("/api/room/**").permitAll()
                         .requestMatchers("/api/source_extra_features/**").permitAll()
                         .requestMatchers("/api/source/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/providers").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/provider").permitAll()
                         .requestMatchers("/api/extra_features/**").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers("/api/providers/**").permitAll()
