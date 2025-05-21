@@ -3,6 +3,9 @@ package group4.backend.controller;
 import group4.backend.entities.User;
 import group4.backend.service.UserService;
 import java.util.Optional;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +41,14 @@ public class UserController {
    * @return A {@link ResponseEntity} containing the user with an HTTP status of OK if found,
    * or a {@link ResponseEntity} with an HTTP status of NOT FOUND if the user does not exist.
    */
+  @Operation(
+          summary = "returns a user by username ",
+          description = "gets a user from username ",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "user found and returned"),
+                  @ApiResponse(responseCode = "404", description = "not found")
+          }
+  )
   @GetMapping("/{username}")
   public ResponseEntity<User> getUser(@PathVariable String username) {
     Optional<User> user = this.userService.getUser(username);
@@ -53,6 +64,16 @@ public class UserController {
    * @return A {@link ResponseEntity} containing an {@link Iterable} of {@link User} objects
    * with an HTTP status of OK.
    */
+
+  @Operation(
+          summary = "Get all users ",
+          description = "gets all the users in the database and returns them as " +
+                  "iterable of user",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "returned users"),
+                  @ApiResponse(responseCode = "204", description = "no content")
+          }
+  )
   @GetMapping("/all")
   public ResponseEntity<Iterable<User>> getAll() {
     return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUsers());
@@ -65,6 +86,14 @@ public class UserController {
    * @return A {@link ResponseEntity} containing the added {@link User} object with an HTTP status of CREATED if the operation is successful;
    * otherwise, it returns the same {@link User} object with an HTTP status of FORBIDDEN if the user could not be added.
    */
+  @Operation(
+          summary = "creates a user ",
+          description = "gets user from requestbody and saves it to database",
+          responses = {
+                  @ApiResponse(responseCode = "201", description = "user created"),
+                  @ApiResponse(responseCode = "403", description = "expectations not met")
+          }
+  )
   @PreAuthorize("hasAnyRole('ADMIN')")
   @PostMapping
   public ResponseEntity<User> postUser(@RequestBody User user) {
@@ -88,6 +117,14 @@ public class UserController {
    * - An HTTP status of BAD_REQUEST if the user does not exist or could not be deleted.
    * - An HTTP status of I_AM_A_TEAPOT if the user still appears in the database after deletion.
    */
+  @Operation(
+          summary = "delete a user ",
+          description = "finds user from requestbody data and deletes it",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "user deleted"),
+                  @ApiResponse(responseCode = "403", description = "expectations not met")
+          }
+  )
   @PreAuthorize("hasAnyRole('ADMIN','USER')")
   @DeleteMapping
   public ResponseEntity<String> deleteUser(@RequestBody User user) {
@@ -116,6 +153,15 @@ public class UserController {
    * - A message with an HTTP status of OK if the user is successfully found and updated.
    * - A message with an HTTP status of NOT FOUND if the user does not exist.
    */
+  @Operation(
+          summary = "update a user ",
+          description = "finds user by username and updates with requestbody data",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "user updated"),
+                  @ApiResponse(responseCode = "403", description = "expectations not met"),
+                  @ApiResponse(responseCode = "404", description = "not found user ?")
+          }
+  )
   @PreAuthorize("hasAnyRole('ADMIN','USER')")
   @PutMapping("{username}")
   public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody User user) {
