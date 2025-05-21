@@ -5,7 +5,7 @@ Group project for group 4
 About this project : This is a project in courses IDATA2306 and IDATA2301 
 we were tasked with creating a hotel site where you can log in as user and admin that have their own roles that has their own 
 authorities, the project is to be secured with JWT authentication and the user of the project shall be able to book rooms,
-search for rooms, change settings and login and logout etc. 
+search for rooms, change settings and login and logout etc. it is supposed to be a hotel room aggregator like trivago
 
 
 ## Tech Stack
