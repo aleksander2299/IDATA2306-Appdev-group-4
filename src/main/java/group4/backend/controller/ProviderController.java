@@ -18,6 +18,7 @@ import java.util.Optional;
  * The ProviderController class handles HTTP requests related to operations on providers.
  * This includes retrieving, creating, updating, and deleting providers or their associated data.
  * It provides REST endpoints for interacting with the Provider entity.
+ * NOTE: @Operation documentation was helped by AI
  * NOTE: Java documentation was generated with help from ai to make sure it follows java documentation guidelines.
  */
 @RestController
