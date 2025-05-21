@@ -1,6 +1,8 @@
 package group4.backend.security;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,14 @@ public class AuthenticationController {
      * @param registerRequest The registration details containing user information
      * @return A {@link ResponseEntity} containing an {@link AuthenticationResponse} with the registration result
      */
+    @Operation(
+            summary = "registers a user in database with security ",
+            description = "Registers a user with authenticationService",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "registered user"),
+                    @ApiResponse(responseCode = "400", description = "Invalid registration details")
+            }
+    )
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody
                                                            RegisterRequest registerRequest){
@@ -41,6 +51,14 @@ public class AuthenticationController {
      * @param loginRequest The login credentials containing username and password
      * @return A {@link ResponseEntity} containing an {@link AuthenticationResponse} with the authentication result
      */
+    @Operation(
+            summary = "logs in a user ",
+            description = "logs in a user based on authenticationRequest body",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "extra features found"),
+                    @ApiResponse(responseCode = "401", description = "Invalid username or password")
+            }
+    )
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody
                                                                AuthenticationRequest loginRequest){
