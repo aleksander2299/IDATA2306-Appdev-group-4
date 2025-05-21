@@ -120,7 +120,7 @@ public class FavouriteController {
      * @return the created Favourite entity
      */
     @Operation(
-            summary = "Post curd operation for posting a favourite",
+            summary = "Post crud operation for posting a favourite",
             description = "saves a favourite from request body of favourite ",
             responses = {
                     @ApiResponse(responseCode = "201", description = "the favourite was added"),
