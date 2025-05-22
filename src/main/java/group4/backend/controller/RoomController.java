@@ -38,17 +38,21 @@ import org.springframework.web.multipart.MultipartFile;
 public class RoomController {
 
     private final RoomService roomService;
+    private final String imageURL;
 
     @Autowired
     public RoomController(RoomService roomService) {
         this.roomService = roomService;
+        //This path matches the directory used on the server for images.
+        //In development, it must be changed to fit an existing directory.
+        this.imageURL = "/home/local/shared/WebDeployer4001/website/uploads";
     }
 
 
     /**
      * gets a room at /api/rooms/id
      * @param id the id of the room to get
-     * @return Responseentity of room
+     * @return ResponseEntity of room
      */
     @Operation(
             summary = "Get room by ID",
@@ -252,14 +256,45 @@ public class RoomController {
     )
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @PostMapping("/{roomId}/images")
-    public ResponseEntity<String> uploadImage(@PathVariable Integer roomId, @RequestParam MultipartFile file) {
+    public ResponseEntity<String> uploadImageToRoom(@PathVariable Integer roomId, @RequestParam MultipartFile file) {
         ResponseEntity<String> response = null;
         String filename = UUID.randomUUID() + "-" + file.getOriginalFilename();
-        Path uploadPath = Paths.get("C:/webAttempt/epicProject/uploads", filename);
+        Path uploadPath = Paths.get(this.imageURL, filename);
 
         try(InputStream input = file.getInputStream()) {
             Files.copy(input, uploadPath, StandardCopyOption.REPLACE_EXISTING);
             this.roomService.updateRoomImageUrl(roomId, "/images/" + filename);
+            response = ResponseEntity.status(HttpStatus.CREATED).body(filename);
+        } catch (IOException ioE) {
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return response;
+    }
+
+
+    /**
+     * This method was created with AI assistance
+     * @param roomId
+     * @param file
+     * @return
+     */
+    @Operation(
+        summary = "uploads image",
+        description = "Uploads image with multipartfile",
+        responses = {
+            @ApiResponse(responseCode = "201", description = "successfully uploaded image"),
+            @ApiResponse(responseCode = "403", description = "Expectations not met")
+        }
+    )
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
+    @PostMapping("/images")
+    public ResponseEntity<String> uploadImage(@RequestParam MultipartFile file) {
+        ResponseEntity<String> response = null;
+        String filename = UUID.randomUUID() + "-" + file.getOriginalFilename();
+        Path uploadPath = Paths.get(this.imageURL, filename);
+
+        try(InputStream input = file.getInputStream()) {
+            Files.copy(input, uploadPath, StandardCopyOption.REPLACE_EXISTING);
             response = ResponseEntity.status(HttpStatus.CREATED).body(filename);
         } catch (IOException ioE) {
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -276,11 +311,13 @@ public class RoomController {
                     @ApiResponse(responseCode = "403", description = "expectations not met")
             }
     )
+
+
     @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
     @DeleteMapping("/images/{filename}")
     public ResponseEntity<String> deleteImage(@PathVariable String filename) {
         ResponseEntity<String> response = null;
-        Path path = Paths.get("C:/webAttempt/epicProject/uploads", filename);
+        Path path = Paths.get(this.imageURL, filename);
         try {
             Files.deleteIfExists(path);
             response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deleted");
@@ -306,7 +343,7 @@ public class RoomController {
         if (room.isPresent()) {
             String filename = room.get().getImageUrl().replaceFirst("/images/", "");
             this.roomService.clearImageUrl(roomId);
-            Path path = Paths.get("C:/webAttempt/epicProject/uploads", filename);
+            Path path = Paths.get(this.imageURL, filename);
             try {
                 Files.deleteIfExists(path);
                 response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Deleted");
