@@ -17,6 +17,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+
+/**
+ * Service class responsible for handling JWT-related operations.
+ * The service uses a secret key to sign and verify the tokens.
+ */
 @Service
 public class JwtService {
 

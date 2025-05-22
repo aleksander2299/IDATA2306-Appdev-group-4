@@ -44,7 +44,8 @@ public class SourceExtraFeaturesController {
      *
      * @param id the unique identifier of the Source to retrieve
      * @return ResponseEntity containing the Source if found, or a ResponseEntity with a not found status
-     */@Operation(
+     */
+    @Operation(
             summary = "Get source from Source id ",
             description = "gets a source from pathVariable id",
             responses = {

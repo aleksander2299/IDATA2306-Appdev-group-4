@@ -248,6 +248,13 @@ public class ProviderController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Updates the name of a provider identified by its ID.
+     *
+     * @param providerId the unique identifier of the provider to be updated.
+     * @param newName the new name to be assigned to the provider.
+     * @return a ResponseEntity containing the updated Provider object if the operation is successful.
+     */
     @Operation(
             summary = "Update a provider",
             description = "Updates the name of a provider identified by ID.",

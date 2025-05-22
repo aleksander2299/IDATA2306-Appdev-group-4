@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Controller for managing room-related operations. Provides endpoints for retrieving, creating, updating,
  * and deleting rooms, as well as handling associated data like room providers, sources, occupied dates,
  * and images.
+ * NOTE: Java documentation was generated with help from ai to make sure it follows java documentation guidelines.
  */
 @RestController
 @RequestMapping("/api/rooms")
@@ -195,6 +196,15 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newRoom);
     }
 
+    /**
+     * Creates a room with a source linked by the provided sourceId.
+     * The method uses the sourceId to find a source, and if the source is found,
+     * it creates a room instance using the request body and saves it with the associated source.
+     *
+     * @param sourceId the ID of the source to be linked with the created room
+     * @param room the room object provided in the request body to be created and saved
+     * @return a ResponseEntity containing the created Room instance and an HTTP status of CREATED
+     */
     @Operation(
             summary = "creates a room with a source linked by sourceId ",
             description = "sourceID is used to find a source and if found creates a room from requestBody " +
@@ -237,10 +247,13 @@ public class RoomController {
     }
 
     /**
-     * This method was created with AI assistance
-     * @param roomId
-     * @param file
-     * @return
+     * Handles the upload of an image file to the specified room.
+     * The uploaded file is stored on the server, and the corresponding room's image URL is updated.
+     *
+     * @param roomId The ID of the room to which the image will be uploaded.
+     * @param file The MultipartFile representing the image to be uploaded.
+     * @return A ResponseEntity containing the generated filename if uploaded successfully,
+     * or an HTTP error status in case of failure.
      */
     @Operation(
             summary = "uploads image to room",
@@ -267,7 +280,16 @@ public class RoomController {
         return response;
     }
 
-
+    /**
+     * Deletes an image file from the directory "/images".
+     *
+     * @param filename the name of the image file to be deleted, provided as a path variable
+     * @return ResponseEntity with a status code:
+     *         - 200 (OK) if the image was successfully deleted
+     *         - 403 (Forbidden) if the user does not have the required role
+     *         - 404 (Not Found) if the file does not exist
+     *         - 500 (Internal Server Error) if an IO error occurred during deletion
+     */
     @Operation(
             summary = "delete image from /images",
             description = "deletes image from images",
@@ -290,6 +312,16 @@ public class RoomController {
         return response;
     }
 
+    /**
+     * Deletes the image associated with a specific room, identified by its room ID.
+     * This method removes the image URL reference from the room and deletes the
+     * corresponding image file from the local storage directory.
+     *
+     * @param roomId the unique identifier of the room whose image is to be deleted
+     * @return a ResponseEntity containing a success message with HTTP status 204 (No Content)
+     *         if the image was successfully deleted, or an error message with the appropriate
+     *         HTTP status in case of failure such as expectations not met or server errors.
+     */
     @Operation(
             summary = "delete image from room",
             description = "deletes image from room found from roomId",
