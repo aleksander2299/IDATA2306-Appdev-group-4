@@ -59,6 +59,7 @@ public class BookingController {
           }
   )
   @GetMapping("/all")
+  @PreAuthorize("hasAnyRole('ADMIN')")
   public ResponseEntity<Iterable<Booking>> getAll() {
     logger.info("Getting all bookings");
     return ResponseEntity.status(HttpStatus.OK).body(bookingService.getAllBookings());
@@ -79,6 +80,7 @@ public class BookingController {
           }
   )
   @GetMapping("/{bookingId}")
+  @PreAuthorize("hasAnyRole('ADMIN') or @bookingService.isBookingOwner(authentication, #bookingId)")
   public ResponseEntity<Booking> getBooking(@PathVariable Integer bookingId) {
     ResponseEntity<Booking> response;
     Optional<Booking> booking = this.bookingService.getBooking(bookingId);
@@ -101,6 +103,7 @@ public class BookingController {
           }
   )
   @GetMapping("/room")
+  @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
   public ResponseEntity<Iterable<Booking>> getWithRoom(@RequestBody Room room) {
     logger.info("Getting all the bookings with room {}", room.getRoomName());
     return ResponseEntity.status(HttpStatus.OK).body(bookingService.getAllBookingsByRoom(room));
@@ -156,6 +159,7 @@ public class BookingController {
           }
   )
   @PostMapping
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Booking> postBooking(@RequestBody Booking booking) {
     ResponseEntity<Booking> response;
     if (this.bookingService.addBooking(booking)) {
@@ -184,7 +188,7 @@ public class BookingController {
                   @ApiResponse(responseCode = "403", description = "The booking wasnt created and saved for various reasons I.E(security, wrong request body")
           }
   )
-  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+  @PreAuthorize("hasRole('ADMIN') or (hasAnyRole('USER', 'PROVIDER') and #username == authentication.name)")
   @PostMapping("/withIds/{roomProviderId}/{username}")
   public ResponseEntity<Booking> postBooking(@PathVariable Integer roomProviderId, @PathVariable String username, @RequestBody Booking booking) {
     ResponseEntity<Booking> response;
@@ -212,6 +216,7 @@ public class BookingController {
           }
   )
   @DeleteMapping("/{bookingId}")
+  @PreAuthorize("hasRole('ADMIN') or @bookingService.isBookingOwner(authentication, #bookingId)")
   public ResponseEntity<String> deleteBooking(@PathVariable Integer bookingId) {
     ResponseEntity<String> response;
 
@@ -250,6 +255,7 @@ public class BookingController {
           }
   )
 
+  @PreAuthorize("hasRole('ADMIN') or @bookingService.isBookingOwner(authentication, #bookingId)")
   @PutMapping()
   public ResponseEntity<String> updateBooking(
       @RequestParam(required = true) Integer bookingId,

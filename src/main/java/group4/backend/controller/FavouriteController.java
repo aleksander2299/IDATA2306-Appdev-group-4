@@ -50,6 +50,7 @@ public class FavouriteController {
             }
     )
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Iterable<Favourite> getAllFavourites() {
         return favouriteService.findAll();
     }
@@ -69,6 +70,7 @@ public class FavouriteController {
             }
     )
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @favouriteService.isOwner(authentication, #id)")
     public Optional<Favourite> getFavouriteById(@PathVariable Integer id) {
         return favouriteService.findById(id);
     }
@@ -127,7 +129,7 @@ public class FavouriteController {
                     @ApiResponse(responseCode = "403", description = "Error something is wrong, maybe authorization or request body")
             }
     )
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public Favourite createFavourite(@RequestBody Favourite favourite) {
         return favouriteService.saveFavourite(favourite);
@@ -151,7 +153,7 @@ public class FavouriteController {
                     @ApiResponse(responseCode = "500", description = "Unexpected server error")
             }
     )
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/withIds")
     public ResponseEntity<Favourite> createFavouriteWithIds(@RequestBody FavouriteWithOnlyIds basicFavourite) {
         ResponseEntity<Favourite> response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -187,8 +189,7 @@ public class FavouriteController {
                     @ApiResponse(responseCode = "417", description = "Deletion failed due to unmet expectations")
             }
     )
-    // TODO: Add authentication
-    @PreAuthorize("hasAnyRole('ADMIN') or #username == authentication.name")
+    @PreAuthorize("hasRole('ADMIN') or @favouriteService.isOwner(authentication, #id)")
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteFavouriteById(@PathVariable Integer id) {
         ResponseEntity<Integer> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
@@ -227,7 +228,7 @@ public class FavouriteController {
                     @ApiResponse(responseCode = "417", description = "Deletion failed due to unmet expectations")
             }
     )
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/withIds")
     public ResponseEntity<String> deleteFavouriteWithIds(@RequestBody FavouriteWithOnlyIds basicFavourite) {
         ResponseEntity<String> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
