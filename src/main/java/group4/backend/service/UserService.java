@@ -2,6 +2,7 @@ package group4.backend.service;
 
 import group4.backend.entities.User;
 import group4.backend.repository.UserRepository;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +31,7 @@ public class UserService {
   public boolean addUser(User user) {
     boolean added = false;
     if (canBeAdded(user)) {
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
       this.userRepository.save(user);
       added = true;
     }
@@ -57,14 +59,18 @@ public class UserService {
     return delete;
   }
 
-  public boolean updateUser(String nameOfUserToChange, User userToPut) {
-    boolean updated = false;
-    if (this.userRepository.findById(nameOfUserToChange).isPresent()) {
-      userToPut.setPassword(passwordEncoder.encode(userToPut.getPassword()));
-      this.userRepository.deleteById(nameOfUserToChange);
-      this.userRepository.save(userToPut);
-      updated = true;
+  public User updateUser(String nameOfUserToChange, User userToPut) {
+    if (this.userRepository.findById(nameOfUserToChange).isEmpty()) {
+      throw new NoSuchElementException("There are no user with username" + nameOfUserToChange);
     }
-    return updated;
+    if (this.userRepository.findById(userToPut.getUsername()).isPresent()) {
+      throw new IllegalArgumentException("Cannot change username");
+    }
+
+    userToPut.setPassword(passwordEncoder.encode(userToPut.getPassword()));
+    this.userRepository.deleteById(nameOfUserToChange);
+    this.userRepository.save(userToPut);
+
+    return userToPut;
   }
 }

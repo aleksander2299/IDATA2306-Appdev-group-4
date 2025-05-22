@@ -2,6 +2,7 @@ package group4.backend.controller;
 
 import group4.backend.entities.User;
 import group4.backend.service.UserService;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -167,10 +168,14 @@ public class UserController {
   )
   @PreAuthorize("hasRole('ADMIN') or (hasAnyRole('USER', 'PROVIDER') and #user.username == authentication.name)")
   @PutMapping("{username}")
-  public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody User user) {
-    ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("A user with that name was not found");
-    if (this.userService.updateUser(username, user)) {
-      response = ResponseEntity.status(HttpStatus.OK).body("Found and updated user: " + username);
+  public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User user) {
+    ResponseEntity<User> response;
+    try {
+      response = ResponseEntity.status(HttpStatus.OK).body(this.userService.updateUser(username, user));
+    } catch (IllegalArgumentException iAe) {
+      response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    } catch (NoSuchElementException nSeE) {
+      response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
     return response;
   }

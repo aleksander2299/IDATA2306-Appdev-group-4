@@ -2,10 +2,70 @@
 	"info": {
 		"_postman_id": "00fddca7-671c-4995-94c4-1508cdd3d451",
 		"name": "User tests",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "42432285"
 	},
 	"item": [
+		{
+			"name": "Register user Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newuser\",\r\n    \"password\": \"password123\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/authenticate/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Log in user Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"jwt\", pm.response.json().token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newuser\",\r\n    \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/authenticate/login"
+			},
+			"response": []
+		},
 		{
 			"name": "Get every user",
 			"event": [
@@ -32,16 +92,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/all",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"all"
-					]
-				}
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": "{{BASE_URL}}/all"
 			},
 			"response": []
 		},
@@ -62,6 +120,7 @@
 							"        count = parseInt(count);\r",
 							"\r",
 							"        pm.environment.set(\"user_count\", count + 1);\r",
+							"        pm.environment.set(\"user_password\", pm.response.json().password)\r",
 							"\r",
 							"        console.log(\"User created. Count is now:\", count + 1);\r",
 							"    } else {\r",
@@ -77,7 +136,13 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"TestNameTestUsername\",\r\n    \"password\": \"VerySecretTestPassword2\",\r\n    \"role\": \"ADMIN\"\r\n}",
@@ -87,12 +152,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{BASE_URL}}",
-					"host": [
-						"{{BASE_URL}}"
-					]
-				}
+				"url": "{{BASE_URL}}"
 			},
 			"response": []
 		},
@@ -115,7 +175,13 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"TestNameTestUsername\",\r\n    \"password\": \"DifferentPass\",\r\n    \"role\": \"PROVIDER\"\r\n}",
@@ -125,12 +191,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{BASE_URL}}",
-					"host": [
-						"{{BASE_URL}}"
-					]
-				}
+				"url": "{{BASE_URL}}"
 			},
 			"response": []
 		},
@@ -166,7 +227,13 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"AnotherTestName\",\r\n    \"password\": \"VerySecretTestPassword2\",\r\n    \"role\": \"ADMIN\"\r\n}",
@@ -176,12 +243,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{BASE_URL}}",
-					"host": [
-						"{{BASE_URL}}"
-					]
-				}
+				"url": "{{BASE_URL}}"
 			},
 			"response": []
 		},
@@ -207,16 +269,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/all",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"all"
-					]
-				}
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": "{{BASE_URL}}/all"
 			},
 			"response": []
 		},
@@ -238,7 +298,7 @@
 							"    pm.expect(jsonData).to.have.property(\"role\");\r",
 							"\r",
 							"    pm.expect(jsonData.username).to.eql(\"TestNameTestUsername\");\r",
-							"    pm.expect(jsonData.password).to.eql(\"VerySecretTestPassword2\");\r",
+							"    pm.expect(jsonData.password).to.eql(pm.environment.get(\"user_password\"));\r",
 							"    pm.expect(jsonData.role).to.eql(\"ADMIN\");\r",
 							"});"
 						],
@@ -249,16 +309,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/TestNameTestUsername",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"TestNameTestUsername"
-					]
-				}
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": "{{BASE_URL}}/TestNameTestUsername"
 			},
 			"response": []
 		},
@@ -271,6 +329,7 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
+							"    pm.environment.set(\"user_password\", pm.response.json().password)\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -280,7 +339,13 @@
 			],
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"Readable\",\r\n    \"password\": \"Memorable\",\r\n    \"role\": \"USER\"\r\n}",
@@ -290,15 +355,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{BASE_URL}}/TestNameTestUsername",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"TestNameTestUsername"
-					]
-				}
+				"url": "{{BASE_URL}}/TestNameTestUsername"
 			},
 			"response": []
 		},
@@ -320,16 +377,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/TestNameTestUsername",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"TestNameTestUsername"
-					]
-				}
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": "{{BASE_URL}}/TestNameTestUsername"
 			},
 			"response": []
 		},
@@ -351,7 +406,7 @@
 							"    pm.expect(jsonData).to.have.property(\"role\");\r",
 							"\r",
 							"    pm.expect(jsonData.username).to.eql(\"Readable\");\r",
-							"    pm.expect(jsonData.password).to.eql(\"Memorable\");\r",
+							"    pm.expect(jsonData.password).to.eql(pm.environment.get(\"user_password\"));\r",
 							"    pm.expect(jsonData.role).to.eql(\"USER\");\r",
 							"});"
 						],
@@ -362,16 +417,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/Readable",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"Readable"
-					]
-				}
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": "{{BASE_URL}}/Readable"
 			},
 			"response": []
 		},
@@ -406,7 +459,13 @@
 			],
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"AnotherTestName\",\r\n    \"password\": \"VerySecretTestPassword2\",\r\n    \"role\": \"ADMIN\"\r\n}",
@@ -416,12 +475,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{BASE_URL}}",
-					"host": [
-						"{{BASE_URL}}"
-					]
-				}
+				"url": "{{BASE_URL}}"
 			},
 			"response": []
 		},
@@ -443,7 +497,13 @@
 			],
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"Readable\",\r\n    \"password\": \"VerySecretTestPassword2\",\r\n    \"role\": \"USER\"\r\n}",
@@ -453,12 +513,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{BASE_URL}}",
-					"host": [
-						"{{BASE_URL}}"
-					]
-				}
+				"url": "{{BASE_URL}}"
 			},
 			"response": []
 		},
@@ -493,7 +548,13 @@
 			],
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"Readable\",\r\n    \"password\": \"Memorable\",\r\n    \"role\": \"USER\"\r\n}",
@@ -503,12 +564,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{BASE_URL}}",
-					"host": [
-						"{{BASE_URL}}"
-					]
-				}
+				"url": "{{BASE_URL}}"
 			},
 			"response": []
 		},
@@ -530,7 +586,13 @@
 			],
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"Readable\",\r\n    \"password\": \"Memorable\",\r\n    \"role\": \"USER\"\r\n}",
@@ -540,12 +602,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{BASE_URL}}",
-					"host": [
-						"{{BASE_URL}}"
-					]
-				}
+				"url": "{{BASE_URL}}"
 			},
 			"response": []
 		},
@@ -571,16 +628,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/all",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"all"
-					]
-				}
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": "{{BASE_URL}}/all"
 			},
 			"response": []
 		}
