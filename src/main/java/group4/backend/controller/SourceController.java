@@ -45,6 +45,7 @@ public class SourceController {
                     @ApiResponse(responseCode = "404", description = "source not found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/{id}")
     public ResponseEntity<Source> getSource(@PathVariable("id") int id) {
         Optional<Source> sourceOptional = sourceService.getSourceById(id);
@@ -65,6 +66,7 @@ public class SourceController {
                     @ApiResponse(responseCode = "204", description = "no content")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping()
     public ResponseEntity<List<Source>> getAllSources(){
         List<Source> sources = sourceService.getAllSources();

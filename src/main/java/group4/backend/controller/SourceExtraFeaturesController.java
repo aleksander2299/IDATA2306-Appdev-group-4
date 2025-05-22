@@ -52,6 +52,7 @@ public class SourceExtraFeaturesController {
                     @ApiResponse(responseCode = "404", description = "source not found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/source/{id}")
     public ResponseEntity<Source> getSource(@PathVariable("id") int id) {
         Optional<Source> sourceOptional = sourceService.getSourceById(id);
@@ -73,6 +74,7 @@ public class SourceExtraFeaturesController {
                     @ApiResponse(responseCode = "204", description = "No content")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/source")
     public ResponseEntity<List<Source>> getAllSources(){
         List<Source> sources = sourceService.getAllSources();
@@ -98,6 +100,7 @@ public class SourceExtraFeaturesController {
                     @ApiResponse(responseCode = "404", description = "feature not found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/extra_features/{id}")
     public ResponseEntity<ExtraFeatures> getFeatures(@PathVariable("id") String id) {
         Optional<ExtraFeatures> extraFeaturesOptional = extraFeaturesService.getFeatureById(id);
@@ -120,6 +123,7 @@ public class SourceExtraFeaturesController {
                     @ApiResponse(responseCode = "200", description = "found extra features and returned")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/extra_features/sourceFeatures/{SourceId}")
     public ResponseEntity<List<ExtraFeatures>> getFeaturesForSource(@PathVariable("SourceId") int SourceId) {
         Optional<Source> sourceOptional = sourceService.getSourceById(SourceId);
@@ -204,6 +208,7 @@ public class SourceExtraFeaturesController {
                     @ApiResponse(responseCode = "204", description = "no content")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping()
     public ResponseEntity<List<SourceExtraFeatures>> getAllSourceExtraFeatures() {
         List<SourceExtraFeatures> sourceExtraFeatures = sourceExtraFeaturesService.getAllSourceExtraFeatures();

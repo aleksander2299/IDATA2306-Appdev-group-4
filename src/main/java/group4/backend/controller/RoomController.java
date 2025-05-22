@@ -58,6 +58,7 @@ public class RoomController {
                     @ApiResponse(responseCode = "404", description = "Room not found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/{id}")
     public ResponseEntity<Room> getRoom(@PathVariable("id") int id) {
         Optional<Room> roomOptional = roomService.getRoomById(id);
@@ -79,6 +80,7 @@ public class RoomController {
                     @ApiResponse(responseCode = "404", description = "source not found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/{id}/source")
     public ResponseEntity<Source> getSource(@PathVariable("id") int id){
         Optional<Source> source = Optional.ofNullable(roomService.getRoomById(id).get().getSource());
@@ -98,6 +100,7 @@ public class RoomController {
                     @ApiResponse(responseCode = "403",description = "expectations not met")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/{id}/roomProviders")
     public ResponseEntity<Iterable<RoomProvider>> getRoomProviders(@PathVariable("id") int id) {
         ResponseEntity<Iterable<RoomProvider>> response = null;
@@ -126,6 +129,7 @@ public class RoomController {
                     @ApiResponse(responseCode = "204", description = "no rooms in list")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping()
     public ResponseEntity<List<Room>> getAllRooms(){
         List<Room> rooms = roomService.getAllRooms();
@@ -151,6 +155,7 @@ public class RoomController {
                     @ApiResponse(responseCode = "200", description = "list of dates returned"),
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/{roomId}/dates")
     public ResponseEntity<List<LocalDate[]>> getOccupiedDates(@PathVariable Integer roomId) {
         ResponseEntity<List<LocalDate[]>> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
@@ -406,6 +411,7 @@ public class RoomController {
                     @ApiResponse(responseCode = "204", description = "No rooms match the query")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/search")
     public ResponseEntity<List<Room>> searchRooms(@RequestParam("query") String query) {
         if (query == null || query.isEmpty()) {

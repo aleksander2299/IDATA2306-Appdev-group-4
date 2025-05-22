@@ -48,6 +48,7 @@ public class RoomProviderController {
                     @ApiResponse(responseCode = "404", description = "not found roomProvider")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/{id}")
     public ResponseEntity<RoomProvider> findById(@PathVariable("id") int id){
         Optional<RoomProvider> roomProvider = roomProviderService.findById(id);
@@ -71,6 +72,7 @@ public class RoomProviderController {
                     @ApiResponse(responseCode = "204", description = "no roomProviders found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping()
     public ResponseEntity<List<RoomProvider>> findAll(){
         List<RoomProvider> roomProviderList = roomProviderService.findAll();
@@ -125,7 +127,8 @@ public class RoomProviderController {
                     @ApiResponse(responseCode = "404", description = "roomProviders not found")
             }
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping()
     public ResponseEntity<RoomProvider> deleteAll(){
         if(roomProviderService.findAll().isEmpty()){
             return ResponseEntity.noContent().build();

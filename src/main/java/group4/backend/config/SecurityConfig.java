@@ -51,16 +51,19 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                        .requestMatchers(HttpMethod.GET,"/api/rooms/search").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/rooms").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/rooms/{id}/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET,"/api/source_extra_features/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/source/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/extra_features/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/providers/**").permitAll()
+
                         .requestMatchers(HttpMethod.DELETE, "/api/roomProvider/unlink/**").hasAnyRole("ADMIN", "PROVIDER")
                         .requestMatchers(HttpMethod.DELETE, "/api/roomProvider/*").hasAnyRole("ADMIN", "PROVIDER")
-                        .requestMatchers("/api/rooms").permitAll()
-                        .requestMatchers("/api/rooms/**").permitAll()
-                        .requestMatchers("/api/source_extra_features/**").permitAll()
-                        .requestMatchers("/api/source/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/providers").permitAll()
-                        .requestMatchers("/api/extra_features/**").permitAll()
-                        .requestMatchers("/api/user/**").permitAll()
-                        .requestMatchers("/api/providers/**").permitAll()
+
+                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement((session) ->
