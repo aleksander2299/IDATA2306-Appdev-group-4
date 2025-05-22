@@ -41,6 +41,7 @@ public class ProviderController {
                     @ApiResponse(responseCode = "204", description = "No providers found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping()
     public ResponseEntity<List<Provider>> getProviders(){
         List<Provider> providerList = providerService.getAllProviders();
@@ -58,6 +59,7 @@ public class ProviderController {
                     @ApiResponse(responseCode = "404", description = "Provider not found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/withId/{numericId}/roomProviders")
     public ResponseEntity<Optional<Provider>> getRoomProvidersId(@PathVariable("numericId") int numericId) {
         Optional<Provider> rooms= providerService.getProviderById(numericId);
@@ -85,7 +87,7 @@ public class ProviderController {
                     @ApiResponse(responseCode = "404", description = "No room providers found for the given provider")
             }
     )
-    @PreAuthorize("hasAnyRole('PROVIDER')")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('PROVIDER') and #providerName == authentication.name)")
     @GetMapping("/{provider_name}/roomProviders")
     public ResponseEntity<Iterable<RoomProvider>> getRoomProviders(@PathVariable("provider_name") String providerName) {
         Iterable<RoomProvider> rooms= providerService.getRoomProviders(providerName);
@@ -115,6 +117,7 @@ public class ProviderController {
                     @ApiResponse(responseCode = "404", description = "Provider not found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/{id}")
     public ResponseEntity<Provider> getProvider(@PathVariable("id") int id){
         Optional<Provider> providerOptional = providerService.getProviderById(id);
@@ -131,6 +134,7 @@ public class ProviderController {
                     @ApiResponse(responseCode = "404", description = "Provider not found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/byName/{providerName}")
     public ResponseEntity<Provider> getProviderByName(@PathVariable("providerName") String providerName){
         Optional<Provider> providerOptional = providerService.getProviderByName(providerName);
@@ -180,7 +184,7 @@ public class ProviderController {
                     @ApiResponse(responseCode = "400", description = "Invalid provider list")
             }
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/bulk")
     public ResponseEntity<List<Provider>> createRooms(@RequestBody List<Provider> providers){
         if(providers.isEmpty()){
@@ -234,7 +238,7 @@ public class ProviderController {
                     @ApiResponse(responseCode = "204", description = "No providers to delete")
             }
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping()
     public ResponseEntity<Void> deleteAllRoom() {
         List<Provider> providers = providerService.getAllProviders();

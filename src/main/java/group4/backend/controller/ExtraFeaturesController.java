@@ -40,6 +40,7 @@ public class ExtraFeaturesController {
                     @ApiResponse(responseCode = "404", description = "extra feature object was not found")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping("/{id}")
     public ResponseEntity<ExtraFeatures> getFeature(@PathVariable("id") String id) {
         Optional<ExtraFeatures> extraFeaturesOptional = extraFeaturesService.getFeatureById(id);
@@ -60,6 +61,7 @@ public class ExtraFeaturesController {
                     @ApiResponse(responseCode = "204", description = "list is empty")
             }
     )
+    @PreAuthorize("permitAll")
     @GetMapping()
     public ResponseEntity<List<ExtraFeatures>> getAllFeatures() {
         List<ExtraFeatures> features = extraFeaturesService.getAllFeatures();
@@ -110,6 +112,7 @@ public class ExtraFeaturesController {
             }
     )
     @PostMapping("/bulk")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ExtraFeatures>> createFeatures(@RequestBody List<ExtraFeatures> features) {
         if(features.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(features);
@@ -136,6 +139,7 @@ public class ExtraFeaturesController {
                     @ApiResponse(responseCode = "404", description = "feature not found")
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ExtraFeatures> deleteFeature(@PathVariable("id") String id) {
         if(extraFeaturesService.getFeatureById(id).isPresent()) {
@@ -162,6 +166,7 @@ public class ExtraFeaturesController {
                     @ApiResponse(responseCode = "403", description = "something went wrong like request body might be wrong or authorization")
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping()
     public ResponseEntity<Void> deleteAllFeatures() {
         List<ExtraFeatures> features = extraFeaturesService.getAllFeatures();
