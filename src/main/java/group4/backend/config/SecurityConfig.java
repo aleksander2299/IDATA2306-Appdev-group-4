@@ -63,7 +63,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/roomProvider/unlink/**").hasAnyRole("ADMIN", "PROVIDER")
                         .requestMatchers(HttpMethod.DELETE, "/api/roomProvider/*").hasAnyRole("ADMIN", "PROVIDER")
 
-                        .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/roomProvider/**").hasAnyRole("ADMIN", "PROVIDER")
 
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().authenticated()
