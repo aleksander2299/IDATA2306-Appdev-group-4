@@ -58,7 +58,7 @@ public class ProviderController {
                     @ApiResponse(responseCode = "404", description = "Provider not found")
             }
     )
-    @GetMapping("/withId/{numericId}/roomProviders)")
+    @GetMapping("/withId/{numericId}/roomProviders")
     public ResponseEntity<Optional<Provider>> getRoomProvidersId(@PathVariable("numericId") int numericId) {
         Optional<Provider> rooms= providerService.getProviderById(numericId);
         if (rooms.isEmpty()) {
