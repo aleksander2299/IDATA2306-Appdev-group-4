@@ -8,8 +8,11 @@ authorities, the project is to be secured with JWT authentication and the user o
 search for rooms, change settings and login and logout etc. it is supposed to be a hotel room aggregator like trivago
 
 ## Website
-To go to the website with backend and frontend combined the url is: http://10.212.27.153/
+To go to the website with backend and frontend combined the url is: [http://10.212.27.153/](http://10.212.27.153/)
+also url for swagger online will be:  [http://10.212.27.153/swagger-ui/index.html#/](http://10.212.27.153:8080/swagger-ui/index.html#/)
 
+## Local swagger 
+swagger url if you're running locally: http://localhost:8080/swagger-ui/index.html#/
 
 ## Tech Stack
 - Java 21

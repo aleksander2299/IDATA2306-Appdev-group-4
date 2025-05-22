@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
 
 /**
  * Service class for managing booking-related operations in the system.
@@ -209,5 +210,32 @@ public class BookingService {
       // Save the updated entity
     }
     return altered;
+  }
+
+  /**
+   * Checks if the currently authenticated user is the owner of the booking.
+   * Simplified with explicit if statements.
+   *
+   * @param authentication The current authentication object.
+   * @param bookingId      The ID of the booking to check.
+   * @return true if the user is the owner, false otherwise.
+   * NOTE: AI was used to help fully generate this authentication
+   */
+  public boolean isBookingOwner(Authentication authentication, Integer bookingId) {
+    if (authentication == null || bookingId == null ||
+            !authentication.isAuthenticated()) {
+      return false;
+    }
+
+    Optional<Booking> booking = this.bookingRepository.findById(bookingId);
+    if (booking.isEmpty()) {
+      return false;
+    }
+    Booking bookingObject = booking.get();
+    if (bookingObject.getUser() != null &&
+            bookingObject.getUser().getUsername() != null) {
+      return bookingObject.getUser().getUsername().equals(authentication.getName());
+    }
+    return false;
   }
 }

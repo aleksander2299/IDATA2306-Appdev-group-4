@@ -48,6 +48,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         // Will change however need to test this first
                         .requestMatchers("/api/authenticate/**").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         .requestMatchers(HttpMethod.DELETE, "/api/roomProvider/unlink/**").hasAnyRole("ADMIN", "PROVIDER")
                         .requestMatchers(HttpMethod.DELETE, "/api/roomProvider/*").hasAnyRole("ADMIN", "PROVIDER")
                         .requestMatchers("/api/rooms").permitAll()
@@ -58,8 +61,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/extra_features/**").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers("/api/providers/**").permitAll()
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement((session) ->

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -85,6 +86,7 @@ public class ExtraFeaturesController {
             }
     )
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ExtraFeatures> createFeature(@RequestBody ExtraFeatures feature) {
          ExtraFeatures newFeature = extraFeaturesService.saveFeature(feature);
         return ResponseEntity.status(HttpStatus.CREATED).body(newFeature);

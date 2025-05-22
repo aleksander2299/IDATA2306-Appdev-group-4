@@ -7,6 +7,7 @@ import group4.backend.entities.User;
 import group4.backend.service.BookingService;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -58,6 +59,7 @@ public class BookingController {
           }
   )
   @GetMapping("/all")
+  @PreAuthorize("hasAnyRole('ADMIN')")
   public ResponseEntity<Iterable<Booking>> getAll() {
     logger.info("Getting all bookings");
     return ResponseEntity.status(HttpStatus.OK).body(bookingService.getAllBookings());
@@ -78,6 +80,7 @@ public class BookingController {
           }
   )
   @GetMapping("/{bookingId}")
+  @PreAuthorize("hasAnyRole('ADMIN') or @bookingService.isBookingOwner(authentication, #bookingId)")
   public ResponseEntity<Booking> getBooking(@PathVariable Integer bookingId) {
     ResponseEntity<Booking> response;
     Optional<Booking> booking = this.bookingService.getBooking(bookingId);
@@ -100,6 +103,7 @@ public class BookingController {
           }
   )
   @GetMapping("/room")
+  @PreAuthorize("hasAnyRole('ADMIN', 'PROVIDER')")
   public ResponseEntity<Iterable<Booking>> getWithRoom(@RequestBody Room room) {
     logger.info("Getting all the bookings with room {}", room.getRoomName());
     return ResponseEntity.status(HttpStatus.OK).body(bookingService.getAllBookingsByRoom(room));
@@ -119,21 +123,22 @@ public class BookingController {
           }
   )
   @GetMapping("/user/{username}")
+  @PreAuthorize("hasAnyRole('ADMIN') or #username == authentication.name")
   public ResponseEntity<Iterable<Booking>> getWithUserId(@PathVariable String username) {
     logger.info("Getting all the bookings with room id: {}", username);
-    ResponseEntity<Iterable<Booking>> response = null;
-    Iterable<Booking> bookings = null;
+    ResponseEntity<Iterable<Booking>> response;
+    Iterable<Booking> bookings;
     try {
       bookings = this.bookingService.getAllBookingsBelongingToUsername(username);
+      response = ResponseEntity.ok(bookings);
     } catch (IllegalArgumentException iAe) {
       logger.error(iAe.getMessage());
-      response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
     } catch (NoSuchElementException nSeE) {
       logger.error(nSeE.getMessage());
-      response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-    if (bookings != null) {
-      response = ResponseEntity.status(HttpStatus.OK).body(bookings);
+      response = ResponseEntity.ok(Collections.emptyList());
+    } catch (Exception e) {
+      response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
     }
     return response;
   }
@@ -154,6 +159,7 @@ public class BookingController {
           }
   )
   @PostMapping
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Booking> postBooking(@RequestBody Booking booking) {
     ResponseEntity<Booking> response;
     if (this.bookingService.addBooking(booking)) {
@@ -182,7 +188,7 @@ public class BookingController {
                   @ApiResponse(responseCode = "403", description = "The booking wasnt created and saved for various reasons I.E(security, wrong request body")
           }
   )
-  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+  @PreAuthorize("hasRole('ADMIN') or (hasAnyRole('USER', 'PROVIDER') and #username == authentication.name)")
   @PostMapping("/withIds/{roomProviderId}/{username}")
   public ResponseEntity<Booking> postBooking(@PathVariable Integer roomProviderId, @PathVariable String username, @RequestBody Booking booking) {
     ResponseEntity<Booking> response;
@@ -210,6 +216,7 @@ public class BookingController {
           }
   )
   @DeleteMapping("/{bookingId}")
+  @PreAuthorize("hasRole('ADMIN') or @bookingService.isBookingOwner(authentication, #bookingId)")
   public ResponseEntity<String> deleteBooking(@PathVariable Integer bookingId) {
     ResponseEntity<String> response;
 
@@ -248,6 +255,7 @@ public class BookingController {
           }
   )
 
+  @PreAuthorize("hasRole('ADMIN') or @bookingService.isBookingOwner(authentication, #bookingId)")
   @PutMapping()
   public ResponseEntity<String> updateBooking(
       @RequestParam(required = true) Integer bookingId,
