@@ -147,12 +147,18 @@ public class Room {
         this.roomType = roomType;
     }
 
-
+    /**
+     * sets the image url to a new image url
+     * @param imageUrl the new image url
+     */
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
-
+    /**
+     * returns the image url of the room
+     * @return the image url of the room
+     */
     public String getImageUrl(){
         return this.imageUrl;
     }
