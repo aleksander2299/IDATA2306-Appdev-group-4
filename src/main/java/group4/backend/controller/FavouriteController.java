@@ -127,6 +127,7 @@ public class FavouriteController {
                     @ApiResponse(responseCode = "403", description = "Error something is wrong, maybe authorization or request body")
             }
     )
+    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping
     public Favourite createFavourite(@RequestBody Favourite favourite) {
         return favouriteService.saveFavourite(favourite);

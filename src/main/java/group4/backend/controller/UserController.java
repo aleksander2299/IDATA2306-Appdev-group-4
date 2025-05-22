@@ -75,6 +75,7 @@ public class UserController {
           }
   )
   @GetMapping("/all")
+  @PreAuthorize("hasAnyRole('ADMIN')")
   public ResponseEntity<Iterable<User>> getAll() {
     return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUsers());
   }
