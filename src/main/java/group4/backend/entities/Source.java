@@ -1,6 +1,9 @@
 package group4.backend.entities;
 
 import jakarta.persistence.*;
+
+import java.util.List;
+
 /**
  * class representing source table in our database. responsible for holding source_id, source_name and location_type.
  */
@@ -23,6 +26,9 @@ public class Source implements Comparable<Source>{
 
     @Column(name = "country", nullable = false)
     private String country;
+
+    @OneToMany(mappedBy = "sourceId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SourceExtraFeatures> sourceExtraFeatures;
 
 
     /**

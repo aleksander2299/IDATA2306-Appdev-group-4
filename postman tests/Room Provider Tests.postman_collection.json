@@ -1,16 +1,116 @@
 {
 	"info": {
-		"_postman_id": "25eb4e9a-cf7a-4f20-b306-b8401defbe7c",
-		"name": "test roomProvider",
+		"_postman_id": "979022e2-b6d2-4413-8531-847178c5cb78",
+		"name": "Room Provider Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "42374620"
+		"_exporter_id": "42375213"
 	},
 	"item": [
 		{
-			"name": "add a source to link room in update Copy",
+			"name": "Admin register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newadmin\",\r\n    \"password\": \"password1234\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/authenticate/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"authenticate",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the JSON response body\r",
+							"const json = pm.response.json();\r",
+							"\r",
+							"// Check if the token exists and save it\r",
+							"if (json.token) {\r",
+							"    pm.environment.set(\"jwt\", json.token);\r",
+							"    console.log(\"JWT token saved to environment variable.\");\r",
+							"} else {\r",
+							"    console.log(\"Token not found in response.\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"newadmin\",\r\n    \"password\": \"password1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/authenticate/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"authenticate",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add a source to link room in update",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"sourceName\" : \"Thon Hotel Ålesund\",\r\n    \"locationType\" : \"Suite\",\r\n    \"city\" : \"Ålesund\",\r\n    \"country\" : \"Norway\"\r\n}",
@@ -36,13 +136,19 @@
 			"response": []
 		},
 		{
-			"name": "post room with source Copy",
+			"name": "post room with source",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n    {\r\n        \"roomName\": \"Room 101\",\r\n        \"description\": \"A cozy single room\",\r\n        \"visibility\": true,\r\n        \"roomType\": \"Single\",\r\n        \"imageurl\": \"http://example.com/room101.jpg\"\r\n    },\r\n    {\r\n        \"roomName\": \"Room 102\",\r\n        \"description\": \"A spacious double room\",\r\n        \"visibility\": true,\r\n        \"roomType\": \"Double\",\r\n        \"imageurl\": \"http://example.com/room102.jpg\"\r\n    }\r\n]\r\n",
+					"raw": "{\r\n    \"roomName\": \"Room 101\",\r\n    \"description\": \"A cozy single room\",\r\n    \"visibility\": true,\r\n    \"roomType\": \"Single\",\r\n    \"imageurl\": \"http://example.com/room101.jpg\"\r\n}\r\n\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -50,7 +156,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/rooms/bulk",
+					"raw": "http://localhost:8080/api/rooms/withSource/10",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -59,17 +165,24 @@
 					"path": [
 						"api",
 						"rooms",
-						"bulk"
+						"withSource",
+						"10"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "post individual provider Copy",
+			"name": "post individual provider",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n  \"providerName\": \"Hotels.com\"\r\n}",
@@ -95,10 +208,16 @@
 			"response": []
 		},
 		{
-			"name": "get providers Copy",
+			"name": "get providers",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/providers",
 					"protocol": "http",
@@ -115,10 +234,16 @@
 			"response": []
 		},
 		{
-			"name": "get room id 1 Copy",
+			"name": "get room id 1",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/rooms/1",
 					"protocol": "http",
@@ -139,10 +264,16 @@
 			"name": "make new roomProvider",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"roomId\": 1,\r\n    \"providerId\": 1,\r\n    \"roomPrice\": 1000\r\n}\r\n",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -150,7 +281,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/roomProvider",
+					"raw": "http://localhost:8080/api/roomProvider/link/1/3/1000",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -158,7 +289,11 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"roomProvider"
+						"roomProvider",
+						"link",
+						"1",
+						"3",
+						"1000"
 					]
 				}
 			},
@@ -168,9 +303,15 @@
 			"name": "test getting roomProvider 1",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8080/api/roomProvider/1",
+					"raw": "http://localhost:8080/api/roomProvider/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -179,7 +320,7 @@
 					"path": [
 						"api",
 						"roomProvider",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -189,7 +330,13 @@
 			"name": "post provider 2",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n  \"providerName\": \"airbnb.com\"\r\n}",
@@ -218,7 +365,13 @@
 			"name": "get all rooms",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/rooms",
 					"protocol": "http",
@@ -238,10 +391,16 @@
 			"name": "make second roomProvider",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"roomId\": 2,\r\n    \"providerId\": 2,\r\n    \"roomPrice\": 10000\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -249,7 +408,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/roomProvider",
+					"raw": "http://localhost:8080/api/roomProvider/link/2/2/10000",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -257,7 +416,11 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"roomProvider"
+						"roomProvider",
+						"link",
+						"2",
+						"2",
+						"10000"
 					]
 				}
 			},
@@ -267,7 +430,13 @@
 			"name": "test getting all roomProvider",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/roomProvider",
 					"protocol": "http",
@@ -287,10 +456,16 @@
 			"name": "test update provider 1",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"roomId\": 2,\r\n    \"providerId\": 2,\r\n    \"roomPrice\": 10000\r\n}",
+					"raw": "{\r\n  \"room\": {\r\n    \"roomId\": 3\r\n  },\r\n  \"provider\": {\r\n    \"providerId\": 2\r\n  },\r\n  \"roomPrice\": 100000\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

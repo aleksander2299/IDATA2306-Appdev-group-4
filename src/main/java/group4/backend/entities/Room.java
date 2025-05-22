@@ -39,7 +39,7 @@ public class Room {
     private String roomType;
 
     @Column(name = "image_url")
-    private String imageurl;
+    private String imageUrl;
 
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -148,13 +148,13 @@ public class Room {
     }
 
 
-    public void setImageurl(String imageUrl) {
-        this.imageurl = imageUrl;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 
     public String getImageUrl(){
-        return this.imageurl;
+        return this.imageUrl;
     }
 
 }

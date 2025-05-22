@@ -167,7 +167,7 @@ public class RoomService {
   public void updateRoomImageUrl(Integer roomId, String url) {
     Room room = this.roomRepository.findById(roomId)
         .orElseThrow(() -> new IllegalArgumentException("Room not found"));
-    room.setImageurl(url);
+    room.setImageUrl(url);
     this.roomRepository.save(room);
   }
 
@@ -175,7 +175,7 @@ public class RoomService {
   public void clearImageUrl(int roomId) {
     Room room = this.roomRepository.findById(roomId)
         .orElseThrow(() -> new IllegalArgumentException("Room not found"));
-    room.setImageurl("");
+    room.setImageUrl("");
     roomRepository.save(room);
   }
 
@@ -225,7 +225,7 @@ public class RoomService {
       room.setRoomType(roomType);
     }
     if (imageUrl != null) {
-      room.setImageurl(imageUrl);
+      room.setImageUrl(imageUrl);
     }
 
     return roomRepository.save(room);
