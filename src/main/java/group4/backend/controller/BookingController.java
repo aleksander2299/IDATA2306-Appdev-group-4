@@ -119,6 +119,7 @@ public class BookingController {
           }
   )
   @GetMapping("/user/{username}")
+  @PreAuthorize("hasAnyRole('ADMIN') or @bookingService.isBookingOwner(authentication, bookingId)")
   public ResponseEntity<Iterable<Booking>> getWithUserId(@PathVariable String username) {
     logger.info("Getting all the bookings with room id: {}", username);
     ResponseEntity<Iterable<Booking>> response = null;
