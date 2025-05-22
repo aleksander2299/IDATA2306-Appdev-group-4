@@ -1,25 +1,13 @@
 {
 	"info": {
-		"_postman_id": "99bf89ec-c521-48b1-a918-97d32d5dbf29",
-		"name": "Source Extra Features Tests",
+		"_postman_id": "dc73e665-8966-4b51-be83-f10038b5978c",
+		"name": "Room Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "42375213"
 	},
 	"item": [
 		{
 			"name": "Admin register",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -70,6 +58,13 @@
 						"type": "text/javascript",
 						"packages": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -101,7 +96,7 @@
 			"response": []
 		},
 		{
-			"name": "Post /api/source",
+			"name": "add a source to link room in update",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -113,7 +108,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"sourceName\" : \"Thon Hotel Ålesund\",\r\n    \"locationType\" : \"Suite\",\r\n    \"city\" : \"Ålesund\",\r\n    \"country\" : \"Norway\"\r\n}\r\n\r\n",
+					"raw": "{\r\n    \"sourceName\" : \"Thon Hotel Ålesund\",\r\n    \"locationType\" : \"Suite\",\r\n    \"city\" : \"Ålesund\",\r\n    \"country\" : \"Norway\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -136,7 +131,7 @@
 			"response": []
 		},
 		{
-			"name": "Post /api/extra_features",
+			"name": "post room with source",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -148,7 +143,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"feature\" : \"internet included.\"\r\n}",
+					"raw": "{\r\n    \"roomName\": \"Room 101\",\r\n    \"description\": \"A cozy single room\",\r\n    \"visibility\": true,\r\n    \"roomType\": \"Single\",\r\n    \"imageurl\": \"http://example.com/room101.jpg\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -156,7 +151,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/extra_features",
+					"raw": "http://localhost:8080/api/rooms/withSource/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -164,14 +159,52 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"extra_features"
+						"rooms",
+						"withSource",
+						"3"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get /api/source_extra_features/source/1",
+			"name": "post list to /bulk",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"roomName\": \"Room 101\",\r\n        \"description\": \"A cozy single room\",\r\n        \"visibility\": true,\r\n        \"roomType\": \"Single\",\r\n        \"imageUrl\": \"http://example.com/room101.jpg\",\r\n        \"source\": {\r\n    \"sourceId\": 1\r\n  }\r\n    },\r\n    {\r\n        \"roomName\": \"Room 102\",\r\n        \"description\": \"A spacious double room\",\r\n        \"visibility\": true,\r\n        \"roomType\": \"Double\",\r\n        \"imageUrl\": \"http://example.com/room102.jpg\",\r\n        \"source\": {\r\n    \"sourceId\": 2\r\n  }\r\n    }\r\n]\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/rooms/bulk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rooms",
+						"bulk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get room id 1",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -182,7 +215,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/api/source_extra_features/source/1",
+					"raw": "http://localhost:8080/api/rooms/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -190,100 +223,15 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"source_extra_features",
-						"source",
+						"rooms",
 						"1"
-					],
-					"query": [
-						{
-							"key": "",
-							"value": null,
-							"disabled": true
-						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get /api/source_extra_features/extra_features/internet included.",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{jwt}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/source_extra_features/extra_features/internet included.",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"source_extra_features",
-						"extra_features",
-						"internet included."
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Link source to feature",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{jwt}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/source_extra_features/1/internet included.",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"source_extra_features",
-						"1",
-						"internet included."
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get /api/source_extra_features",
+			"name": "test get source",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -294,7 +242,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/api/source_extra_features",
+					"raw": "http://localhost:8080/api/source",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -302,7 +250,149 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"source_extra_features"
+						"source"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update room id 1",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"roomName\": \"ROOM UPDATED\",\r\n  \"source\": {\r\n    \"sourceId\": 2\r\n  },\r\n  \"description\": \"A cozy single UPDATED ROOM\",\r\n  \"visibility\": true,\r\n  \"roomType\": \"Single UPDATED\",\r\n  \"imageUrl\": \"http://example.com/room101.jpg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/rooms/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rooms",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get room id 2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/rooms/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rooms",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete test",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/rooms/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rooms",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all rooms after deleting one",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/rooms",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test delete all",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/rooms",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rooms"
 					]
 				}
 			},

@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "cb7b371e-bafb-4dfc-8973-4335fcfa4e18",
-		"name": "Extra Features Tests",
+		"_postman_id": "6aa8f105-65e5-45d7-a8d3-550f45e6a5c2",
+		"name": "Provider Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "42375213"
 	},
@@ -58,6 +58,13 @@
 						"type": "text/javascript",
 						"packages": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -89,7 +96,7 @@
 			"response": []
 		},
 		{
-			"name": "Post /api/extra_features",
+			"name": "post individual provider",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -101,7 +108,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"feature\" : \"internet included.\"\r\n}",
+					"raw": "{\r\n    \"providerId\": \"1\",\r\n    \"providerName\": \"Airbnb2\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -109,7 +116,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/extra_features",
+					"raw": "http://localhost:8080/api/providers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -117,14 +124,50 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"extra_features"
+						"providers"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get /api/extra_features/internet included.",
+			"name": "post bulk provider",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n    \"providerId\": \"2\",\r\n    \"providerName\": \"Airbnb3\"\r\n    },\r\n    {\r\n    \"providerId\": \"3\",\r\n    \"providerName\": \"Airbnb4\"\r\n}\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/providers/bulk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"providers",
+						"bulk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get providers",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -135,7 +178,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/api/extra_features/internet included.",
+					"raw": "http://localhost:8080/api/providers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -143,14 +186,48 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"extra_features",
-						"internet included."
+						"providers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test updating provider",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/providers/5?newName=Airbnb7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"providers",
+						"5"
 					],
 					"query": [
 						{
-							"key": "",
-							"value": null,
-							"disabled": true
+							"key": "newName",
+							"value": "Airbnb7"
 						}
 					]
 				}
@@ -158,7 +235,34 @@
 			"response": []
 		},
 		{
-			"name": "Delete /api/extra_features/string",
+			"name": "get individual provider",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/providers/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"providers",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test deleting provider",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -169,7 +273,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/api/extra_features/internet included.",
+					"raw": "http://localhost:8080/api/providers/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -177,34 +281,8 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"extra_features",
-						"internet included."
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get /api/extra_features",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{jwt}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/api/extra_features",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"extra_features"
+						"providers",
+						"3"
 					]
 				}
 			},
