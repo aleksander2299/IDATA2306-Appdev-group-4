@@ -7,6 +7,7 @@ import group4.backend.entities.User;
 import group4.backend.service.BookingService;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -119,22 +120,22 @@ public class BookingController {
           }
   )
   @GetMapping("/user/{username}")
-  @PreAuthorize("hasAnyRole('ADMIN') or @bookingService.isBookingOwner(authentication, bookingId)")
+  @PreAuthorize("hasAnyRole('ADMIN') or #username == authentication.name")
   public ResponseEntity<Iterable<Booking>> getWithUserId(@PathVariable String username) {
     logger.info("Getting all the bookings with room id: {}", username);
-    ResponseEntity<Iterable<Booking>> response = null;
-    Iterable<Booking> bookings = null;
+    ResponseEntity<Iterable<Booking>> response;
+    Iterable<Booking> bookings;
     try {
       bookings = this.bookingService.getAllBookingsBelongingToUsername(username);
+      response = ResponseEntity.ok(bookings);
     } catch (IllegalArgumentException iAe) {
       logger.error(iAe.getMessage());
-      response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
     } catch (NoSuchElementException nSeE) {
       logger.error(nSeE.getMessage());
-      response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-    if (bookings != null) {
-      response = ResponseEntity.status(HttpStatus.OK).body(bookings);
+      response = ResponseEntity.ok(Collections.emptyList());
+    } catch (Exception e) {
+      response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
     }
     return response;
   }
