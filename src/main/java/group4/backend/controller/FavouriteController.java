@@ -92,7 +92,7 @@ public class FavouriteController {
                     @ApiResponse(responseCode = "500", description = "Unexpected server error")
             }
     )
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('ADMIN') or #username == authentication.name")
     @GetMapping("/user/{username}")
     public ResponseEntity<Iterable<Favourite>> getFavouriteRoomsByUsername(@PathVariable String username) {
         ResponseEntity<Iterable<Favourite>> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
@@ -187,7 +187,8 @@ public class FavouriteController {
                     @ApiResponse(responseCode = "417", description = "Deletion failed due to unmet expectations")
             }
     )
-    @PreAuthorize("hasAnyRole('USER')")
+    // TODO: Add authentication
+    @PreAuthorize("hasAnyRole('ADMIN') or #username == authentication.name")
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteFavouriteById(@PathVariable Integer id) {
         ResponseEntity<Integer> response = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();

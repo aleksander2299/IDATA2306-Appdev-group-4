@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class FavouriteService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
 
+
     /**
      * Constructs a new FavouriteService with required repositories.
      *
@@ -46,6 +48,32 @@ public class FavouriteService {
         this.favouriteRepository = favouriteRepository;
         this.userRepository = userRepository;
         this.roomRepository = roomRepository;
+    }
+
+    /**
+     * Checks if the currently authenticated user is the owner of the favourite.
+     * (This is the method called from @PreAuthorize)
+     * @param authentication The current authentication object.
+     * @param favouriteId    The ID of the favourite to check.
+     * @return true if the user is the owner, false otherwise.
+     * NOTE: Made with help from AI
+     */
+    public boolean isOwner(Authentication authentication, Integer favouriteId) {
+        if (authentication == null || !authentication.isAuthenticated() || favouriteId == null) {
+            return false;
+        }
+        String currentUsername = authentication.getName();
+        if (currentUsername == null || currentUsername.isEmpty()) { return false; }
+
+        Optional<Favourite> favouriteOptional = this.favouriteRepository.findById(favouriteId);
+        if (favouriteOptional.isEmpty()) {
+            return false;
+        }
+        Favourite favouriteObject = favouriteOptional.get();
+        if (favouriteObject.getUser() != null && favouriteObject.getUser().getUsername() != null) {
+            return currentUsername.equals(favouriteObject.getUser().getUsername());
+        }
+        return false;
     }
 
     /**
