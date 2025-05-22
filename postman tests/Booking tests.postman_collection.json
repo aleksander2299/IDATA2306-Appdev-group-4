@@ -297,7 +297,7 @@
 						}
 					}
 				},
-				"url": "http://localhost:8080/api/roomProvider/link/{{room_id}}/{{provider_id}}"
+				"url": "http://localhost:8080/api/roomProvider/link/{{room_id}}/{{provider_id}}/1000"
 			},
 			"response": []
 		},
