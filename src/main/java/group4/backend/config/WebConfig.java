@@ -5,6 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Configuration class for setting up web related configurations.
+ * This class defines beans and other configurations related to the web layer.
+ */
 @Configuration
 public class WebConfig {
 

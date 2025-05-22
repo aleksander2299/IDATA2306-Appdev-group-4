@@ -17,6 +17,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * This class serves as the configuration for setting up authentication and security-related beans.
+ * It integrates with Spring Security to provide the necessary components such as
+ * authentication providers, password encoders, and user detail services.
+ *
+ * Annotations:
+ * - {@code @Configuration}: Marks this class as a configuration class.
+ * - {@code @RequiredArgsConstructor}: Generates a constructor for the class with required fields.
+ * NOTE: Documentation was made with help from AI
+ */
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
