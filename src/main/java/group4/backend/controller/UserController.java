@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
 
 /**
  * A REST controller for managing user-related operations.
@@ -49,6 +50,7 @@ public class UserController {
                   @ApiResponse(responseCode = "404", description = "not found")
           }
   )
+  @PreAuthorize("hasAnyRole('ADMIN') or #username == authentication.name")
   @GetMapping("/{username}")
   public ResponseEntity<User> getUser(@PathVariable String username) {
     Optional<User> user = this.userService.getUser(username);
@@ -126,7 +128,7 @@ public class UserController {
                   @ApiResponse(responseCode = "403", description = "expectations not met")
           }
   )
-  @PreAuthorize("hasAnyRole('ADMIN','USER')")
+  @PreAuthorize("hasRole('ADMIN') or (hasAnyRole('USER', 'PROVIDER') and #user.username == authentication.name)")
   @DeleteMapping
   public ResponseEntity<String> deleteUser(@RequestBody User user) {
     ResponseEntity<String> response;
@@ -163,7 +165,7 @@ public class UserController {
                   @ApiResponse(responseCode = "404", description = "not found user ?")
           }
   )
-  @PreAuthorize("hasAnyRole('ADMIN','USER')")
+  @PreAuthorize("hasRole('ADMIN') or (hasAnyRole('USER', 'PROVIDER') and #user.username == authentication.name)")
   @PutMapping("{username}")
   public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody User user) {
     ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("A user with that name was not found");
