@@ -1,8 +1,8 @@
 # IDATA2306-Appdev-group-4
 Group project for group 4 
+Candidate Numbers: 10037, 10002, 10001, 10013
 
-
-About this project : This is a project in courses IDATA2306 and IDATA2301 
+About this project : This is a project in the courses IDATA2306 and IDATA2301 
 we were tasked with creating a hotel site where you can log in as user and admin that have their own roles that has their own 
 authorities, the project is to be secured with JWT authentication and the user of the project shall be able to book rooms,
 search for rooms, change settings and login and logout etc. it is supposed to be a hotel room aggregator like trivago
@@ -12,7 +12,7 @@ To go to the website with backend and frontend combined the url is: [[http://10.
 also url for swagger online will be:  [http://10.212.27.153/swagger-ui/index.html#/](http://10.212.27.153:8080/swagger-ui/index.html#/)
 
 ## Local swagger 
-swagger url if you're running locally: http://localhost:8080/swagger-ui/index.html#/
+Swagger url if you are running locally: http://localhost:8080/swagger-ui/index.html#/
 
 ## Tech Stack
 - Java 21
