@@ -34,11 +34,11 @@ Before running this project, ensure you have:
 - **MySQL Server** running locally or remotely
 - A `.env` file in the root directory with the following variables:
 
-# MySQL Database credentials
+# For the env file MySQL Database credentials
   DB_USERNAME=your_mysql_username
   DB_PASSWORD=your_mysql_password
 
-# JWT secret key for HS256 signing
+# For the env file JWT secret key for HS256 signing
   jwt.secret=your_generated_secret_key
   this must be generated HS256
 
