@@ -8,7 +8,7 @@ authorities, the project is to be secured with JWT authentication and the user o
 search for rooms, change settings and login and logout etc. it is supposed to be a hotel room aggregator like trivago
 
 ## Website
-To go to the website with backend and frontend combined the url is: [[http://10.212.27.153/](([(https://stayfinder.no/))](https://stayfinder.no/)
+To go to the website with backend and frontend combined the url is: [[http://10.212.27.153/](https://stayfinder.no/)
 also url for swagger online will be:  [http://10.212.27.153/swagger-ui/index.html#/](http://10.212.27.153:8080/swagger-ui/index.html#/)
 
 ## Local swagger 
