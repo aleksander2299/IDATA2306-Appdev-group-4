@@ -56,7 +56,10 @@ CREATE DATABASE appdev4;
 ```
 
 ### Running the project
-after all prerequisites are met you can then run in IDE of your choice and go on the main file and run it.
+After all prerequisites are met you can then run in IDE of your choice and go on the main file and run it.
+
+## Running postman collections
+Certain postman collections fail if you run other collections first, please restart the backend between each collection.
 
 ## important for adding images 
 if you cannot add images while adding room or editing room while running locally in backend and frontend you must go to roomcontroller and check the message in the method:
