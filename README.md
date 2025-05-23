@@ -58,5 +58,16 @@ CREATE DATABASE appdev4;
 ### Running the project
 after all prerequisites are met you can then run in IDE of your choice and go on the main file and run it.
 
-
+## important for adding images 
+if you cannot add images while adding room or editing room while running locally in backend and frontend you must go to roomcontroller and check the message in the method:
+```
+@Autowired
+    public RoomController(RoomService roomService) {
+        this.roomService = roomService;
+        //This path matches the directory used on the server for images.
+        //In development, it must be changed to fit an existing directory.
+        this.imageURL = "/home/local/shared/WebDeployer4001/website/uploads";
+}
+```
+and follow it 
 
