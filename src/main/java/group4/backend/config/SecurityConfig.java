@@ -54,6 +54,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/api/rooms/search").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/rooms").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/rooms/{id}/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/rooms/{roomId}/images").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/rooms/images").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/rooms/images/{filename}").permitAll()
 
                         .requestMatchers(HttpMethod.GET,"/api/source_extra_features/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/source/**").permitAll()

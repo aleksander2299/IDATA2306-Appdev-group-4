@@ -280,6 +280,7 @@ public class RoomController {
             response = ResponseEntity.status(HttpStatus.CREATED).body(filename);
         } catch (IOException ioE) {
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            System.out.println(ioE.getMessage());
         }
         return response;
     }
@@ -311,6 +312,7 @@ public class RoomController {
             response = ResponseEntity.status(HttpStatus.CREATED).body(filename);
         } catch (IOException ioE) {
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            System.out.println(ioE.getMessage());
         }
         return response;
     }
