@@ -29,10 +29,21 @@ public class UserService {
     this.passwordEncoder = passwordEncoder;
   }
 
+  /**
+   * Retrieves all the users from the repository.
+   *
+   * @return an Iterable of User objects representing all the users in the system
+   */
   public Iterable<User> getAllUsers() {
     return this.userRepository.findAll();
   }
 
+  /**
+   * Retrieves a user from the repository based on the given username.
+   *
+   * @param username the username of the user to retrieve
+   * @return an Optional containing the User if found, otherwise an empty Optional
+   */
   public Optional<User> getUser(String username) {
     return this.userRepository.findById(username);
   }
