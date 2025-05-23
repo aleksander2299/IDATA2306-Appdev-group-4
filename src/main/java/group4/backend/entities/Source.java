@@ -108,6 +108,12 @@ public class Source implements Comparable<Source>{
         this.country = country;
     }
 
+    /**
+     * Compares this Source object with the specified Source object for order.
+     *
+     * @param other the Source object to be compared.
+     * @return a integer
+     */
     @Override
     public int compareTo(Source other) {
         return Integer.compare(this.sourceId, other.sourceId);
