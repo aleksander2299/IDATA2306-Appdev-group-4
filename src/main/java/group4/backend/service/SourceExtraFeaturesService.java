@@ -24,6 +24,13 @@ public class SourceExtraFeaturesService {
     @Autowired
     private ExtraFeaturesRepository extraFeaturesRepository;
 
+    /**
+     * Retrieves all SourceExtraFeatures entities from the database and returns them as a list.
+     * Throws an exception if no entities are found.
+     *
+     * @return a list of SourceExtraFeatures entities
+     * @throws EmptyResultDataAccessException if no SourceExtraFeatures entities are found
+     */
     public List<SourceExtraFeatures> findAll(){
 
         List<SourceExtraFeatures> sourceExtraFeaturesList = new ArrayList<>();
@@ -34,6 +41,14 @@ public class SourceExtraFeaturesService {
         return sourceExtraFeaturesList;
     }
 
+    /**
+     * Links a Source entity identified by its ID to an ExtraFeatures entity identified by its ID.
+     * Creates a relationship between the Source and the ExtraFeatures if both exist in the respective repositories.
+     *
+     * @param sourceId the ID of the Source to be linked
+     * @param featureId the ID of the ExtraFeatures to be linked
+     * @throws IllegalArgumentException if the Source or ExtraFeatures entity does not exist
+     */
     // Got help from chatGPT to make this work.
     public void linkSourceToFeature(int sourceId, String featureId) {
         // Check if the Source and Feature exists.
@@ -60,6 +75,14 @@ public class SourceExtraFeaturesService {
         sourceExtraFeaturesRepository.save(sourceExtraFeatures);
     }
 
+    /**
+     * Unlinks a Source entity identified by its ID from an ExtraFeatures entity identified by its ID.
+     * Removes the association between the Source and the ExtraFeatures if the link exists in the repository.
+     *
+     * @param sourceId the ID of the Source to be unlinked
+     * @param featureId the ID of the ExtraFeatures to be unlinked
+     * @throws IllegalArgumentException if the link between the Source and ExtraFeatures does not exist
+     */
     public void unlinkSourceToFeature(int sourceId, String featureId){
         Source source = sourceRepository.findById(sourceId).get();
         ExtraFeatures feature = extraFeaturesRepository.findById(featureId).get();
@@ -72,12 +95,23 @@ public class SourceExtraFeaturesService {
         sourceExtraFeaturesRepository.delete(sourceExtraFeatures);
     }
 
+    /**
+     * Retrieves all SourceExtraFeatures entities from the database and returns them as a list.
+     *
+     * @return a list of all sourceExtraFeatures
+     */
     public List<SourceExtraFeatures> getAllSourceExtraFeatures() {
         List<SourceExtraFeatures> sourceExtraFeatures = new ArrayList<>();
         sourceExtraFeaturesRepository.findAll().forEach(sourceExtraFeatures::add);
         return sourceExtraFeatures;
     }
 
+    /**
+     * Retrieves a list of extra features associated with a given source.
+     *
+     * @param source the source entity for which to retrieve associated extra features
+     * @return a list of ExtraFeatures objects associated with the given source
+     */
     public List<ExtraFeatures> getFeaturesForSource(Source source) {
         List<ExtraFeatures> features = new ArrayList<>();
 

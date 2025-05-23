@@ -188,7 +188,18 @@ public class RoomProviderService {
     }
 
 
-
+    /**
+     * Updates an existing RoomProvider entity with new information if available.
+     * The RoomProvider is fetched by its ID, and the corresponding attributes
+     * such as room price, room, or provider are updated based on the provided parameters.
+     *
+     * @param roomProviderId the ID of the RoomProvider to be updated
+     * @param roomPrice the new room price to update, or null to skip updating this attribute
+     * @param roomId the ID of the new Room to associate, or null to skip updating this attribute
+     * @param providerId the ID of the new Provider to associate, or null to skip updating this attribute
+     * @return the updated RoomProvider entity
+     * @throws NullPointerException if no RoomProvider is found with the given ID
+     */
     public RoomProvider updateRoomProvider(int roomProviderId, Integer roomPrice,
                                                            Integer roomId, Integer providerId){
 

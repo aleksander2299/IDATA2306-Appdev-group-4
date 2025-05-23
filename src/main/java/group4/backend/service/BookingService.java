@@ -122,6 +122,16 @@ public class BookingService {
     return optionalBooking;
   }
 
+  /**
+   * Checks if a booking can be added to the system.
+   * The booking is considered valid for addition if:
+   * - It is not null.
+   * - It passes its own validation.
+   * - There are no overlapping bookings for the same room during the booking period.
+   *
+   * @param booking The booking to check for validity.
+   * @return true if the booking can be added to the system, false otherwise.
+   */
   private boolean canBeAdded(Booking booking) {
     return (
         booking != null
@@ -134,6 +144,19 @@ public class BookingService {
     );
   }
 
+  /**
+   * Prepares a booking object by associating it with a room provider and a user based on their IDs.
+   * This method ensures that the booking is valid and sets the room provider and user details
+   * if the booking object meets the required conditions.
+   *
+   * @param roomProviderId the ID of the room provider to be associated with the booking
+   * @param username the username of the user to be associated with the booking
+   * @param booking the booking object that needs to be prepared and validated
+   * @return the prepared booking object with room provider and user information set,
+   *         or null if the booking cannot be prepared
+   * @throws IllegalArgumentException if the booking has an existing ID, missing check-in or check-out date,
+   *                                  or a check-in date that is after the check-out date
+   */
   private Booking prepareBookingWithIds(Integer roomProviderId, String username, Booking booking) {
     Optional<RoomProvider> roomProvider = this.roomProviderRepository.findById(roomProviderId);
     Optional<User> user = this.userRepository.findById(username);

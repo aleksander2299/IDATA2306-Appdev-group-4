@@ -222,6 +222,21 @@ public class FavouriteService {
         }
     }
 
+    /**
+     * Deletes all favourite entities associated with a given room ID and username.
+     * The method ensures the validity of the input DTO before attempting to delete the corresponding
+     * favourite entities in the database. Throws exceptions for invalid input or if the operation fails.
+     *
+     * @param basicFavourite the data transfer object containing the room ID and username to
+     *                       identify the favourite entities to be deleted. Must contain non-null,
+     *                       valid room ID and non-blank username.
+     * @throws IllegalArgumentException if the provided DTO is null, or if the room ID is null,
+     *                                  or if the username is null or blank.
+     * @throws NoSuchElementException if the room ID or username cannot be found in the database,
+     *                                or if no favourites matching the given criteria exist in the database.
+     * @throws ExpectedDeletedEntityException if any favourite entities still exist after the deletion
+     *                                        operation is performed.
+     */
     public void deleteFavouriteWithOnlyIds(FavouriteWithOnlyIds basicFavourite) {
         if (basicFavourite == null) {
             throw new IllegalArgumentException("Null was passed as favourite DTO when trying to post favourite");

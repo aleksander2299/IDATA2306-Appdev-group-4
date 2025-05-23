@@ -164,6 +164,14 @@ public class RoomService {
     roomRepository.deleteById(id);
   }
 
+  /**
+   * Updates the image URL of an existing room in the repository.
+   * If the room with the specified ID is not found, an IllegalArgumentException is thrown.
+   *
+   * @param roomId The ID of the room whose image URL is to be updated
+   * @param url    The new image URL to be set for the room
+   * @throws IllegalArgumentException if the room with the specified ID is not found
+   */
   public void updateRoomImageUrl(Integer roomId, String url) {
     Room room = this.roomRepository.findById(roomId)
         .orElseThrow(() -> new IllegalArgumentException("Room not found"));
@@ -171,7 +179,12 @@ public class RoomService {
     this.roomRepository.save(room);
   }
 
-
+  /**
+   * Clears the image URL of a specific room by setting it to an empty string.
+   * If the room with the specified ID is not found, an IllegalArgumentException is thrown.
+   *
+   * @param roomId The ID of the room whose image URL is to be cleared
+   * @throws IllegalArgumentException if the room with the specified ID*/
   public void clearImageUrl(int roomId) {
     Room room = this.roomRepository.findById(roomId)
         .orElseThrow(() -> new IllegalArgumentException("Room not found"));
